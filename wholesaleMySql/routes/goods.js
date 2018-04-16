@@ -2,7 +2,7 @@ var controller = require('./modules/case7controller.js');
 var formidable = require('formidable');
 
 //--------------case7
-//--checkresult
+//--checkresul
 
 module.exports = function (app) {
     app.post('/case7/upload/checkresult', function (req, res) {
