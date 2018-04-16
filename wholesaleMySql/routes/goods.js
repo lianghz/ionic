@@ -17,7 +17,7 @@ module.exports = function (app) {
         controller.checkResultToExcel(req, res);
     });
     app.get('/case7/checkresultgrid', function (req, res) {
-        controller.checkResultGrid(req,res);
+        controller.checkResultGrid(req, res);
     });
     app.get('/case7/checkresult', function (req, res) {
 
