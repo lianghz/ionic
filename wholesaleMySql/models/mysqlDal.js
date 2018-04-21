@@ -12,10 +12,10 @@ db.query = function (sql, parameter, callback) {
         console.log(err);
         callback(err, null);
       };
-      console.log("SELECT ==> ");
-      for (var i in rows) {
-        console.log(rows[i]);
-      }
+      // console.log("SELECT ==> ");
+      // for (var i in rows) {
+      //   console.log(rows[i]);
+      // }
       callback(null, rows, fields);
       conn.release();
     });

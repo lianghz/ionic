@@ -7,6 +7,7 @@ var Goods = require('../models/goods');
 module.exports = {
 
 	Routes: function (app) {
+		app.get('/goods/brand',this.brand);
 		app.get('/goods/getbrand',this.getBrand);
 		app.post('/goods/addbrand', this.addBrand);
 	},
@@ -31,6 +32,12 @@ module.exports = {
 	},
 
 	getBrand: function (req, res, next) {
-		res.render('goods/BrandSetting', Goods.getBrand());
+		Goods.getBrand(function(rows){
+			res.json(rows[0]);
+		});
+	},
+
+	brand: function (req, res, next) {
+		res.render('goods/BrandSetting',{ layout: null});
 	},
 };
