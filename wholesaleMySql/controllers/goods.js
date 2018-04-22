@@ -32,7 +32,8 @@ module.exports = {
 	},
 
 	getBrand: function (req, res, next) {
-		Goods.getBrand(function(rows){
+		var inParams = [-1, req.query.name, req.query.company, req.query.status]
+		Goods.getBrand(inParams,function(rows){
 			res.json(rows[0]);
 		});
 	},

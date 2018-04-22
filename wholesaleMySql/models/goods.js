@@ -1,6 +1,5 @@
 var db = require('./mysqlDal');
-function getBrand(cb) {
-    var inParams = [-1, "", "", 1]
+function getBrand(inParams,cb) {
     var sql = 'CALL P_GetBrand(?,?,?,?)';
     db.query(sql, inParams, function (err, rows, fields) {
         if (err) {
