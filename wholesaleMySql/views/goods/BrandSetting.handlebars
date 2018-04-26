@@ -29,52 +29,92 @@
         </select>
     <a id="brand-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
     <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
-    <a id="brand-bt-save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="openDialogSave()">添加</a>
+    <a id="brand-bt-save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="openDialogAdd()">添加</a>
+    <a id="brand-bt-save" href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="openDialogEdit()">修改</a>
+   
 </div>
 {{!-- 数据上下文 --}}
 <input id="brand-params" type="hidden" name="referrer" value="{{params}}">
 <input id="brand-params2" type="hidden" name="referrer" value="{{params2}}">
 {{!-- 表单 --}}
-<div id="brand-dlg-save" class="easyui-dialog" title="保存计算结果" style="width:400px;height:200px;padding:10px" data-options="
+<div id="brand-dlg-add" class="easyui-dialog" title="添加品牌" style="width:400px;height:200px;padding:10px" data-options="
                 closed: true,
-                iconCls: 'icon-save',
+                iconCls: 'icon-add',
                 buttons: [{
-                    text:'保存',
+                    text:'添加',
                     iconCls:'icon-ok',
                     handler:function(){
-                        $('#brand-ff-save').submit();
+                        $('#brand-ff-add').submit();
                         
                     }
                 },{
                     text:'取消',
+                    iconCls:'icon-cancel',
                     handler:function(){
-                        $('#brand-dlg-save').dialog('close');
+                        $('#brand-dlg-add').dialog('close');
                     }
                 }]
             ">
-    <form id="brand-ff-save" action="/savenonkaversion" method="post">
+    <form id="brand-ff-add" action="/goods/addbrand" method="post">
         <table>
             <tr>
                 <td>
-                    <input id="brand-ff-period" name="period" class="f1 easyui-textbox" data-options="label:'周期:',required:true,readonly:true,validateOnCreate:false,err:err"></input>
+                    <input id="brand-ff-name" name="name"  style="width:300px" class="f1 easyui-textbox" data-options="label:'品牌名称:',prompt:'输入品牌名称',required:true,validateOnCreate:false,err:err"></input>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <input id="brand-ff-vno" name="vno" style="width:200px" class="f1 easyui-numberbox tb" data-options="label:'版本号:',prompt:'输入数字',required:true,validType:'length[1,3]'"></input>
-                </td>
-            </tr>
-            <tr>
-                <td><input name="vname" class="f1 easyui-textbox" style="width:300px" data-options="label:'版本描述:',required:true"></input>
+                    <input id="brand-ff-company" name="company" style="width:300px" class="f1 easyui-textbox tb" data-options="label:'公司名称:',prompt:'输入公司名称',required:true,validateOnCreate:false,err:err"></input>
                 </td>
             </tr>
         </table>
         <input id="brand-ff-outlet" type="hidden" name="outlet" value="">
         <input id="brand-ff-loc" type="hidden" name="loc" value="">
-        <input id="brand-ff-name" type="hidden" name="name" value="">
         <input id="brand-ff-over" type="hidden" name="over" value="">
     </form>
 </div>
+
+<div id="brand-dlg-edit" class="easyui-dialog" title="修改品牌" style="width:400px;height:200px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'修改',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#brand-ff-edit').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#brand-dlg-edit').dialog('close');
+                    }
+                }]
+            ">
+    <form id="brand-ff-edit" action="/goods/modifybrand" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="brand-ff-edit-name" name="name"  style="width:300px" class="f1 easyui-textbox" data-options="label:'品牌名称:',prompt:'输入品牌名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="brand-ff-edit-company" name="company" style="width:300px" class="f1 easyui-textbox tb" data-options="label:'公司名称:',prompt:'输入公司名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr><td>
+            <select id="brand-cbb-edit-status" name="status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+            <option value="1">1-有效</option>
+            <option value="0">0-无效</option>
+        </select>
+            </td></tr>
+            <input id="brand-ff-edit-id" type="hidden" name="brandId" value="">
+        </table>
+    </form>
+</div>
+
 
 {{!-- 脚本 --}}
 <script>
@@ -146,10 +186,10 @@
         }).textbox('addClearBtn', 'icon-clear');
         //------
 
-        $('#brand-ff-save').form({
+        $('#brand-ff-add').form({
             onSubmit: function () {
                 if ($(this).form('enableValidation').form('validate')) {
-                    $('#brand-dlg-save').dialog('close');
+                    $('#brand-dlg-add').dialog('close');
                     MaskUtil.mask();
                     return true;
                 } else {
@@ -158,22 +198,30 @@
             },
             success: function (data) {
                 MaskUtil.unmask();
-                if (data == '该版本已经存在,是否覆盖') {
-
-                    $.messager.confirm(data, '该版本已经存在,是否覆盖?<br>点确定,覆盖<br>点取消,修改版本号', function (r) {
-                        if (r) {
-                            $('#brand-ff-over').val('ok');
-                            $('#brand-ff-save').submit();
-                        } else {
-                            openDialogSave();
-                        }
-                    });
-                } else {
-                    $.messager.alert('消息提示:', "<center>"+data+"</center>");
-                }
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>"+data[0]["pramResult"]+"</center>");
             },
 
         });
+
+         $('#brand-ff-edit').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#brand-dlg-edit').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>"+data[0]["pramResult"]+"</center>");
+            },
+
+        });
+
         //down
         $("#brand-btn-down").click(function () {
             MaskUtil.mask();
@@ -225,7 +273,7 @@
 
     //---------------
 
-    function openDialogSave() {
+    function openDialogAdd() {
         var params = $('#brand-dg').datagrid("options").queryParams;
         $('#brand-ff-over').val("");
         $('#brand-ff-outlet').val(params.outlet ? params.outlet : '');
@@ -237,9 +285,29 @@
             value: v,
         }).textbox({ readonly: true, });
 
-        $('#brand-dlg-save').dialog({
+        $('#brand-dlg-add').dialog({
             modal: true,
         }).dialog('open');
     }
+
+    function openDialogEdit() {
+        var row = $('#brand-dg').datagrid('getSelected');
+        if(!row)
+        {
+            $.messager.alert('提示','<center>请选择一个品牌!</center>');
+        }
+        $('#brand-ff-edit').form('load',{
+            brandId:row.BrandId,
+            name:row.Name,
+            company:row.Company,
+            status:row.Status
+        });
+
+        $('#brand-dlg-edit').dialog({
+            modal: true,
+        }).dialog('open');
+    }
+
+    
 
 </script>

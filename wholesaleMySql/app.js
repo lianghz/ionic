@@ -1,5 +1,6 @@
 var createError = require('http-errors');
 var express = require('express');
+var session = require('express-session');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
@@ -8,7 +9,7 @@ var usersRouter = require('./routes/users');
 // var goodsRouter = require('./controllers/goods');
 
 var app = express();
-app.set('env', 'development') 
+app.set('env', 'development')
 
 
 // view engine setup
@@ -23,20 +24,29 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 //route
+app.use(session({
+  secret: 'hubwiz app', //secret的值建议使用随机字符串
+  cookie: {maxAge: 60 * 1000 * 30} // 过期时间（毫秒）
+}));
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+
+
 require('./routes/goods')(app);//goods route
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -45,6 +55,7 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
 
 app.listen(8080);
 

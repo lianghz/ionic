@@ -10,30 +10,29 @@ module.exports = {
 		app.get('/goods/brand',this.brand);
 		app.get('/goods/getbrand',this.getBrand);
 		app.post('/goods/addbrand', this.addBrand);
+		app.post('/goods/modifybrand', this.modifyBrand);
 	},
 
 	addBrand: function (req, res, next) {
-		// TODO: back-end validation (safety)
-		var c = new Customer({
-			firstName: req.body.firstName,
-			lastName: req.body.lastName,
-			email: req.body.email,
-			address1: req.body.address1,
-			address2: req.body.address2,
-			city: req.body.city,
-			state: req.body.state,
-			zip: req.body.zip,
-			phone: req.body.phone,
-		});
-		c.save(function (err) {
-			if (err) return next(err);
-			res.redirect(303, '/customer/' + c._id);
+		var userName = req.session.userName;
+		var inParams2 = [req.body.name, req.body.company, userName];
+		Goods.addBrand(inParams2,function(rows){
+			res.json(rows[0]);
 		});
 	},
 
 	getBrand: function (req, res, next) {
+		
 		var inParams = [-1, req.query.name, req.query.company, req.query.status]
 		Goods.getBrand(inParams,function(rows){
+			res.json(rows[0]);
+		});
+	},
+
+	modifyBrand: function (req, res, next) {
+		var userName = req.session.userName;
+		var inParams = [req.body.brandId, req.body.name, req.body.company, req.body.status,userName]
+		Goods.modifyBrand(inParams,function(rows){
 			res.json(rows[0]);
 		});
 	},
