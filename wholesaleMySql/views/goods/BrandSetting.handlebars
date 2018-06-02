@@ -1,5 +1,5 @@
 {{!-- 数据格 --}}
-<table id="brand-dg" title="返还奖励计算" style="width:100%;height:250px;border-top:0px;" toolbar="#brand-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+<table id="brand-dg" title="品牌管理" style="width:100%;height:250px;border-top:0px;" toolbar="#brand-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
    <thead>
         <tr>
             <th data-options="field:'BrandId',width:150">品牌编号</th>
@@ -76,7 +76,7 @@
 
 <div id="brand-dlg-edit" class="easyui-dialog" title="修改品牌" style="width:400px;height:200px;padding:10px" data-options="
                 closed: true,
-                iconCls: 'icon-add',
+                iconCls: 'icon-edit',
                 buttons: [{
                     text:'修改',
                     iconCls:'icon-ok',
@@ -105,7 +105,7 @@
                 </td>
             </tr>
             <tr><td>
-            <select id="brand-cbb-edit-status" name="status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+            <select id="brand-cbb-edit-status" data-options="label:'状态:'" style="width:300px" name="status" class="easyui-combobox" panelHeight="auto" style="width:100px">
             <option value="1">1-有效</option>
             <option value="0">0-无效</option>
         </select>

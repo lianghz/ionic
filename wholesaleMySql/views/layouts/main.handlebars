@@ -2,17 +2,19 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>买到家管理系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> {{!--
+    <title>买到家管理系统</title> --}}
     <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css"> {{!--
     <link rel="stylesheet" type="text/css" href="/easyui/ui-sunny/easyui.css">--}}
     <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/texteditor.css">
+    
     <link rel="stylesheet" type="text/css" href="/css/my.css">
     <script type="text/javascript" src="/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
-    <script type="text/javascript" src="/easyui/datagrid-detailview.js"></script>
     <script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.texteditor.js"></script>
 
     <script type="text/javascript" src="/js/my.js"></script>
     <script>
@@ -41,7 +43,8 @@
     <div data-options="region:'north'" style="height:50px;background-color: rgb(45, 62, 80);">--}}
         <div data-options="region:'north'" style="height:50px;background-color:rgb(45, 62, 80);padding-top: 5px;padding-left: 7px">
             <span style="font-size: 22pt;margin-top: 20px;padding-top:10px">
-                <font color="#ffffff" style="padding-top:100px">买到家管理系统</font>
+                {{!--
+                <font color="#ffffff" style="padding-top:100px">买到家管理系统</font> --}}
             </span>
         </div>
         <div data-options="region:'south'" style="height:30px;text-align: center;">
@@ -79,7 +82,7 @@
                             <span>3.产品管理</span>
                             <ul>
                                 <li data-options="url:'/goods/brand'">3.1.品牌管理</li>
-                                <li data-options="url:'/goods/checkresultgrid'">3.2.产品查询与修改</li>
+                                <li data-options="url:'/goods/goods'">3.2.产品查询与修改</li>
                                 <li data-options="url:'/goods/contractgrid'">3.3.产品添加</li>
                                 <li data-options="url:'/goods/salesgrid'">3.4.产品分类</li>
                                 <li data-options="url:'/goods/delivergrid'">3.5.分组管理</li>
@@ -130,7 +133,7 @@
                                 <li data-options="url:'/case7/checkresultgrid'">8.4.结算删档</li>
                             </ul>
                         </li>
-                         <li data-options="state:'closed'">
+                        <li data-options="state:'closed'">
                             <span>9.供应链管理</span>
                             <ul>
                                 <li data-options="url:'/case7/setargeementgrid'">9.1.供应商管理</li>
@@ -138,27 +141,27 @@
                                 <li data-options="url:'/case7/salesgrid'">9.3.采购单管理</li>
                                 <li data-options="url:'/case7/checkresultgrid'">9.4.采购入库管理</li>
                             </ul>
-                        </li> 
-                         <li data-options="state:'closed'">
+                        </li>
+                        <li data-options="state:'closed'">
                             <span>10.社区管理</span>
                             <ul>
                                 <li data-options="url:'/case7/setargeementgrid'">10.1.广告管理</li>
                                 <li data-options="url:'/case7/checkresultgrid'">10.2.公告管理</li>
                             </ul>
                         </li>
-                         <li data-options="state:'closed'">
+                        <li data-options="state:'closed'">
                             <span>11.财务管理</span>
                             <ul>
                                 <li data-options="url:'/case7/setargeementgrid'">11.1.其它资金记录管理</li>
                                 <li data-options="url:'/case7/checkresultgrid'">11.2.付款单管理</li>
                                 <li data-options="url:'/case7/salesgrid'">11.3.现金盘点管理</li>
                             </ul>
-                        </li>  
+                        </li>
                         <li data-options="state:'closed'">
                             <span>12.报表</span>
                             <ul>
                                 <li data-options="url:'/case7/setargeementgrid'">11.1.货单分析报表</li>
-                                 <li data-options="url:'/case7/checkresultgrid'">11.2.货单分析报表2</li>
+                                <li data-options="url:'/case7/checkresultgrid'">11.2.货单分析报表2</li>
                                 <li data-options="url:'/case7/checkresultgrid'">11.3.货单时间分析报表</li>
                                 <li data-options="url:'/case7/salesgrid'">11.4.库存报表</li>
                                 <li data-options="url:'/case7/checkresultgrid'">11.5.价格调查</li>
@@ -166,7 +169,7 @@
                                 <li data-options="url:'/case7/checkresultgrid'">11.7.交班表</li>
                                 <li data-options="url:'/case7/salesgrid'">11.8.送货分析</li>
                             </ul>
-                        </li>                                                                                              
+                        </li>
                     </ul>
                 </li>
             </ul>
