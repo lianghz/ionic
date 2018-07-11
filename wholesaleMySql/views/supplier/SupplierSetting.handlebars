@@ -1,0 +1,220 @@
+{{!-- 数据格 --}}
+<table id="supplier-dg" class="easyui-datagrid" title="配装运单" style="width:100%;height:250px;bsupplier-top:0px;" toolbar="#supplier-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'SupplierId',width:150">供应商编号</th>
+            <th data-options="field:'Name',width:200">供应商名称</th>
+            <th data-options="field:'Address',width:100">地址</th>
+            <th data-options="field:'Telephone',width:300">供应商电话</th>
+            <th data-options="field:'ChargeMobile',width:80">负责人手机</th>
+            <th data-options="field:'LinkMobile',width:80">联系人手机</th>
+            <th data-options="field:'InCharge',width:80">负责人</th>
+            <th data-options="field:'LinkMan',width:300">联系人</th>
+            <th data-options="field:'UpdateUser',width:300">更新人</th>
+            <th data-options="field:'Status',width:300">状态</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="supplier-tbr">
+    <input id="supplier-txt-supplierId" style="width:130px;">
+    <input id="supplier-txt-name" style="width:130px;">
+    <select id="supplier-cb-status" name="status" class="easyui-combobox" data-options="width:200">
+        <option value="-1">选择状态</option>
+        <option value="1">1-有效</option>
+        <option value="0">0-无效</option>
+    </select>
+    <a id="supplier-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="supplierSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="supplierOpenDialogAdd()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="supplierOpenDialogEdit()">修改</a>
+</div>
+{{!-- 对话框 --}}
+<div id="supplier-dlg" class="easyui-dialog" title="添加因子" style="width:650px;height:350px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#supplier-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#supplier-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="supplier-ff" action="/supplier/modifySupplier" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="supplier-ff-txt-name" name="name" style="width:300px" class="f1 easyui-textbox" data-options="label:'供应名称:',prompt:'输入供应名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <td>
+                    <input id="supplier-ff-txt-address" name="address" style="width:300px" class="f1 easyui-textbox " data-options="label:
+                        '供应商地址:',prompt: '输入供应商地址',required:true,validateOnCreate:false,err:err "></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="supplier-ff-txt-telephone" name="telephone" class="easyui-textbox" style="width:300px" data-options="label: '电话号码:',prompt: '输入电话号码',required:true,validateOnCreate:false,err:err">
+                </td>
+                <td>
+                    <input id="supplier-ff-txt-chargeMobile" name="chargeMobile" class="easyui-textbox" style="width:300px" data-options="label:'负责人电话:',prompt: '输入负责人电话',required:true,validateOnCreate:false,err:err">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="supplier-ff-txt-linkMobile" name="linkMobile" class="easyui-textbox" style="width:300px" data-options="label: '联系人电话:',prompt: '输入联系人电话',required:true,validateOnCreate:false,err:err">
+                </td>
+                <td>
+                    <input id="supplier-ff-txt-inCharge" name="inCharge" style="width:300px" class="f1 easyui-textbox" data-options="label:'负责人人姓名:',prompt:'输入负责人姓名',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="supplier-ff-txt-linkMan" name="linkMan" style="width:300px" class="f1 easyui-textbox" data-options="label:'联系人姓名:',prompt:'输入联系人姓名',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <td>
+                    <select id="supplier-ff-cb-status" name="status" class="easyui-combobox" data-options="label:'状态:',width:200,prompt:'选择状态',required:true,validateOnCreate:false,err:err">
+                        <option value="1">1-有效</option>
+                        <option value="0">0-无效</option>
+                    </select>
+                </td>
+                <input id="supplier-ff-txt-supplierId" name="supplierId" type="hidden"></input>
+            </tr>
+        </table>
+    </form>
+</div>
+
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+
+        $('#supplier-txt-supplierId').textbox({
+            prompt: '供应商编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#supplier-txt-name').textbox({
+            prompt: '供应商名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#supplier-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#supplier-dlg').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                if (data[0]["pramCode"] == 1) {
+                    $('#supplier-dg').datagrid('reload');
+                }
+            },
+
+        });
+    });
+
+    function supplierSearch() {
+        var supplierId = $('#supplier-txt-supplierId').val();
+        var name = $('#supplier-txt-name').val();
+        var status = $('#supplier-cb-status').val();
+        supplierId = supplierId ? supplierId : 0;
+
+        $('#supplier-dg').datagrid({
+            url: '/supplier/getSupplier',
+            queryParams: {
+                supplierId: supplierId,
+                name: name,
+                status: status
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true
+        });
+    }
+
+    function supplierOpenDialogAdd() {
+        $('#supplier-ff-txt-supplierId').val("0");
+        $('#supplier-dlg').dialog({
+            title: "添加供应商",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function supplierOpenDialogEdit() {
+        var row = $('#supplier-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('提示', '<center>请选择一个供应商!</center>');
+        }
+        $('#supplier-ff-txt-supplierId').val(row.SupplierId);
+        $('#supplier-ff').form('load', {
+            supplierId: row.SupplierId,
+            name: row.Name,
+            address: row.Address,
+            telephone: row.Telephone,
+            chargeMobile: row.ChargeMobile,
+            linkMobile: row.LinkMobile,
+            linkMan: row.LinkMan,
+            status: row.Status,
+            inCharge: row.InCharge
+        });
+
+        $('#supplier-dlg').dialog({
+            title: "修改供应商",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function Search() {
+
+    }
+
+
+</script>

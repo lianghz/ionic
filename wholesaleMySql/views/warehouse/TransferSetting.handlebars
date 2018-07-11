@@ -1,0 +1,339 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="移库单" style="width:400px;height:350px;">
+        <table id="transfer-dg" class="easyui-datagrid" style="width:100%;height:400px;border-top:0px;" toolbar="#transfer-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'TransferNo',width:150">移库单</th>
+                    <th data-options="field:'FromName',width:150">发送仓库</th>
+                    <th data-options="field:'ToName',width:150">接收仓库</th>
+                    <th data-options="field:'Createdate',width:150">新建时间</th>
+                    <th data-options="field:'CreateUser',width:150">建立用户</th>
+                    <th data-options="field:'Updatedate',width:150">更新时间</th>
+                    <th data-options="field:'CheckOutDate',width:150">出仓时间</th>
+                    <th data-options="field:'CheckOutUser',width:150">出仓人</th>
+                    <th data-options="field:'ReceiveDate',width:150">接收时间</th>
+                    <th data-options="field:'ReceiveUser',width:150">接收人</th>
+                    <th data-options="field:'TransStatus',width:150">状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <table id="transfer-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#transfer-detail-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="移库单明细">
+            <thead>
+                <tr>
+                    <th data-options="field:'Transferno',width:120">移库单号</th>
+                    <th data-options="field:'GoodsId',width:150">商品编号</th>
+                    <th data-options="field:'GoodsName',width:80">商品名称</th>
+                    <th data-options="field:'Cases',width:100">箱数</th>
+                    <th data-options="field:'Piece',width:100">散数</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="transfer-tbr">
+    <input id="transfer-cg-fromWarehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择发送仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //transferSelectWarehouse(row);
+                    }
+
+                ">
+    <input id="transfer-cg-toWarehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择接收仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //transferSelectWarehouse(row);
+                    }
+                ">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="transfer-txt-transferNo" style="width:120px;height:25px">
+    <input id="transfer-date-startDate" class="easyui-datebox" style="width:130px;">
+    <input id="transfer-date-endDate" class="easyui-datebox" style="width:130px;">
+    <select id="transfer-cbb-status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="-1">所有状态</option>
+        <option value="0">0-未出仓</option>
+        <option value="1">1-已出仓</option>
+        <option value="2">2-已接收</option>
+    </select>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="transferSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="transferAdd()">添加</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a id="transfer-bt-out" onclick="transferOut();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok" data-options="disabled: true">出仓确认</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a id="transfer-bt-receive" onclick="transferReceive();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-ok"
+        data-options="disabled: true">接收确认</a>
+</div>
+
+<div id="transfer-detail-tbr">
+    <input id="transfer-detail-txt-goodsId" style="width:120px;height:25px" data-options="validType:'number'">
+    <input id="transfer-detail-txt-cases" style="width:120px;height:25px" data-options="validType:'number'">
+    <input id="transfer-detail-txt-piece" style="width:120px;height:25px" data-options="validType:'number'">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a onclick="transferDetailAdd();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add">添加</a>
+</div>
+
+{{!-- 对话框 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#transfer-txt-transferNo').textbox({
+            prompt: '移库单号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#transfer-date-startDate').datebox({
+            prompt: '选择开始时间',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#transfer-date-endDate').datebox({
+            prompt: '选择结束时间',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#transfer-detailNotin-txt-transfer').textbox({
+            prompt: '选择价格',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#transfer-detail-txt-piece').textbox({
+            prompt: '输入散数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#transfer-detail-txt-cases').textbox({
+            prompt: '输入箱数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#transfer-detail-txt-goodsId').textbox({
+            prompt: '输入商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+
+        //------
+
+    });
+
+    function transferAdd() {
+        var fromWarehouseId = $('#transfer-cg-fromWarehouseId').combogrid('getValue');
+        var toWarehouseId = $('#transfer-cg-toWarehouseId').combogrid('getValue');
+        if (fromWarehouseId == "") {
+            $.messager.alert('消息提示:', "<center>请选择发出仓库</center>");
+            return;
+        }
+        if (toWarehouseId == "") {
+            $.messager.alert('消息提示:', "<center>请选择接收仓库</center>");
+            return;
+        }
+        $.post("/warehouse/addTransfer", { fromWarehouseId: fromWarehouseId, toWarehouseId: toWarehouseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#transfer-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function transferSearch() {
+        var fromWarehouseId = $('#transfer-cg-fromWarehouseId').combogrid('getValue');
+        var toWarehouseId = $('#transfer-cg-toWarehouseId').combogrid('getValue');
+        var transferNo = $('#transfer-txt-transferNo').val();
+        var startDate = $('#transfer-date-startDate').val();
+        var endDate = $('#transfer-date-endDate').val();
+        var status = $('#transfer-cbb-status').val();
+        fromWarehouseId = fromWarehouseId ? fromWarehouseId : 0;
+        toWarehouseId = toWarehouseId ? toWarehouseId : 0;
+        transferNo = transferNo ? transferNo : 0;
+        startDate = startDate ? startDate : '1991-1-1';
+        endDate = endDate ? endDate : '9999-12-30';
+        $('#transfer-dg').datagrid({
+            url: '/warehouse/getTransfer',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                fromWarehouseId: fromWarehouseId,
+                toWarehouseId: toWarehouseId,
+                transferNo: transferNo,
+                startDate: startDate,
+                endDate: endDate,
+                status: status
+            },
+            onSelect: function (index, row) {
+                getTransferDetail(row.TransferNo);
+                if (row.TransStatus == 0) {
+                    $('#transfer-bt-out').linkbutton({
+                        disabled: false
+                    })
+                } else {
+                    $('#transfer-bt-out').linkbutton({
+                        disabled: true
+                    })
+                }
+                if (row.TransStatus == 1) {
+                    $('#transfer-bt-receive').linkbutton({
+                        disabled: false
+                    })
+                } else {
+                    $('#transfer-bt-receive').linkbutton({
+                        disabled: true
+                    })
+                }
+            }
+
+        });
+    }
+    function getTransferDetail(transferNo) {
+        $('#transfer-detail-dg').datagrid({
+            url: '/warehouse/getTransferDetail',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                transferNo: transferNo
+            }
+        });
+    }
+
+    function transferDetailAdd() {
+        var headerRow = $('#transfer-dg').datagrid('getSelected')
+        if (!headerRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条移库单</center>");
+            return;
+        }
+        var transferNo = headerRow.TransferNo
+        var goodsId = $('#transfer-detail-txt-goodsId').val()
+        var cases = $('#transfer-detail-txt-cases').val();
+        var piece = $('#transfer-detail-txt-piece').val();
+        //var detailRow = $('#transfer-detail-dg').datagrid('getSelected');
+        if (!goodsId) {
+            $.messager.alert('消息提示:', "<center>请输入商品编号</center>");
+            return;
+        }
+        cases = cases ? cases : 0;
+        piece = piece ? piece : 0;
+        //var transferno = detailRow.Transferno;
+        //var goodsId = detailRow.GoodsId;
+        $.post("/warehouse/transferDetailAdd", { transferNo: transferNo, goodsId: goodsId, cases: cases, piece: piece },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#transfer-detail-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function transferOut() {
+        var headerRow = $('#transfer-dg').datagrid('getSelected');
+        if (!headerRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条移库单</center>");
+            return;
+        }
+        var transferNo = headerRow.TransferNo;
+        $.post("/warehouse/checkOutTransfer", { transferNo: transferNo },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#transfer-dg').datagrid('reload');
+                $('#transfer-detail-dg').datagrid('reload');
+                $('#transfer-bt-out').linkbutton({
+                    disabled: true
+                })
+            }
+        );
+    }
+    function transferReceive() {
+        var headerRow = $('#transfer-dg').datagrid('getSelected');
+        if (!headerRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条移库单</center>");
+            return;
+        }
+        var transferNo = headerRow.TransferNo;
+        $.post("/warehouse/receiveTransfer", { transferNo: transferNo },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#transfer-dg').datagrid('reload');
+                $('#transfer-detail-dg').datagrid('reload');
+                $('#transfer-bt-receive').linkbutton({
+                    disabled: true
+                })
+            }
+        );
+    }
+//usage
+//wait for 3 seconds
+
+</script>

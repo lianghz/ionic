@@ -1,0 +1,303 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="管理转包装规则" style="width:400px;height:250px;">
+        <table id="changePackage-dg" style="width:100%;height:250px;border-top:0px;" toolbar="#changePackage-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'RuleId',width:150">规则编号</th>
+                    <th data-options="field:'RuleDesc',width:150">规则名称</th>
+                    <th data-options="field:'UpdateUser',width:150">更新用户</th>
+                    <th data-options="field:'UpdateDate',width:150">更新时间</th>
+                    <th data-options="field:'Status',width:150">状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:400px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',split:true" style="width:50%;border:0px 0px 0px 0px;">
+                <table id="changePackage-oringin-dg" style="width:100%;height:250px;border-top:0px;" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,"
+                    title="源商品">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'GoodsId',width:150">商品编号</th>
+                            <th data-options="field:'Name',width:150">商品名称</th>
+                            <th data-options="field:'Quantity',width:150">数量</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div data-options="region:'center'">
+                <table id="changePackage-destination-dg" style="width:100%;height:250px;border-top:0px;" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,"
+                    title="目的商品">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'GoodsId',width:150">商品编号</th>
+                            <th data-options="field:'Name',width:150">商品名称</th>
+                            <th data-options="field:'Quantity',width:150">数量</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div data-options="region:'south',split:true,title:'转换记录'" style="height:250px;">
+        <table id="changelog-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#changelog-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'WarehouseId',width:150">仓库编号</th>
+                    <th data-options="field:'WarehouseName',width:150">仓库名称</th>
+                    <th data-options="field:'TransationId',width:150">交易编号</th>
+                    <th data-options="field:'RuleId',width:150">规则编号</th>
+                    <th data-options="field:'GoodsId',width:150">商品编号</th>
+                    <th data-options="field:'Name',width:150">商品名称</th>
+                    <th data-options="field:'InventoryInOut',width:150">换包装出入库</th>
+                    <th data-options="field:'Quantiy',width:150">转换数量</th>
+                    <th data-options="field:'UpdateDate',width:150">更新人</th>
+                    <th data-options="field:'UpdateUser',width:150">更新时间</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="changePackage-tbr">
+    <input id="changePackage-txt-name" style="width:120px;height:25px">
+    <select id="changePackage-cb-status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="-1">选择状态</option>
+        <option value="1">1-有效</option>
+        <option value="0">0-无效</option>
+    </select>
+    <a onclick="changePackageSearch();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+</div>
+
+<div id="changelog-tbr">
+    <input id="change-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        changeLogSearch();
+                    }
+
+                ">
+    <a onclick="changeLogSearch();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="change-txt-quantity" style="width:120px;height:25px">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="changeAdd(1)">转换&gt;&gt;&gt;</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="changeAdd(0)">&lt;&lt;&lt;转换</a>
+
+</div>
+
+{{!-- 对话框 --}}
+<div id="changePackage-dlg" class="easyui-dialog" title="添加商品组" style="width:400px;height:200px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#changePackage-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#changePackage-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="changePackage-ff" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="changePackage-ff-txt-name" name="name" style="width:300px" class="f1 easyui-textbox" data-options="label:'商品组名称:',prompt:'输入商品组名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="changePackage-ff-cbb-status" data-options="label:'状态:'" style="width:300px" name="status" class="easyui-combobox"
+                        panelHeight="auto" style="width:100px">
+                        <option value="1">1-有效</option>
+                        <option value="0">0-无效</option>
+                    </select>
+                </td>
+            </tr>
+            <input id="changePackage-ff-txt-ruleId" name="ruleId" type="hidden" value=""></input>
+        </table>
+    </form>
+</div>
+{{!-- 脚本 --}}
+<script>
+
+
+    $('#changePackage-oringin-dg').datagrid({
+        url: '/goods/getpackageodetail',
+        queryParams: {
+            barCode: -11
+        },
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: false
+
+    });
+
+    $('#changePackage-destination-dg').datagrid({
+        url: '/goods/getpackageddetail',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true
+
+    });
+
+    $('#changePackage-dg').datagrid({
+        url: '/goods/getpackagerule',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true,
+        onSelect: function (index, row) {
+            $('#changePackage-oringin-dg').datagrid('load', {
+                ruleId: row.RuleId
+            });
+            $('#changePackage-destination-dg').datagrid('load', {
+                ruleId: row.RuleId
+            });
+        }
+
+    });
+
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#changePackage-txt-name').textbox({
+            prompt: '规则名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#change-txt-quantity').textbox({
+            prompt: '转换数量',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+        $('#changePackage-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                if (data[0]['pramCode'] == "1") {
+                    $('#goods-ff-add').form('clear');
+                    $('#changePackage-dlg').dialog('close');
+                    $('#changePackage-dg').datagrid('reload');
+                }
+            },
+        });
+    });
+
+
+
+    function changeLogSearch() {
+        var row = $('#changePackage-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一个规则</center>");
+            return;
+        }
+        var warehouseId = $('#change-cg-warehouseId').combogrid('getValue');
+        var ruleId = row.RuleId;
+        //var warehouseId = row.WarehouseId;
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择仓库</center>");
+            return;
+        }
+        $('#changelog-dg').datagrid({
+            url: '/warehouse/getChangePackageTransation',
+            queryParams: {
+                warehouseId: warehouseId,
+                ruleId:ruleId
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true
+        });
+    }
+
+    function changeAdd(direction) {
+        var row = $('#changePackage-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>选择一个规则</center>");
+            return;
+        }
+        var ruleId = row.RuleId;
+        var quantity = $('#change-txt-quantity').val();
+        //var direction = 1;
+        var warehouseId = $('#change-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>选择一个仓库</center>");
+            return;
+        }
+        $.post("/warehouse/ChangePackage", { warehouseId: warehouseId, direction: direction,ruleId:ruleId,quantity:quantity },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#changelog-dg').datagrid('reload');
+            });
+    }
+//usage
+//wait for 3 seconds
+
+</script>

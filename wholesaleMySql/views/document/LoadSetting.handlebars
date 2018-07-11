@@ -1,0 +1,245 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="装运单" style="width:300px;height:200px;">
+        <table id="load-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#load-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'WarehouseName',width:150">仓库编号</th>
+                    <th data-options="field:'LoadId',width:130">装运单号</th>
+                    <th data-options="field:'PlanName',width:80">计划送货员</th>
+                    <th data-options="field:'RealName',width:80">实际送货员</th>
+                    <th data-options="field:'CreateDate',width:120">创建时间</th>
+                    <th data-options="field:'CreateUser',width:120">建立人</th>
+                    <th data-options="field:'UpdateDate',width:120">更新时间</th>
+                    <th data-options="field:'UpdateUser',width:80">更新人</th>
+                    <th data-options="field:'CheckOutDate',width:120">出仓时间</th>
+                    <th data-options="field:'Confirm',width:150">最终确认</th>
+                    <th data-options="field:'CheckOutStatus',width:80">出仓状态</th>
+                    <th data-options="field:'BalanceStatus',width:80">结算平标志</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" title="送货单" style="height:300px;">
+        <table id="load-document-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#load-document-tbr"
+            data-options="collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'DocumentId',width:120">货单编号</th>
+                    <th data-options="field:'CustomerId',width:80">客户编号</th>
+                    <th data-options="field:'PriceListId',width:120">价表编号</th>
+                    <th data-options="field:'WarehouseId',width:120">仓库</th>
+                    <th data-options="field:'CreateDate',width:120">建立时间</th>
+                    <th data-options="field:'SettleDate',width:120">结算日期</th>
+                    <th data-options="field:'BalanceStatus',width:80">结算平标</th>
+                    <th data-options="field:'DeliverAddress',width:100">送货地址</th>
+                    <th data-options="field:'Mobile',width:60">联系电话</th>
+                    <th data-options="field:'Linkman',width:60">联系人</th>
+                    <th data-options="field:'Remark',width:60">备注</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'south',split:true" title="货单明细" style="height:250px;">
+        <table id="load-document-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'DocumentId',width:150">货单号</th>
+                    <th data-options="field:'GoodsId',width:200">商品编号</th>
+                    <th data-options="field:'Name',width:200">商品名称</th>
+                    <th data-options="field:'Piece',width:200">数量</th>
+                    <th data-options="field:'Price',width:200">单价</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="load-tbr">
+    <input id="load-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="load-date-startDate" class="easyui-datebox" style="width:130px;" data-options="prompt: '输入开始时间'">
+    <input id="load-date-endDate" class="easyui-datebox" style="width:130px;" data-options="prompt: '输入结束时间'">
+    <select id="load-cb-status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="1">1-已确认</option>
+        <option value="0">0-未确认</option>
+    </select>
+    <a id="load-btn-search" onclick="loadSearch();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="loadCheckOut()">出仓确认</a>
+</div>
+
+<div id="load-document-tbr">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="loadDocumentDel()">移除货单</a>
+</div>
+
+{{!-- 对话框 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#load-txt-name').textbox({
+            prompt: '商品组名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#load-goods-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#load-goods-txt-name').textbox({
+            prompt: '商品名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#load-goods-txt-barCode').textbox({
+            prompt: '商品条码',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#load-goods-txt-categoryId').textbox({
+            prompt: '分类编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#load-goods-txt-brandId').textbox({
+            prompt: '品牌编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+    })
+
+    function loadSearch() {
+        var warehouseId = $("#load-cg-warehouseId").val();
+        var confirm = $("#load-cb-status").val();
+        var startDate = $("#load-date-startDate").val();
+        var endDate = $("#load-date-endDate").val();
+        $('#load-dg').datagrid({
+            url: '/document/getLoadList',
+            queryParams: {
+                warehouseId: warehouseId,
+                confirm: confirm,
+                startDate: startDate,
+                endDate: endDate
+            },
+            onSelect: function (index, row) {
+                var loadId = row.LoadId;
+                $('#load-document-dg').datagrid({
+                    url: '/document/getDocumentByLoad',
+                    queryParams: {
+                        loadId: loadId
+                    },
+                    onSelect: function (index, row) {
+                        var documentId = row.DocumentId;
+                        $('#load-document-detail-dg').datagrid({
+                            url: '/document/getDocumentDetail',
+                            queryParams: {
+                                documentId: documentId
+                            },
+                        })
+                    }
+                })
+            }
+        });
+    }
+
+    function loadCheckOut() {
+        var row = $("#load-dg").datagrid("getSelected")
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一个装运单</center>");
+            return;
+        }
+        var loadId = row.LoadId;
+        $.post("/document/setLoadCheckOut", { loadId: loadId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#load-document-dg').datagrid('reload');
+            }
+        );
+
+    }
+
+    function loadDocumentDel() {
+        var row = $('#load-document-dg').datagrid("getSelected");
+        var rowLoad = $("#load-dg").datagrid("getSelected")
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一个货单</center>");
+            return;
+        }
+        if (!rowLoad) {
+            $.messager.alert('消息提示:', "<center>请选择一个装运单</center>");
+            return;
+        }
+        var documentId = row.DocumentId;
+        var loadId = rowLoad.LoadId;
+        $.post("/document/deleteDocumentFromLoad", { loadId:loadId,documentId: documentId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#load-document-dg').datagrid('reload');
+            }
+        );
+    }
+//usage
+//wait for 3 seconds
+
+</script>

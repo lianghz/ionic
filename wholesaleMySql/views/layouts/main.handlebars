@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
     <link rel="stylesheet" type="text/css" href="/easyui/themes/color.css">
     <link rel="stylesheet" type="text/css" href="/easyui/texteditor.css">
-    
+
     <link rel="stylesheet" type="text/css" href="/css/my.css">
     <script type="text/javascript" src="/easyui/jquery.min.js"></script>
     <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
@@ -34,6 +34,24 @@
             str = str.replace(/MM/, (this.getMonth() + 1) > 9 ? (this.getMonth() + 1).toString() : '0' + (this.getMonth() + 1));
             str = str.replace(/dd|DD/, this.getDate() > 9 ? this.getDate().toString() : '0' + this.getDate());
             return str;
+        }
+
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+            return currentdate;
         }
     </script>
 </head>
@@ -79,33 +97,32 @@
                             </ul>
                         </li>
                         <li data-options="state:'closed'">
-                            <span>3.产品管理</span>
+                            <span>3.商品管理</span>
                             <ul>
                                 <li data-options="url:'/goods/brand'">3.1.品牌管理</li>
-                                <li data-options="url:'/goods/goods'">3.2.产品查询与修改</li>
-                                <li data-options="url:'/goods/contractgrid'">3.3.产品添加</li>
-                                <li data-options="url:'/goods/salesgrid'">3.4.产品分类</li>
-                                <li data-options="url:'/goods/delivergrid'">3.5.分组管理</li>
-                                <li data-options="url:'/goods/activegrid'">3.6.转包装规则管理</li>
-                                <li data-options="url:'/goods/activegrid'">3.7.首页促销商品管理</li>
+                                <li data-options="url:'/goods/categroy'">3.2.产品分类</li>
+                                <li data-options="url:'/goods/goods'">3.3.商品管理</li>
+                                <li data-options="url:'/goods/group'">3.4.分组管理</li>
+                                <li data-options="url:'/goods/package'">3.5.转包装规则管理</li>
+                                <li data-options="url:'/goods/promgoods'">3.6.首页促销商品管理</li>
                             </ul>
                         </li>
                         <li data-options="state:'closed'">
                             <span>4.价格管理</span>
                             <ul>
-                                <li data-options="url:'/case4/outletgrid'">4.1.价格表管理</li>
-                                <li data-options="url:'/case4/salesgrid'">4.2.促销因子维护</li>
-                                <li data-options="url:'/case4/packagegrid'">4.3.促销价格生成</li>
-                                <li data-options="url:'/case4/packagegrid'">4.4.价格牌打印</li>
+                                <li data-options="url:'/price/price'">4.1.价格表管理</li>
+                                <li data-options="url:'/price/promotion'">4.2.促销因子维护</li>
+                                <li data-options="url:'/price/create'">4.3.促销价格生成</li>
+                                <li data-options="url:'/price/priceprint'">4.4.价格牌打印</li>
                             </ul>
                         </li>
                         <li data-options="state:'closed'">
                             <span>5.仓库管理</span>
                             <ul>
-                                <li data-options="url:'/case5/outletgrid'">5.1.添加仓库</li>
-                                <li data-options="url:'/case5/checkresultgrid'">5.2.商品盘点</li>
-                                <li data-options="url:'/case5/contractgrid'">5.3.移库管理</li>
-                                <li data-options="url:'/case5/salesgrid'">5.4.转换包装管理</li>
+                                <li data-options="url:'/warehouse/warehouse'">5.1.添加仓库</li>
+                                <li data-options="url:'/warehouse/check'">5.2.商品盘点</li>
+                                <li data-options="url:'/warehouse/transfer'">5.3.移库管理</li>
+                                <li data-options="url:'/warehouse/changepackage'">5.4.转换包装管理</li>
                             </ul>
                         </li>
                         <li data-options="state:'closed'">
@@ -117,29 +134,29 @@
                         <li data-options="state:'closed'">
                             <span>7.货单管理</span>
                             <ul>
-                                <li data-options="url:'/case7/setargeementgrid'">7.1.订单转货单</li>
-                                <li data-options="url:'/case7/checkresultgrid'">7.2.配装运单</li>
-                                <li data-options="url:'/case7/salesgrid'">7.3.装运单管理</li>
-                                <li data-options="url:'/case7/checkresultgrid'">7.4.回库单管理</li>
-                                <li data-options="url:'/case7/salesgrid'">7.5.退货管理</li>
+                                <li data-options="url:'/document/order'">7.1.订单转货单</li>
+                                <li data-options="url:'/document/document'">7.2.配装运单</li>
+                                <li data-options="url:'/document/load'">7.3.装运单管理</li>
+                                <li data-options="url:'/document/return'">7.4.回库单管理</li>
+                                <li data-options="url:'/document/returndoc'">7.5.退货管理</li>
                             </ul>
                         </li>
                         <li data-options="state:'closed'">
                             <span>8.结算管理</span>
                             <ul>
-                                <li data-options="url:'/case7/setargeementgrid'">8.1.货单修改</li>
-                                <li data-options="url:'/case7/checkresultgrid'">8.2.缴款单</li>
-                                <li data-options="url:'/case7/salesgrid'">8.3.结算复核</li>
-                                <li data-options="url:'/case7/checkresultgrid'">8.4.结算删档</li>
+                                <li data-options="url:'/settle/docmod'">8.1.货单修改</li>
+                                <li data-options="url:'/settle/receive'">8.2.缴款单</li>
+                                <li data-options="url:'/settle/check'">8.3.结算复核</li>
+                                <li data-options="url:'/settle/settle'">8.4.结算删档</li>
                             </ul>
                         </li>
                         <li data-options="state:'closed'">
                             <span>9.供应链管理</span>
                             <ul>
-                                <li data-options="url:'/case7/setargeementgrid'">9.1.供应商管理</li>
-                                <li data-options="url:'/case7/checkresultgrid'">9.2.供应商价格管理</li>
-                                <li data-options="url:'/case7/salesgrid'">9.3.采购单管理</li>
-                                <li data-options="url:'/case7/checkresultgrid'">9.4.采购入库管理</li>
+                                <li data-options="url:'/supplier/supplier'">9.1.供应商管理</li>
+                                <li data-options="url:'/supplier/supplierprice'">9.2.供应商价格管理</li>
+                                <li data-options="url:'/supplier/purchase'">9.3.采购单管理</li>
+                                <li data-options="url:'/supplier/instore'">9.4.采购入库管理</li>
                             </ul>
                         </li>
                         <li data-options="state:'closed'">

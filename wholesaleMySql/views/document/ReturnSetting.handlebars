@@ -1,0 +1,280 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="装运单" style="width:400px;height:350px;">
+        <table id="return-dg" class="easyui-datagrid" style="width:100%;height:400px;border-top:0px;" toolbar="#return-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'LoadId',width:150">装运单号</th>
+                    <th data-options="field:'ReturnId',width:150">回库单号</th>
+                    <th data-options="field:'WarehouseName',width:80">仓库</th>
+                    <th data-options="field:'StaffName',width:80">送货人</th>
+                    <th data-options="field:'BalanceStatus',width:80">平行状态</th>
+                    <th data-options="field:'CheckInDate',width:120">检查日期</th>
+                    <th data-options="field:'CreateDate',width:120">建立日期</th>
+                    <th data-options="field:'CreateUser',width:100">建立人</th>
+                    <th data-options="field:'UpdateDate',width:120">更新日期</th>
+                    <th data-options="field:'UpdateUser',width:80">更新人</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <table id="return-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#return-detail-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="回库单">
+            <thead>
+                <tr>
+                    <th data-options="field:'ReturnId',width:120">回库单号</th>
+                    <th data-options="field:'GoodsId',width:150">商品编号</th>
+                    <th data-options="field:'Name',width:200">商品名称</th>
+                    <th data-options="field:'Cases',width:100">箱数</th>
+                    <th data-options="field:'Piece',width:100">散数</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="return-tbr">
+    <input id="return-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="return-txt-loadId" style="width:120px;height:25px">
+    <input id="return-txt-returnId" style="width:120px;height:25px">
+    <input id="return-date-startDate" class="easyui-datebox" style="width:130px;">
+    <input id="return-date-endDate" class="easyui-datebox" style="width:130px;">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="returnSearch()">查询</a>
+</div>
+
+<div id="return-detail-tbr">
+    <input id="return-detail-txt-goodsId" style="width:200px;height:25px" data-options="validType:'number'">
+    <input id="return-detail-txt-cases" style="width:120px;height:25px" data-options="validType:'number'">
+    <input id="return-detail-txt-piece" style="width:120px;height:25px" data-options="validType:'number'">
+    <input id="return-cg-staffId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择送货人',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/staff/getStaff',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'员工编号',width:100},
+                        {field:'ItemText',title:'员工名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a id="#return-detail-bt-add" onclick="returnDetailAdd();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add">添加</a>
+</div>
+
+{{!-- 对话框 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#return-txt-loadId').textbox({
+            prompt: '装运单号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#return-txt-returnId').textbox({
+            prompt: '回库单号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#return-date-startDate').datebox({
+            prompt: '选择开始时间',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#return-date-endDate').datebox({
+            prompt: '选择结束时间',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+
+        $('#return-detail-txt-goodsId').textbox({
+            prompt: '输入商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#return-detail-txt-cases').textbox({
+            prompt: '输入商品箱数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#return-detail-txt-piece').textbox({
+            prompt: '输入商品散数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+    });
+
+    function returnAdd() {
+        var fromWarehouseId = $('#return-cg-fromWarehouseId').combogrid('getValue');
+        var toWarehouseId = $('#return-cg-toWarehouseId').combogrid('getValue');
+        if (fromWarehouseId == "") {
+            $.messager.alert('消息提示:', "<center>请选择发出仓库</center>");
+            return;
+        }
+        if (toWarehouseId == "") {
+            $.messager.alert('消息提示:', "<center>请选择接收仓库</center>");
+            return;
+        }
+        $.post("/warehouse/addreturn", { fromWarehouseId: fromWarehouseId, toWarehouseId: toWarehouseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#return-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function returnSearch() {
+        var returnId = $('#return-txt-returnId').val();
+        var loadId = $('#return-txt-loadId').val();
+        var startDate = $('#return-date-startDate').val();
+        var endDate = $('#return-date-endDate').val();
+        var staffId = -1;
+        var balanceStatus = -1;
+        var warehouseId = $('#return-cg-warehouseId').val();
+        warehouseId = warehouseId ? warehouseId : -1;
+        returnId = returnId ? returnId : -1;
+        loadId = loadId ? loadId : -1;
+        startDate = startDate ? startDate : '1991-1-1';
+        endDate = endDate ? endDate : '9999-12-30';
+        $('#return-dg').datagrid({
+            url: '/document/getReturnList',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                returnId: returnId,
+                loadId: loadId,
+                startDate: startDate,
+                endDate: endDate,
+                staffId: staffId,
+                balanceStatus: balanceStatus,
+                warehouseId: warehouseId
+            },
+            onSelect: function (index, row) {
+                getreturnDetail(row.ReturnId);
+            }
+
+        });
+    }
+    function getreturnDetail(returnId) {
+        $('#return-detail-dg').datagrid({
+            url: '/document/getReturnDetail',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                returnId: returnId
+            }
+        });
+    }
+
+    function returnDetailAdd() {
+        var headerRow = $('#return-dg').datagrid('getSelected')
+        if (!headerRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条装运单</center>");
+            return;
+        }
+        var loadId = headerRow.LoadId;
+        var warehouseId = headerRow.WarehouseId;
+
+        var goodsId = $('#return-detail-txt-goodsId').val()
+        var cases = $('#return-detail-txt-cases').val();
+        var piece = $('#return-detail-txt-piece').val();
+        var realDeliveryManId = $('#return-cg-staffId').val();
+        var checkInDate = getNowFormatDate();
+
+        //var detailRow = $('#return-detail-dg').datagrid('getSelected');
+        if (!goodsId) {
+            $.messager.alert('消息提示:', "<center>请输入商品编号</center>");
+            return;
+        }
+        if (!realDeliveryManId) {
+            $.messager.alert('消息提示:', "<center>请选择实际送货人</center>");
+            return;
+        }
+
+        cases = cases ? cases : 0;
+        piece = piece ? piece : 0;
+        //var ReturnId = detailRow.ReturnId;
+        //var goodsId = detailRow.GoodsId;
+        $.post("/document/addReturn", { loadId: loadId, warehouseId: warehouseId, goodsId: goodsId, cases: cases, piece: piece, realDeliveryManId: realDeliveryManId,checkInDate:checkInDate},
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#return-detail-dg').datagrid('reload');
+            }
+        );
+    }
+
+//usage
+//wait for 3 seconds
+
+</script>

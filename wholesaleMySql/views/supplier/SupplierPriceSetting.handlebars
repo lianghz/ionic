@@ -1,0 +1,270 @@
+{{!-- 数据格 --}}
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" style="width:400px;height:350px;">
+        <table id="supplierPrice-dg" class="easyui-datagrid" title="供应商" style="width:100%;height:250px;bsupplierPrice-top:0px;"
+            toolbar="#supplierPrice-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'SupplierId',width:150">供应商编号</th>
+                    <th data-options="field:'Name',width:200">供应商名称</th>
+                    <th data-options="field:'Address',width:100">地址</th>
+                    <th data-options="field:'Telephone',width:300">供应商电话</th>
+                    <th data-options="field:'ChargeMobile',width:80">负责人手机</th>
+                    <th data-options="field:'LinkMobile',width:80">联系人手机</th>
+                    <th data-options="field:'InCharge',width:80">负责人</th>
+                    <th data-options="field:'LinkMan',width:300">联系人</th>
+                    <th data-options="field:'UpdateUser',width:300">更新人</th>
+                    <th data-options="field:'Status',width:300">状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <table id="supplierPrice-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#supplierPrice-detail-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="商品价格">
+            <thead>
+                <tr>
+                    <th data-options="field:'GoodsId',width:120">商品编号</th>
+                    <th data-options="field:'GoodsName',width:250">商品名称</th>
+                    <th data-options="field:'Price',width:100">价格</th>
+                    <th data-options="field:'CurrentNo',width:100">当前版本</th>
+                    <th data-options="field:'PriceDate',width:100">价格日期</th>
+                    <th data-options="field:'UpdateUser',width:100">更新人</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+{{!-- 工具栏 --}}
+<div id="supplierPrice-tbr">
+    <input id="supplierPrice-txt-supplierId" style="width:130px;">
+    <input id="supplierPrice-txt-name" style="width:130px;">
+    <select id="supplierPrice-cb-status" name="status" class="easyui-combobox" data-options="width:200">
+        <option value="-1">选择状态</option>
+        <option value="1">1-有效</option>
+        <option value="0">0-无效</option>
+    </select>
+    <a id="supplierPrice-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="supplierPriceSearch()">查询</a>
+</div>
+
+<div id="supplierPrice-detail-tbr">
+    <input id="supplierPrice-detail-txt-goodsId" style="width:130px;">
+    <select id="supplierPrice-detail-cb-currentNo" name="status" class="easyui-combobox" data-options="width:200">
+        <option value="0">当前版本</option>
+        <option value="-1">过期版本</option>
+        <option value="-2">所有版本</option>
+    </select>
+    <a id="supplierPrice-detail-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="supplierDetailPriceSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="supplierPriceOpenDialogAdd()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="supplierPriceDel()">删除</a>
+</div>
+{{!-- 对话框 --}}
+<div id="supplierPrice-dlg" class="easyui-dialog" title="添加因子" style="width:500px;height:250px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#supplierPrice-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#supplierPrice-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="supplierPrice-ff" action="/supplier/modifySupplierGoodsPrice" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="supplierPrice-ff-txt-goodsId" name="goodsId" style="width:300px" class="f1 easyui-textbox" data-options="label:'商品编号:',prompt:'输入商品编号',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="supplierPrice-ff-txt-price" name="price" style="width:300px" class="f1 easyui-textbox " data-options="label:
+                        '商品价格:',prompt: '输入商品价格',required:true,validateOnCreate:false,err:err "></input>
+                </td>
+            </tr>
+            <input id="supplierPrice-ff-txt-supplierId" name="supplierId" type="hidden">
+        </table>
+    </form>
+</div>
+
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+        $('#supplierPrice-txt-supplierId').textbox({
+            prompt: '供应商编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#supplierPrice-txt-name').textbox({
+            prompt: '供应商名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#supplierPrice-detail-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+
+
+        $('#supplierPrice-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#supplierPrice-dlg').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                if (data[0]["pramCode"] == 1) {
+                    $('#supplierPrice-detail-dg').datagrid('reload');
+                }
+            },
+
+        });
+    });
+
+    function supplierPriceSearch() {
+        var supplierId = $('#supplierPrice-txt-supplierId').val();
+        var name = $('#supplierPrice-txt-name').val();
+        var status = $('#supplierPrice-cb-status').val();
+        supplierId = supplierId ? supplierId : 0;
+
+        $('#supplierPrice-dg').datagrid({
+            url: '/supplier/getSupplier',
+            queryParams: {
+                supplierId: supplierId,
+                name: name,
+                status: status
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            onSelect: function (index, row) {
+                getSupplierPriceDetail(row);
+            }
+        });
+    }
+
+    function getSupplierPriceDetail(row) {
+        var supplierId = row.SupplierId;
+        $('#supplierPrice-detail-dg').datagrid({
+            url: '/supplier/getSupplierGoodsPrice',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                supplierId: supplierId,
+                goodsId: 0,
+                currentNo: 0
+            }
+        });
+    }
+    function supplierDetailPriceSearch() {
+        var row = $('#supplierPrice-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一个供应商</center>");
+            return;
+        }
+        var supplierId = row.SupplierId;
+        var goodsId = $('#supplierPrice-detail-txt-goodsId').val();
+        goodsId = goodsId ? goodsId : 0;
+        var currentNo = $('#supplierPrice-detail-cb-currentNo').val();
+        $('#supplierPrice-detail-dg').datagrid({
+            url: '/supplier/getSupplierGoodsPrice',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                supplierId: supplierId,
+                goodsId: goodsId,
+                currentNo: currentNo
+            }
+        });
+    }
+    function supplierPriceOpenDialogAdd() {
+        var row = $('#supplierPrice-dg').datagrid('getSelected')
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一个供应商</center>");
+            return;
+        }
+        $('#supplierPrice-ff-txt-supplierId').val(row.SupplierId);
+        $('#supplierPrice-dlg').dialog({
+            title: "添加商品",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function supplierPriceDel() {
+        var row = $('#supplierPrice-detail-dg').datagrid('getSelected')
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一条商品价格记录</center>");
+            return;
+        }
+        var supplierId = row.SupplierId;
+        var goodsId = row.GoodsId;
+        $.post("/supplier/deleteSupplierGoodsPrice", { supplierId: supplierId, goodsId: goodsId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#supplierPrice-detail-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function Search() {
+
+    }
+
+
+</script>

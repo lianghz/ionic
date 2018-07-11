@@ -1,0 +1,202 @@
+{{!-- 数据格 --}}
+<table id="promoGoods-dg" style="width:100%;border-top:0px;" toolbar="#promoGoods-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'GoodsId',width:150">商品编号</th>
+            <th data-options="field:'Name',width:150">商品名称</th>
+            <th data-options="field:'Price',width:150">价格</th>
+            <th data-options="field:'ImageId',width:150">图片</th>
+        </tr>
+    </thead>
+</table>
+
+{{!-- 工具栏 --}}
+<div id="promoGoods-tbr">
+    <input id="promoGoods-txt-goodsId" style="width:200px;height:25px">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="promoGoodsAdd()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-remove'" onclick="promoGoodsDel()">删除</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <select id="promoGoods-cbg-warehouseId" class="easyui-combogrid" style="width:250px" data-options="
+                    panelWidth: 400,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/UserWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'编号',width:100},
+                        {field:'ItemText',title:'名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        Search();
+                        //return false;  
+                    },  
+                    fitColumns: true,
+                    label: '用户仓库:',
+                    labelPosition: 'left'
+                ">
+    </select>
+    <select id="promoGoods-cbg-promotionType" class="easyui-combogrid" style="width:250px" data-options="
+                    panelWidth: 400,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/promotiontype',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'编号',width:100},
+                        {field:'ItemText',title:'名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        Search();
+                        //return false;  
+                    },  
+                    fitColumns: true,
+                    label: '促销类型:',
+                    labelPosition: 'left'
+                ">
+    </select>
+    <a onclick="promoGoodsSearch();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+</div>
+
+{{!-- 对话框 --}} {{!-- 脚本 --}}
+<script>
+
+
+    $('#promoGoods-oringin-dg').datagrid({
+        url: '/goods/getpromoGoodsodetail',
+        queryParams: {
+            barCode: -11
+        },
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: false
+
+    });
+
+    $('#promoGoods-destination-dg').datagrid({
+        url: '/goods/getpromoGoodsddetail',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true
+
+    });
+
+    $('#promoGoods-dg').datagrid({
+        url: '/goods/getwebgoods',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true
+    });
+
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#promoGoods-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+    });
+
+    function promoGoodsSearch() {
+        var warehouseRow = $('#promoGoods-cbg-warehouseId').combogrid('grid').datagrid('getSelected');
+        var promotionRow = $('#promoGoods-cbg-promotionType').combogrid('grid').datagrid('getSelected');
+        $('#promoGoods-dg').datagrid('load', {
+            levelId: 0,
+            warehouseId: warehouseRow.ItemValue,
+            promotionType: promotionRow.ItemValue
+        });
+    }
+
+    function promoGoodsAdd() {
+        var warehouseRow = $('#promoGoods-cbg-warehouseId').combogrid('grid').datagrid('getSelected');
+        var promotionRow = $('#promoGoods-cbg-promotionType').combogrid('grid').datagrid('getSelected');
+        if (!warehouseRow) {
+            $.messager.alert('消息提示:', "<center>请选择仓库</center>");
+            return;
+        }
+        if (!promotionRow) {
+            $.messager.alert('消息提示:', "<center>请选择促销类型</center>");
+            return;
+        }
+        var goodsId = $('#promoGoods-txt-goodsId').val();
+        if (goodsId == "") {
+            $.messager.alert('消息提示:', "<center>请输入商品编号</center>");
+            return;
+        }
+        var warehouseId = warehouseRow.ItemValue;
+        var promotionType = promotionRow.ItemValue;
+        var modType = 1;//1添加，2删除
+        $.post("/goods/modwebpromo", { warehouseId: warehouseId, promotionType: promotionType, goodsId: goodsId, modType: modType },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#promoGoods-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function promoGoodsDel() {
+        var warehouseRow = $('#promoGoods-cbg-warehouseId').combogrid('grid').datagrid('getSelected');
+        var promotionRow = $('#promoGoods-cbg-promotionType').combogrid('grid').datagrid('getSelected');
+        var goodsRow = $('#promoGoods-dg').datagrid('getSelected');
+
+        if (!warehouseRow) {
+            $.messager.alert('消息提示:', "<center>请选择仓库</center>");
+            return;
+        }
+        if (!promotionRow) {
+            $.messager.alert('消息提示:', "<center>请选择促销类型</center>");
+            return;
+        }
+        if (!goodsRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条要删除的商品记录</center>");
+            return;
+        }
+        var goodsId = goodsRow.GoodsId;
+        var warehouseId = warehouseRow.ItemValue;
+        var promotionType = promotionRow.ItemValue;
+        var modType = 2;//1添加，2删除
+        $.post("/goods/modwebpromo", { warehouseId: warehouseId, promotionType: promotionType, goodsId: goodsId, modType: modType },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#promoGoods-dg').datagrid('reload');
+            }
+        );
+    }
+
+
+</script>

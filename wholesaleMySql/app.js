@@ -39,6 +39,13 @@ app.use('/users', usersRouter);
 
 
 require('./routes/goods')(app);//goods route
+require('./routes/common')(app);
+require('./routes/price')(app);
+require('./routes/warehouse')(app);
+require('./routes/document')(app);
+require('./routes/staff')(app);
+require('./routes/settle')(app);
+require('./routes/supplier')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

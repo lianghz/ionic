@@ -1,0 +1,302 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="管理转包装规则" style="width:400px;height:350px;">
+        <table id="price-dg" style="width:100%;height:400px;border-top:0px;" toolbar="#price-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'PriceListId',width:150">价表编号</th>
+                    <th data-options="field:'Description',width:150">描述</th>
+                    <th data-options="field:'CreateUser',width:150">新建用户</th>
+                    <th data-options="field:'CreateDate',width:150">新建时间</th>
+                    <th data-options="field:'UpdateUser',width:150">更新用户</th>
+                    <th data-options="field:'UpdateDate',width:150">更新时间</th>
+                    <th data-options="field:'Status',width:150">状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',split:true" style="width:50%;border:0px 0px 0px 0px;">
+                <table id="price-detailNotin-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#price-detailNotin-tbr"
+                    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="不在价表的商品">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'GoodsId',width:120">商品编号</th>
+                            <th data-options="field:'Name',width:150">商品名称</th>
+                            <th data-options="field:'Price',width:80">入库价格</th>
+                            <th data-options="field:'SuggestPrice',width:80">建议价格</th>
+                            <th data-options="field:'GoodsCreateDate',width:100">建立时间</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div data-options="region:'center'">
+                <table id="price-detail-dg" style="width:100%;height:250px;border-top:0px;" toolbar="#price-detail-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,"
+                    title="在价表里的商品">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'GoodsId',width:120">商品编号</th>
+                            <th data-options="field:'GoodsName',width:150">商品名称</th>
+                            <th data-options="field:'Price',width:80">价格</th>
+                            <th data-options="field:'GoodsUser',width:100">建立人</th>
+                            <th data-options="field:'GoodsCreateDate',width:100">建立时间</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="price-tbr">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="price-txt-priceListId" style="width:120px;height:25px">
+    <input id="price-txt-name" style="width:120px;height:25px">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="priceListAdd()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="priceListEdit()">修改</a>
+</div>
+
+<div id="price-detail-tbr">
+    <input id="price-detail-txt-price" style="width:120px;height:25px" data-options="validType:'number'">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a onclick="editPriceDetail();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-edit">修改</a>
+</div>
+
+<div id="price-detailNotin-tbr">
+    <input id="price-detailNotin-txt-price" style="width:120px;height:25px" data-options="validType:'number'" value="">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a onclick="addPriceDetail();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add">添加到价表</a>
+</div>
+
+{{!-- 对话框 --}} {{!-- 脚本 --}}
+<script>
+
+
+    $('#price-detail-dg').datagrid({
+        url: '/price/getPriceDetail',
+        queryParams: {
+            priceListId: -11
+        },
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true,
+        onSelect: function (index, row) {
+            $('#price-detail-txt-price').textbox('setValue', row.Price);
+        }
+    });
+
+    function getDetailNotin(pricListId) {
+        $('#price-detailNotin-dg').datagrid({
+            url: '/price/getPriceDetailNotIn',
+            queryParams: {
+                priceListId: pricListId
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            onSelect: function (index, row) {
+                $('#price-detailNotin-txt-price').textbox('setValue', row.SuggestPrice);
+            }
+        });
+    }
+
+
+    $('#price-dg').datagrid({
+        url: '/price/getPriceList',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true,
+        onSelect: function (index, row) {
+            $('#price-txt-priceListId').textbox('setValue', row.PriceListId);
+            $('#price-txt-name').textbox('setValue', row.Description);
+            $('#price-detail-dg').datagrid('load', {
+                priceListId: row.PriceListId
+            });
+            getDetailNotin(row.PriceListId);
+        }
+
+    });
+
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#price-txt-name').textbox({
+            prompt: '价表名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#price-txt-priceListId').textbox({
+            prompt: '价表编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#price-detail-txt-price').textbox({
+            prompt: '选择价格',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#price-detailNotin-txt-price').textbox({
+            prompt: '选择价格',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+
+        //------
+
+    });
+
+    function priceListAdd() {
+        var priceListId = $('#price-txt-priceListId').val();
+        var name = $('#price-txt-name').val();
+        var status = 1;
+        if (priceListId == "") {
+            $.messager.alert('消息提示:', "<center>请输入价表编号</center>");
+            return;
+        }
+        if (name == "") {
+            $.messager.alert('消息提示:', "<center>请输入价表名称</center>");
+            return;
+        }
+        $.post("/price/addPriceList", { priceListId: priceListId, name: name, status: status },
+            function (data) {
+                if (data[0]["pramCode"] == "1") {
+                    $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                    $('#price-dg').datagrid('reload');                   
+                }else{
+                    $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                }
+            }
+        );
+    }
+
+    function priceListEdit() {
+        $('#price-txt-priceListId').val("")
+        var priceListRow = $('#price-dg').datagrid('getSelected');
+        if (!priceListRow) {
+            $.messager.alert('消息提示:', "<center>请选择一个价表</center>");
+            return;
+        }
+        var priceListId = priceListRow.PriceListId;
+        var name = $('#price-txt-name').val();
+        var status = 1;
+        if (priceListId == "") {
+            $.messager.alert('消息提示:', "<center>请输入价表编号</center>");
+            return;
+        }
+        if (name == "") {
+            $.messager.alert('消息提示:', "<center>请输入价表名称</center>");
+            return;
+        }
+        $.post("/price/modifyPriceList", { priceListId: priceListId, name: name, status: status },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#price-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function addPriceDetail() {
+        var priceListRow = $('#price-dg').datagrid('getSelected');
+        if (!priceListRow) {
+            $.messager.alert('消息提示:', "<center>请选择一个价表</center>");
+            return;
+        }
+        var detailRow = $('#price-detailNotin-dg').datagrid('getSelected');
+
+        if (!detailRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条商品记录</center>");
+            return;
+        }
+        var priceListId = priceListRow.PriceListId;
+        goodsId = detailRow.GoodsId;
+        price = $('#price-detailNotin-txt-price').val();
+        if (price == '') {
+            $.messager.alert('消息提示:', "<center>请输入商品价格</center>");
+            return;
+        }
+        $.post("/price/modifyPriceListDetails", { priceListId: priceListId, goodsId: goodsId, price: price },
+            function (data) {
+                if (data[0]["pramCode"] == 1) {
+                    $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                    $('#price-detailNotin-dg').datagrid('reload');
+                    $('#price-detail-dg').datagrid('reload');
+                } else {
+                    $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                }
+            }
+        );
+    }
+
+    function editPriceDetail() {
+        var priceListRow = $('#price-dg').datagrid('getSelected');
+        if (!priceListRow) {
+            $.messager.alert('消息提示:', "<center>请选择一个价表</center>");
+            return;
+        }
+        var detailRow = $('#price-detail-dg').datagrid('getSelected');
+
+        if (!detailRow) {
+            $.messager.alert('消息提示:', "<center>请选择一条商品记录</center>");
+            return;
+        }
+        var priceListId = priceListRow.PriceListId;
+        goodsId = detailRow.GoodsId;
+        price = $('#price-detail-txt-price').val();
+        if (price == '') {
+            $.messager.alert('消息提示:', "<center>请输入商品价格</center>");
+            return;
+        }
+        $.post("/price/modifyPriceListDetails", { priceListId: priceListId, goodsId: goodsId, price: price },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#price-detail-dg').datagrid('reload');
+            }
+        );
+    }
+
+
+//usage
+//wait for 3 seconds
+
+</script>

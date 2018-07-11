@@ -1,0 +1,135 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'west',split:true" title="" style="width:400px;">
+        <ul id="categroy-tt" class="easyui-tree" url="/goods/getcatetree">
+        </ul>
+    </div>
+    <div data-options="region:'center',split:true" title="">
+        <div style="padding:20px 20px 20px 20px;">
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="javascript:openDialogCategroyAdd()">添加</a>
+            <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="javascript:openDialogCategroyEidt()">修改</a>
+        </div>
+    </div>
+</div>
+
+<div id="categroy-dlg" class="easyui-dialog" title="添加类别" style="width:400px;height:200px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#categroy-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#categroy-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="categroy-ff" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="categroy-ff-name" name="name" style="width:300px" class="f1 easyui-textbox" data-options="label:'类别名称:',prompt:'输入类别名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="categroy-cbb-status" data-options="label:'状态:'" name="status" class="easyui-combobox" panelHeight="auto"
+                        style="width:300px">
+                        <option value="1">1-有效</option>
+                        <option value="0">0-无效</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+        <input id="categroy-ff-categoryId" type="hidden" name="id" value="">
+        <input id="categroy-ff-fartherId" type="hidden" name="fid" value="">
+    </form>
+</div>
+
+{{!-- 脚本 --}}
+<script>
+    function categroyAdd() {
+        var selected = $('#categroy-tt').tree('getSelected');
+        alert(selected.text);
+    }
+    ///添加商品
+    function openDialogCategroyAdd() {
+        var selected = $('#categroy-tt').tree('getSelected');
+
+        $('#categroy-ff').form({
+            url: '/goods/addcate',
+        });
+        if (!selected) {
+            $.messager.alert("提示", "请选择分类！");
+        }
+        $('#categroy-ff-categoryId').val(selected.id);
+        $('#categroy-ff-fartherId').val(selected.id);
+        $('#categroy-dlg').dialog({
+            modal: true,
+            title: '添加类别'
+        }).dialog('open');
+    }
+    //修改商品
+    function openDialogCategroyEidt() {
+        var selected = $('#categroy-tt').tree('getSelected');
+        var parent = $('#categroy-tt').tree('getParent', selected.target);
+
+        $('#categroy-ff').form({
+            url: '/goods/editcate',
+        });
+        if (!selected) {
+            $.messager.alert("提示", "请选择分类！");
+        }
+
+        $('#categroy-ff').form('load', {
+            name: selected.text
+        });
+        $('#categroy-ff-categoryId').val(selected.id);
+        $('#categroy-ff-fartherId').val(parent.id);
+
+        $('#categroy-dlg').dialog({
+            modal: false,
+            title: '修改商品'
+        }).dialog('open');
+    }
+    $('#categroy-ff').form({
+        onSubmit: function () {
+            //alert($('#categroy-ff-fartherId').val());
+            if ($(this).form('enableValidation').form('validate')) {
+                MaskUtil.mask();
+                return true;
+            } else {
+                return false;
+            }
+        },
+        success: function (data) {
+            MaskUtil.unmask();
+            data = JSON.parse(data);
+            $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+            if (data[0]['pramCode'] == "1") {
+                var selected = $('#categroy-tt').tree('getSelected');
+                var children = $('#categroy-tt').tree('getChildren',selected.target);
+                var parent = $('#categroy-tt').tree('getParent', selected.target);
+                var target = (children==""?parent.target:selected.target);
+                $('#categroy-tt').tree('reload', target);
+                $('#categroy-ff').form('clear');
+                $('#categroy-dlg').dialog('close');
+            }
+        },
+    });
+
+    $(function () {
+        $('#categroy-tt').tree({
+            onSelect: function (selected) {
+                $('#categroy-ff-fartherId').val(selected.id);
+            }
+        });
+    })
+</script>

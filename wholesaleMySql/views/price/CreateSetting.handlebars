@@ -1,0 +1,27 @@
+{{!-- 数据格 --}}
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<center>
+    <a href="#" class="easyui-linkbutton" onclick="createPromotionResult()" data-options="iconCls:'icon-large-smartart',size:'large',iconAlign:'top'">生成促销价格</a>
+</center>
+{{!-- 脚本 --}}
+<script>
+    function createPromotionResult() {
+        $.post("/price/createPromotionResult",
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#group-detail-dg').datagrid('reload');
+            }
+        );
+    }
+</script>
