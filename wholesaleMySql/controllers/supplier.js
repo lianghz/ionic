@@ -11,6 +11,8 @@ module.exports = {
 		app.get('/supplier/supplier', this.supplier);
 		app.get('/supplier/supplierprice', this.supplierPrice);
 		app.get('/supplier/purchase', this.purchase);
+		app.get('/supplier/instore', this.instore);
+		
 
 		//调用功能
 		app.get('/supplier/getSupplier', this.getSupplier);	
@@ -23,6 +25,10 @@ module.exports = {
 		app.post('/supplier/addPurchaseHeader', this.addPurchaseHeader);
 		app.post('/supplier/addPurchaseDetail', this.addPurchaseDetail);
 		app.post('/supplier/setPurchaseStatus', this.setPurchaseStatus);
+		app.get('/supplier/getInstoreHeader', this.getInstoreHeader);
+		app.post('/supplier/setInstore', this.setInstore);
+		app.post('/supplier/convertInStore', this.convertInStore);
+		
 	},
 
 	getSupplier: function (req, res, next) {
@@ -140,7 +146,36 @@ module.exports = {
 			res.json(rows[0]);
 		});
 	},
-
+	getInstoreHeader: function (req, res, next) {
+		var supplierId = req.query.supplierId;
+		var warehouseId = req.query.warehouseId;
+		var purchaseId = req.query.purchaseId;
+		var status = req.query.status;
+		var startDate = req.query.startDate;
+		var endDate = req.query.endDate;
+		var inParams = [supplierId, warehouseId, purchaseId,status,startDate,endDate];
+		Supplier.getInstoreHeader(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+	setInstore: function (req, res, next) {
+		var inStoreId = req.body.inStoreId;
+		var userName = req.session.userName;
+		var type = 0;//req.body.type;
+		var inParams = [inStoreId, userName, type];
+		Supplier.setInstore(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+	convertInStore: function (req, res, next) {
+		var purchaseId = req.body.purchaseId;
+		var userName = req.session.userName;
+		var inParams = [purchaseId, userName];
+		Supplier.convertInStore(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+	
 	///页面模板
 	supplier: function (req, res, next) {
 		res.render('supplier/SupplierSetting', { layout: null });
@@ -151,6 +186,8 @@ module.exports = {
 	purchase: function (req, res, next) {
 		res.render('supplier/PurchaseSetting', { layout: null });
 	},
-	
+	instore: function (req, res, next) {
+		res.render('supplier/InstoreSetting', { layout: null });
+	},
 
 };

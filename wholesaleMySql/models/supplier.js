@@ -107,6 +107,37 @@ function setPurchaseStatus(inParams,cb) {
         cb(rows);
     });
 }
+function getInstoreHeader(inParams,cb) {
+    var sql = 'CALL P_GetInstoreHeader(?,?,?,?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("errrrrrr=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
+function setInstore(inParams,cb) {
+    var sql = 'CALL P_SetInstore(?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("errrrrrr=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
+function convertInStore(inParams,cb) {
+    var sql = 'CALL P_ConvertInStore(?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("errrrrrr=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
+
 
 
 var methods = {
@@ -119,6 +150,9 @@ var methods = {
     'getPurchaseDetail':getPurchaseDetail,
     'addPurchaseHeader':addPurchaseHeader,
     'addPurchaseDetail':addPurchaseDetail,
-    'setPurchaseStatus':setPurchaseStatus
+    'setPurchaseStatus':setPurchaseStatus,
+    'getInstoreHeader':getInstoreHeader,
+    'setInstore':setInstore,
+    'convertInStore':convertInStore
 };
 module.exports = methods;
