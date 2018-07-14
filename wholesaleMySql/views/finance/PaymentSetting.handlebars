@@ -1,0 +1,252 @@
+{{!-- 数据格 --}}
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" style="width:400px;height:350px;">
+        <table id="payment-dg" class="easyui-datagrid" title="采购单" style="width:100%;height:250px;bpayment-top:0px;" toolbar="#payment-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'PaymentId',width:100">付款单</th>
+                    <th data-options="field:'InStoreId',width:100">入库单</th>
+                    <th data-options="field:'WarehouseId',width:50">仓库编号</th>
+                    <th data-options="field:'WarehouseName',width:100">仓库</th>
+                    <th data-options="field:'SupplierName',width:120">供应商</th>
+                    <th data-options="field:'PrintDate',width:50">打印时间</th>
+                    <th data-options="field:'PrintUser',width:100">打印人</th>
+                    <th data-options="field:'PrintCount',width:50">打印次数</th>
+                    <th data-options="field:'UpdateDate',width:80">更新时间</th>
+                    <th data-options="field:'UpdateUser',width:100">更新人</th>
+                    <th data-options="field:'Status',width:50">状态</th>
+                    <th data-options="field:'piece',width:50">数量</th>
+                    <th data-options="field:'Amount',width:50">金额</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <table id="payment-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="商品价格">
+            <thead>
+                <tr>
+                    <th data-options="field:'GoodsId',width:120">商品编号</th>
+                    <th data-options="field:'Name',width:250">商品名称</th>
+                    <th data-options="field:'Cases',width:100">箱数</th>
+                    <th data-options="field:'Piece',width:100">散数</th>
+                    <th data-options="field:'Price',width:100">采购价</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+{{!-- 工具栏 --}}
+<div id="payment-tbr">
+    <input id="payment-cg-supplierId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择供应商',required:true,validateOnCreate:false,panelWidth: 300,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/getSupplier',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'供应商编号',width:50},
+                        {field:'ItemText',title:'供应商名称',width:250}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+
+    <input id="payment-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="payment-txt-paymentId" style="width:120px;height:25px">
+    <input id="payment-date-startDate" class="easyui-datebox" style="width:130px;">
+    <input id="payment-date-endDate" class="easyui-datebox" style="width:130px;">
+    <select id="payment-cb-status" name="status" class="easyui-combobox" data-options="width:100">
+        <option value="-1">选择状态</option>
+        <option value="1">有效</option>
+        <option value="0">无效</option>
+    </select>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="paymentSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="paymentAccept()">确认收款</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="paymentCancel()">取消收款</a>
+</div>
+
+{{!-- 对话框 --}}
+
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+        $('#payment-txt-supplierId').textbox({
+            prompt: '供应商编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#payment-txt-paymentId').textbox({
+            prompt: '采购单编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        $('#payment-detail-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#payment-detail-txt-cases').textbox({
+            prompt: '箱数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#payment-detail-txt-piece').textbox({
+            prompt: '散数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+    });
+
+    function paymentSearch() {
+        var supplierId = $('#payment-cg-supplierId').val();
+        var warehouseId = $('#payment-cg-warehouseId').val();
+        var paymentId = $('#payment-txt-paymentId').val();
+        var status = $('#payment-cb-status').val();
+        var startDate = $('#payment-date-startDate').val();
+        var endDate = $('#payment-date-endDate').val();
+
+        supplierId = supplierId ? supplierId : -1;
+        warehouseId = warehouseId ? warehouseId : -1;
+        paymentId = paymentId ? paymentId : -1;
+
+        $('#payment-dg').datagrid({
+            url: '/finance/getPaymentHeader',
+            queryParams: {
+                supplierId: supplierId,
+                warehouseId: warehouseId,
+                paymentId: paymentId,
+                status: status,
+                startDate: startDate,
+                endDate: endDate,
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            onSelect: function (index, row) {
+                getpaymentDetail(row);
+            }
+        });
+    }
+
+    function getpaymentDetail(row) {
+        var paymentId = row.PaymentId;
+        $('#payment-detail-dg').datagrid({
+            url: '/finance/getPaymentDetail',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                paymentId: paymentId
+            }
+        });
+    }
+
+    function paymentAccept() {
+        var row = $('#payment-dg').datagrid('getSelected')
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一条收款单</center>");
+            return;
+        }
+
+        var paymentId = row.PaymentId;
+        var warehouseId = row.WarehouseId;
+
+        $.post("/finance/setPaymentStatus", { paymentId: paymentId, status: 1, warehouseId: warehouseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#payment-dg').datagrid('reload');
+            }
+        );
+    }
+
+     function paymentCancel() {
+        var row = $('#payment-dg').datagrid('getSelected')
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一条收款单</center>");
+            return;
+        }
+
+        var paymentId = row.PaymentId;
+        var warehouseId = row.WarehouseId;
+
+        $.post("/finance/setPaymentStatus", { paymentId: paymentId, status: 0, warehouseId: warehouseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#payment-dg').datagrid('reload');
+            }
+        );
+    }
+
+
+
+
+    function Search() {
+
+    }
+
+
+</script>

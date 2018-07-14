@@ -19,8 +19,8 @@ module.exports = {
 		app.get('/warehouse/getWarehouse', this.getWarehouse);
 		app.post('/warehouse/addWarehouse', this.addWarehouse);
 		app.post('/warehouse/modifywarhouse', this.modifyWarehouse);
-		app.get('/common/getWarehouseLock', this.getWarehouseLock);
-		app.post('/common/setWarehouseLock', this.setWarehouseLock);
+		
+		
 		app.get('/warehouse/getCheckStockDetail', this.getCheckStockDetail);
 		app.post('/warehouse/addCheckStockData', this.addCheckStockData);
 		app.post('/warehouse/endStock', this.endStock);
@@ -101,24 +101,9 @@ module.exports = {
 		});
 	},
 
-	getWarehouseLock: function (req, res, next) {
-		var functionId  = 1;
-		var warehouseId = req.query.warehouseId;
-		var inParams = [functionId, warehouseId];
-		Common.getFunctionCtroll(inParams, function (rows) {
-			res.json(rows[0]);
-		});
-	},
+	
 
-	setWarehouseLock: function (req, res, next) {
-		var functionId  = 1;
-		var lockStatus = req.body.lockStatus;
-		var warehouseId = req.body.warehouseId;
-		var inParams = [functionId,lockStatus, warehouseId];
-		Common.setFunctionCtroll(inParams, function (rows) {
-			res.json(rows[0]);
-		});
-	},
+	
 	
 	endStock: function (req, res, next) {
 		var warehouseId = req.body.warehouseId;

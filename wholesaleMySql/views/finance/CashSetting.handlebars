@@ -1,0 +1,240 @@
+{{!-- 数据格 --}}
+<table id="checkCash-dg" class="easyui-datagrid" title="品牌管理" style="width:100%;height:250px;border-top:0px;" toolbar="#checkCash-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'TotalCash',width:100">盘点金额</th>
+            <th data-options="field:'RealCash',width:100">库存金额</th>
+            <th data-options="field:'DifferenceCash',width:100">差异</th>
+            <th data-options="field:'UpdateUser',width:60">盘点人</th>
+            <th data-options="field:'UpdateDate',width:100">更新时间</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="checkCash-tbr">
+    <input id="checkCash-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        checkCashSearch(row);
+                    }
+
+                ">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="CheckCashStatus()">检查状态</a>
+    <input id="checkCash-switch" class="easyui-switchbutton" style="width:100px;height:30px">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="checkCash-txt-totalCash" style="width:120px;height:25px">
+    <select id="checkCash-cbb-Method" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="0">0-替换</option>
+        <option value="1">1-增加</option>
+    </select>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="addCheckCashData()">金额盘点</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="CheckCashDiff()">差异检查</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="CheckCashEndDate()">最终日结</a>
+
+
+</div>
+{{!-- 数据上下文 --}}
+
+
+{{!-- 脚本 --}}
+<script>
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+
+        //-----
+
+        $('#checkCash-txt-totalCash').textbox({
+            prompt: '金额',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+        $('#checkCash-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#checkCash-dlg').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkCash-dg').datagrid('reload');
+            },
+
+        });
+
+        //search
+        //end search
+        $('#checkCash-switch').switchbutton({
+            onText: '未锁',//check的状态
+            offText: '锁定中',
+            disabled: true,
+            onChange: function (checked) {
+                //alert(checked);
+                var lockStatus = 0;
+                var warehouseId = $('#checkCash-cg-warehouseId').combogrid('getValue');
+                if (!checked) {
+                    lockStatus = 1;//要锁仓
+                }
+                if (selectWarehouse == 0) {
+                    $.post("/common/setCashLock", { warehouseId: warehouseId, lockStatus: lockStatus },
+                        function (data) {
+                            $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                            if (data[0]["pramCode"] == 1) {
+                                $('#checkCash-switch').switchbutton('uncheck');
+                            }
+                            else {
+                                $('#checkCash-switch').switchbutton('check');
+                            }
+
+                            //$('#checkCash-dg').datagrid('reload');
+                        });
+                } else {
+                    selectWarehouse = 0;
+                }
+
+            }
+        })
+    });
+
+    function Search() {
+
+    }
+    var selectWarehouse = 0;
+    function checkCashSearch(row) {
+        var warehouseId = row.WarehouseId;
+        $.ajax({
+            url: "/common/getCashLock",
+            data: { warehouseId: warehouseId },
+            success: function (data) {
+                selectWarehouse = 1;
+                $('#checkCash-switch').switchbutton('enable');
+                var lockType = data[0]["pramCode"];
+                var lockMsg = data[0]["pramResult"];
+                if (lockType == 0) {
+                    $('#checkCash-switch').switchbutton('check');
+                } else {
+                    $('#checkCash-switch').switchbutton('uncheck');
+                }
+            }
+        });
+
+        $('#checkCash-dg').datagrid({
+            url: '/finance/getCheckCashDetail',
+            queryParams: {
+                warehouseId: warehouseId
+            }
+        });
+
+    }
+    function addCheckCashData() {
+        var warehouseId = $('#checkCash-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        var totalCash = $('#checkCash-txt-totalCash').val();
+        if (!totalCash) {
+            $.messager.alert('消息提示:', "<center>请输入金额！</center>");
+            return;
+        }
+        var updateMethod = $('#checkCash-cbb-Method').val();
+        $.post("/finance/addCheckCashData", { warehouseId: warehouseId, totalCash: totalCash, updateMethod: updateMethod },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkCash-dg').datagrid('reload');
+            });
+    }
+    function CheckCashDiff() {
+        var warehouseId = $('#checkCash-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        $.post("/finance/endCash", { warehouseId: warehouseId, method: 1 },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkCash-dg').datagrid('reload');
+            });
+    }
+
+    function CheckCashEndDate() {
+        var warehouseId = $('#checkCash-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        $.post("/finance/endCash", { warehouseId: warehouseId, method: 2 },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkCash-dg').datagrid('reload');
+            });
+    }
+
+    function CheckCashStatus() {
+        var warehouseId = $('#checkCash-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        $.post("/finance/checkCashWithTransation", { warehouseId: warehouseId},
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkCash-dg').datagrid('reload');
+            });
+    }
+
+
+</script>
