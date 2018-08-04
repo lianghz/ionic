@@ -1,0 +1,247 @@
+{{!-- 数据格 --}}
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" style="width:400px;height:350px;">
+        <table id="instore-dg" class="easyui-datagrid" title="采购单" style="width:100%;height:250px;binstore-top:0px;" toolbar="#instore-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'PurchaseId',width:120">采购单</th>
+                    <th data-options="field:'InStoreId',width:120">入库单</th>
+                    <th data-options="field:'WarehouseName',width:100">仓库</th>
+                    <th data-options="field:'SupplierName',width:100">供应商</th>
+                    <th data-options="field:'PrintDate',width:120">打印时间</th>
+                    <th data-options="field:'PrintUser',width:50">打印人</th>
+                    <th data-options="field:'PrintCount',width:80">打印次数</th>
+                    <th data-options="field:'UpdateDate',width:120">更新时间</th>
+                    <th data-options="field:'UpdateUser',width:50">更新人</th>
+                    <th data-options="field:'purchaseStatus',width:100">采购单状态</th>
+                    <th data-options="field:'Status',width:100">入库单状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <table id="instore-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="商品价格">
+            <thead>
+                <tr>
+                    <th data-options="field:'GoodsId',width:120">商品编号</th>
+                    <th data-options="field:'GoodsName',width:250">商品名称</th>
+                    <th data-options="field:'Cases',width:100">箱数</th>
+                    <th data-options="field:'Piece',width:100">散数</th>
+                    <th data-options="field:'Price',width:100">单价</th>
+                    <th data-options="field:'total',width:100">合计</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+
+{{!-- 工具栏 --}}
+<div id="instore-tbr">
+    <input id="instore-cg-supplierId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择供应商',required:true,validateOnCreate:false,panelWidth: 300,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/getSupplier',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'供应商编号',width:50},
+                        {field:'ItemText',title:'供应商名称',width:250}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+
+    <input id="instore-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="instore-txt-purchaseId" style="width:120px;height:25px">
+    <input id="instore-date-startDate" class="easyui-datebox" style="width:130px;">
+    <input id="instore-date-endDate" class="easyui-datebox" style="width:130px;">
+    <select id="instore-cb-status" name="status" class="easyui-combobox" data-options="width:100">
+        <option value="-1">采购单状态</option>
+        <option value="1">有效</option>
+        <option value="0">无效</option>
+    </select>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="instoreSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="instoreAccept()">确认入库</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-cancel'" onclick="instoreCancel()">取消入库</a>
+</div>
+
+{{!-- 对话框 --}} {{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+        $('#instore-txt-supplierId').textbox({
+            prompt: '供应商编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#instore-txt-purchaseId').textbox({
+            prompt: '采购单编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        $('#instore-detail-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#instore-detail-txt-cases').textbox({
+            prompt: '箱数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#instore-detail-txt-piece').textbox({
+            prompt: '散数',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+    });
+
+    function instoreSearch() {
+        var supplierId = $('#instore-cg-supplierId').val();
+        var warehouseId = $('#instore-cg-warehouseId').val();
+        var purchaseId = $('#instore-txt-purchaseId').val();
+        var status = $('#instore-cb-status').val();
+        var startDate = $('#instore-date-startDate').val();
+        var endDate = $('#instore-date-endDate').val();
+
+        supplierId = supplierId ? supplierId : -1;
+        warehouseId = warehouseId ? warehouseId : -1;
+        purchaseId = purchaseId ? purchaseId : -1;
+
+        $('#instore-dg').datagrid({
+            url: '/supplier/getInstoreHeader',
+            queryParams: {
+                supplierId: supplierId,
+                warehouseId: warehouseId,
+                purchaseId: purchaseId,
+                status: status,
+                startDate: startDate,
+                endDate: endDate,
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            onSelect: function (index, row) {
+                getpurchaseDetail(row);
+            }
+        });
+    }
+
+    function getpurchaseDetail(row) {
+        var purchaseId = row.PurchaseId;
+        $('#instore-detail-dg').datagrid({
+            url: '/supplier/getPurchaseDetail',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                purchaseId: purchaseId
+            }
+        });
+    }
+
+    function instoreAccept() {
+        var row = $('#instore-dg').datagrid('getSelected')
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一条采购单</center>");
+            return;
+        }
+
+        var purchaseId = row.PurchaseId;
+        $.post("/supplier/convertInStore", { purchaseId: purchaseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#instore-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function instoreCancel() {
+        var row = $('#instore-dg').datagrid('getSelected')
+        if (!row) {
+            $.messager.alert('消息提示:', "<center>请选择一条采购单</center>");
+            return;
+        }
+
+        var inStoreId = row.InStoreId;
+        if (!inStoreId) {
+            $.messager.alert('消息提示:', "<center>" + row.PurchaseId + "该采购单未入库,请先入库</center>");
+            return;
+        }
+
+        $.post("/supplier/setInstore", { inStoreId: inStoreId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramCode"] + "-" + data[0]["pramResult"] + "</center>");
+                $('#instore-dg').datagrid('reload');
+            }
+        );
+    }
+
+
+    function Search() {
+
+    }
+
+
+</script>

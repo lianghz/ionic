@@ -1,0 +1,71 @@
+{{!-- 数据格 --}}
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<center>
+    <input id="settle-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //receive false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="settle-cg-date" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择结算日期',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    url: '/common/getSettleDate',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'结算日期',width:100}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="backupSettlementedData()">结算删档</a>
+    <span id="settle-span-msg" style="vertical-align: middle;display:inline-block;float:none"></span>
+</center>
+{{!-- 脚本 --}}
+<script>
+    function backupSettlementedData() {
+        var warehouseId = $("#settle-cg-warehouseId").val();
+        var settlementDate = $("#settle-cg-date").val();
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择仓库</center>");
+            return;
+        }
+        if (!settlementDate) {
+            $.messager.alert('消息提示:', "<center>请选择仓库</center>");
+            return;
+        }
+        settlementDate = settlementDate.substring(0,10);
+        $.post("/settle/backupSettlementedData", { warehouseId: warehouseId, settlementDate: settlementDate },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $("#settle-cg-date").combogrid('reload');
+            }
+        );
+    }
+</script>

@@ -1,0 +1,290 @@
+{{!-- 数据格 --}}
+<table id="checkStock-dg" class="easyui-datagrid" title="品牌管理" style="width:100%;height:250px;border-top:0px;" toolbar="#checkStock-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'GoodsId',width:100">商品编号</th>
+            <th data-options="field:'Name',width:250">商品名称</th>
+            <th data-options="field:'Piece',width:300">盘点数</th>
+            <th data-options="field:'RealPiece',width:60">实时库存</th>
+            <th data-options="field:'DifferencePiece',width:60">差异</th>
+            <th data-options="field:'UpdateUser',width:100">盘点人</th>
+            <th data-options="field:'UpdateDate',width:100">更新时间</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="checkStock-tbr">
+    <input id="checkStock-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        checkStockSearch(row);
+                    }
+
+                ">
+    <input id="checkStock-switch" class="easyui-switchbutton" style="width:100px;height:30px">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="checkStock-txt-goodsId" style="width:120px;height:25px">
+    <input id="checkStock-txt-quantity" style="width:120px;height:25px">
+    <select id="checkStock-cbb-Method" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="0">0-替换</option>
+        <option value="1">1-增加</option>
+    </select>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="addCheckStockData()">数量盘点</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="CheckStockDiff()">差异检查</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-ok'" onclick="CheckStockEndDate()">最终日结</a>
+
+
+</div>
+{{!-- 数据上下文 --}}
+<div id="checkStock-dlg" class="easyui-dialog" title="添加因子" style="width:750px;height:490px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#checkStock-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#checkStock-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="checkStock-ff" action="/price/addwarehouse" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="checkStock-ff-txt-priceListId" name="priceListId" style="width:300px" class="easyui-textbox" data-options="label:'价表编号:',prompt:'输入价表',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <td>
+                    <input id="checkStock-ff-txt-warehouseId" name="warehouseId" style="width:300px " class="easyui-textbox " data-options="label:
+                        '仓库编号:',prompt: '输入仓库编号',required:true,validateOnCreate:false,err:err "></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="checkStock-ff-txt-warehouseName" name="name" style="width:300px" class="easyui-textbox" data-options="label:'仓库名称:',prompt:'输入仓库名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <td>
+                    <input id="checkStock-ff-txt-address" name="address" style="width:300px " class="easyui-textbox " data-options="label:
+                        '仓库地址:',prompt: '输入仓库地址',required:true,validateOnCreate:false,err:err "></input>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <select id="checkStock-ff-cb-status" name="status" class="easyui-combobox" panelHeight="auto" style="width:200pt" data-options="label:'状态:',prompt:'输入重量',required:true,validateOnCreate:false,err:err">
+                        <option value="-1">选择状态</option>
+                        <option value="1">1-有效</option>
+                        <option value="0">0-无效</option>
+                    </select>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+{{!-- 脚本 --}}
+<script>
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+
+        //-----
+
+        $('#checkStock-txt-goodsId').textbox({
+            prompt: '商品编号\条码',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#checkStock-txt-quantity').textbox({
+            prompt: '数量',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+        $('#checkStock-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#checkStock-dlg').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkStock-dg').datagrid('reload');
+            },
+
+        });
+
+        //search
+        //end search
+        $('#checkStock-switch').switchbutton({
+            onText: '未锁仓',//check的状态
+            offText: '锁仓中',
+            disabled: true,
+            onChange: function (checked) {
+                //alert(checked);
+                var lockStatus = 0;
+                var warehouseId = $('#checkStock-cg-warehouseId').combogrid('getValue');
+                if (!checked) {
+                    lockStatus = 1;//要锁仓
+                }
+                if (selectWarehouse == 0) {
+                    $.post("/common/setWarehouseLock", { warehouseId: warehouseId, lockStatus: lockStatus },
+                        function (data) {
+                            $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                            if (data[0]["pramCode"] == 1) {
+                                $('#checkStock-switch').switchbutton('uncheck');
+                            }
+                            else {
+                                $('#checkStock-switch').switchbutton('check');
+                            }
+
+                            //$('#checkStock-dg').datagrid('reload');
+                        });
+                } else {
+                    selectWarehouse = 0;
+                }
+
+            }
+        })
+    });
+
+    function Search() {
+
+    }
+    var selectWarehouse = 0;
+    function checkStockSearch(row) {
+        var warehouseId = row.WarehouseId;
+        $.ajax({
+            url: "/common/getWarehouseLock",
+            data: { warehouseId: warehouseId },
+            success: function (data) {
+                selectWarehouse = 1;
+                $('#checkStock-switch').switchbutton('enable');
+                var lockType = data[0]["pramCode"];
+                var lockMsg = data[0]["pramResult"];
+                if (lockType == 0) {
+                    $('#checkStock-switch').switchbutton('check');
+                } else {
+                    $('#checkStock-switch').switchbutton('uncheck');
+                }
+            }
+        });
+
+        $('#checkStock-dg').datagrid({
+            url: '/warehouse/getCheckStockDetail',
+            queryParams: {
+                warehouseId: warehouseId
+            }
+        });
+
+    }
+    function addCheckStockData() {
+        var warehouseId = $('#checkStock-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        var goodsId = $('#checkStock-txt-goodsId').val();
+        if (!goodsId) {
+            $.messager.alert('消息提示:', "<center>请输入商品条码！</center>");
+            return;
+        }
+        var produceDate;
+        var quantity = $('#checkStock-txt-quantity').val();
+        if (!quantity) {
+            $.messager.alert('消息提示:', "<center>请输入商品数量！</center>");
+            return;
+        }
+        var updateMethod = $('#checkStock-cbb-Method').val();
+        $.post("/warehouse/addCheckStockData", { warehouseId: warehouseId, goodsId: goodsId, produceDate: produceDate, quantity: quantity, updateMethod: updateMethod },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkStock-dg').datagrid('reload');
+            });
+    }
+    function CheckStockDiff() {
+        var warehouseId = $('#checkStock-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        $.post("/warehouse/endStock", { warehouseId: warehouseId, method: 1 },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkStock-dg').datagrid('reload');
+            });
+    }
+
+    function CheckStockEndDate() {
+        var warehouseId = $('#checkStock-cg-warehouseId').combogrid('getValue');
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库！</center>");
+            return;
+        }
+        $.post("/warehouse/endStock", { warehouseId: warehouseId, method: 2 },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#checkStock-dg').datagrid('reload');
+            });
+    }
+
+
+</script>

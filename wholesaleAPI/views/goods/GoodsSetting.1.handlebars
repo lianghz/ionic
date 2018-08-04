@@ -1,0 +1,246 @@
+{{!-- 数据格 --}}
+<table id="goods-dg" title="商品管理" style="width:100%;height:250px;border-top:0px;" toolbar="#goods-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'BrandId',width:150">品牌编号</th>
+            <th data-options="field:'brandName',width:200">品牌名称</th>
+            <th data-options="field:'GoodsId',width:200">商品编号</th>
+            <th data-options="field:'Name',width:50">商品名称</th>
+            <th data-options="field:'BarCode',width:60">商品条码</th>
+            <th data-options="field:'Subunit',width:60">包装散数</th>
+            <th data-options="field:'Weight',width:60">重量</th>
+            <th data-options="field:'Length',width:60">长</th>
+            <th data-options="field:'Width',width:60">宽</th>
+            <th data-options="field:'Description',width:60">描述</th>
+            <th data-options="field:'UsefullLife',width:60">有效期</th>
+            <th data-options="field:'MiniLife',width:60">最小有效期</th>
+            <th data-options="field:'Height',width:60">高</th>
+            <th data-options="field:'Height',width:60">高</th>
+            <th data-options="field:'Height',width:60">高</th>
+            <th data-options="field:'UpdateUser',width:60">更新用户</th>
+            <th data-options="field:'CreateDate',width:150">创建时间</th>
+            <th data-options="field:'UpdateDate',width:150">更新时间</th>
+        </tr>
+    </thead>
+</table>
+
+
+
+{{!-- 脚本 --}}
+<script>
+    //var params = $('#goods-params').val();
+    //var params2 = $('#goods-params2').val();
+    //console.log(params2);
+    //params = eval('[' + params + ']');
+    //params2 = eval('[' + params2 + ']');
+
+    $('#goods-dg').datagrid({
+        url: '/goods/getgoods',
+        pagePosition: 'bottom',
+        //pagination: true,
+        rownumbers: true,
+        //pageSize: 30,
+        singleSelect: true,
+        //frozenColumns: params2,
+        //columns: params,
+
+
+    });
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+
+        $('#goods-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#goods-txt-name').textbox({
+            prompt: '商品名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#goods-txt-BarCode').textbox({
+            prompt: '商品条码',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        $('#goods-txt-CategoryId').textbox({
+            prompt: '分类编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        $('#goods-txt-BrandId').textbox({
+            prompt: '品牌编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+        $('#goods-ff-add').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#goods-dlg-add').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+            },
+
+        });
+
+        $('#goods-ff-edit').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#goods-dlg-edit').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+            },
+
+        });
+
+        //down
+        $("#goods-btn-down").click(function () {
+            MaskUtil.mask();
+            var params = $('#goods-dg').datagrid("options").queryParams;
+            var param = '?';
+            for (key in params) {
+                param += key + '=' + params[key] + '&';
+            }
+            param += 'a=1'
+
+            url = "/down/goods" + param;
+            $.get(url, function (result) {
+                $.messager.alert('结果已生成', result);
+                MaskUtil.unmask();
+            });
+
+        })
+        //end down
+        //search
+        $("#goods-btn-search").click(function () {
+            $('#goods-dg').datagrid('load', {
+                goodsId: $('#goods-txt-company').textbox('getValue'),
+                name: $('#goods-txt-name').textbox('getValue'),
+                barCode: $('#goods-txt-barCode').textbox('getValue'),
+                categoryId: $('#goods-txt-categoryId').textbox('getValue'),
+                brandId: $('#goods-txt-brandId').textbox('getValue'),
+            });
+        })
+        //end search
+
+        ///save
+        //down
+        {
+            {
+                !--$("#goods-btn-down").click(function () {
+                    var params = $('#goods-dg').datagrid("options").queryParams;
+                    var param = '?period=' + (params.period ? params.period : '') + '&outlet=' + (params.outlet ? params.outlet : '') + '&loc=' + (params.loc ? params.loc : '') + '&name=' + (params.name ? params.name : '');
+                    if (!params) param = "";
+                    url = "/down/goods" + param;
+                    $.get(url, function (result) {
+                        $.messager.alert('结果已生成', result);
+                    });
+                })--}
+        }
+        ///end save
+
+
+    });
+
+    function formatField(value, row, index, n1, n2) {
+        return (row[n1] ? (row[n1][n2] ? row[n1][n2] : "") : '');
+
+    }
+
+    //---------------
+
+    function openDialogAdd() {
+        var params = $('#goods-dg').datagrid("options").queryParams;
+        $('#goods-ff-over').val("");
+        $('#goods-ff-outlet').val(params.outlet ? params.outlet : '');
+        $('#goods-ff-loc').val(params.loc ? params.loc : '');
+        $('#goods-ff-name').val(params.name ? params.name : '');
+        var v = $('#goods-txt-period').val();
+        $('#goods-ff-period').textbox({
+            readonly: false,
+            value: v,
+        }).textbox({ readonly: true, });
+
+        $('#goods-dlg-add').dialog({
+            modal: true,
+        }).dialog('open');
+    }
+
+    function openDialogEdit() {
+        var row = $('#goods-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('提示', '<center>请选择一个品牌!</center>');
+        }
+        $('#goods-ff-edit').form('load', {
+            goodsId: row.goodsId,
+            name: row.Name,
+            company: row.Company,
+            status: row.Status
+        });
+
+        $('#goods-dlg-edit').dialog({
+            modal: true,
+        }).dialog('open');
+    }
+
+
+
+</script>

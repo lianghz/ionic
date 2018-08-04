@@ -1,0 +1,335 @@
+{{!-- 数据格 --}}
+<table id="otherRecord-dg" class="easyui-datagrid" title="配装运单" style="width:100%;height:250px;botherRecord-top:0px;" toolbar="#otherRecord-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'RecordId',width:150">记录号</th>
+            <th data-options="field:'WarehouseId',width:50">仓库号</th>
+            <th data-options="field:'WarehouseName',width:150">仓库名称</th>
+            <th data-options="field:'AccountId',width:80">账户编号</th>
+            <th data-options="field:'BankAccountId',width:100">银行账户</th>
+            <th data-options="field:'BankName',width:150">银行名称</th>
+            <th data-options="field:'Payer',width:80">付款方</th>
+            <th data-options="field:'Receiver',width:80">接收方</th>
+            <th data-options="field:'Amount',width:50">金额</th>
+            <th data-options="field:'RecordTypeName1',width:100">资金从</th>
+            <th data-options="field:'RecordTypeName2',width:100">转至</th>
+            <th data-options="field:'ReferenceNO',width:100">单证参考号</th>
+            <th data-options="field:'Remark',width:200">备注</th>
+            <th data-options="field:'CreateUser',width:80">记录人</th>
+            <th data-options="field:'CreateDate',width:150">记录时间</th>
+            <th data-options="field:'PrintUser',width:80">打印人</th>
+            <th data-options="field:'PrintDate',width:100">打印时间</th>
+            <th data-options="field:'PrintCount',width:80">打印次数</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="otherRecord-tbr">
+    <input id="otherRecord-cg-warehouseId" class="easyui-combogrid" data-options="width:'150px',prompt:'选择仓库',validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false; 
+                       
+                        
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                         getAccount(row);
+                        
+                    }
+                ">
+    <input id="otherRecord-cg-accountId" name="accountId" class="easyui-combogrid" data-options="width:'150px',prompt:'银行账户',validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/getAccounter',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemText',title:'银行',width:200}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="otherRecord-txt-recordId" style="width:130px;">
+    <input id="otherRecord-date-startDate" class="easyui-datebox" style="width:130px;">
+    <input id="otherRecord-date-endDate" class="easyui-datebox" style="width:130px;">
+    <a id="otherRecord-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="recordSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="recordOpenDialogAdd()">添加</a>
+</div>
+{{!-- 对话框 --}}
+<div id="otherRecord-dlg" class="easyui-dialog" title="添加因子" style="width:650px;height:350px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#otherRecord-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#otherRecord-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="otherRecord-ff" action="/finance/addOtherBankrollRecord" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="otherRecord-ff-cg-warehouseId" name="warehouseId" class="easyui-combogrid" data-options="width:'300px',label:'仓库:',prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                        
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                        getAccountFF(row);
+                    }
+                ">
+                </td>
+                <td>
+                    <input id="otherRecord-ff-cg-accountId" name="accountId" class="easyui-combogrid" data-options="width:'300px',label:'银行账户:',prompt:'银行账户',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/getAccounter',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemText',title:'银行',width:200}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="otherRecord-ff-cg-recordTypeId" name="recordTypeId" class="easyui-combogrid" data-options="width:'300px',label:'资金转出方:',prompt:'资金转出方',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/getRecordType',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemText',title:'从',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+                </td>
+                <td>
+                    <input id="otherRecord-ff-cg-recordTypeId2" name="recordTypeId2" class="easyui-combogrid" data-options="width:'300px',label:'资金转给:',prompt:'资金转给',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/common/getRecordType',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemText',title:'转给',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                "> </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input id="otherRecord-ff-txt-remark" name="remark" class="easyui-textbox" style="width:605px" data-options="label: '摘要:',prompt: '摘要',required:true,validateOnCreate:false,err:err">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="otherRecord-ff-txt-payer" name="payer" style="width:300px" class="f1 easyui-textbox" data-options="label:'金额支付方:',prompt:'金额支付方',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <td>
+                    <input id="otherRecord-ff-txt-receiver" name="receiver" style="width:300px" class="f1 easyui-textbox" data-options="label:'金额接收方:',prompt:'金额接收方',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <input id="otherRecord-ff-txt-supplierId" name="supplierId" type="hidden"></input>
+            </tr>
+            <tr>
+                <td>
+                    <input id="otherRecord-ff-txt-amount" name="amount" style="width:300px" class="f1 easyui-textbox" data-options="label:'金额:',prompt:'金额',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <td>
+                    <input id="otherRecord-ff-txt-referenceNO" name="referenceNO" style="width:300px" class="f1 easyui-textbox" data-options="label:'参考单证号码:',prompt:'参考单证号码',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                
+            </tr>
+        </table>
+    </form>
+</div>
+
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+
+        $('#otherRecord-txt-recordId').textbox({
+            prompt: '记录编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#otherRecord-txt-accountId').textbox({
+            prompt: '账户编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#otherRecord-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#otherRecord-dlg').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                if (data[0]["pramCode"] == 1) {
+                    $('#otherRecord-dg').datagrid('reload');
+                }
+            },
+
+        });
+    });
+
+    function recordSearch() {
+        var recordId = $('#otherRecord-txt-recordId').val();
+        var accountId = $('#otherRecord-cg-accountId').val();
+        var startDate = $('#otherRecord-date-startDate').val();
+        var endDate = $('#otherRecord-date-endDate').val();
+        var warehouseId = $('#otherRecord-cg-warehouseId').val();
+        recordId = recordId ? recordId : 0;
+        accountId = accountId ? accountId : 0;
+        warehouseId = warehouseId ? warehouseId : 0;
+
+        $('#otherRecord-dg').datagrid({
+            url: '/finance/getOtherBankrollRecord',
+            queryParams: {
+                recordId: recordId,
+                accountId: accountId,
+                warehouseId: warehouseId,
+                startDate: startDate,
+                endDate: endDate
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true
+        });
+    }
+
+    function recordOpenDialogAdd() {
+        $('#otherRecord-dlg').dialog({
+            title: "添加资金记录",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function supplierOpenDialogEdit() {
+        var row = $('#otherRecord-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('提示', '<center>请选择一个供应商!</center>');
+        }
+        $('#otherRecord-ff-txt-supplierId').val(row.SupplierId);
+        $('#otherRecord-ff').form('load', {
+            supplierId: row.SupplierId,
+            name: row.Name,
+            address: row.Address,
+            telephone: row.Telephone,
+            chargeMobile: row.ChargeMobile,
+            linkMobile: row.LinkMobile,
+            linkMan: row.LinkMan,
+            status: row.Status,
+            inCharge: row.InCharge
+        });
+
+        $('#otherRecord-dlg').dialog({
+            title: "修改供应商",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function getAccount(row) {
+        //var warehouseRow = $('#otherRecord-cg-warehouseId').combogrid('grid').datagrid('getSelected');
+        var warehouseId = row.WarehouseId;
+        $('#otherRecord-cg-accountId').combogrid('grid').datagrid('load', { warehouseId: warehouseId });
+    }
+    function getAccountFF(row) {
+        var warehouseRow = $('#otherRecord-ff-cg-warehouseId').combogrid('grid').datagrid('getSelected');
+        var warehouseId = warehouseRow.WarehouseId;
+        $('#otherRecord-ff-cg-accountId').combogrid('grid').datagrid('load', { warehouseId: warehouseId });
+    }
+
+</script>

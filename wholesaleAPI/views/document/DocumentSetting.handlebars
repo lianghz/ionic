@@ -1,0 +1,160 @@
+{{!-- 数据格 --}}
+<table id="document-dg" class="easyui-datagrid" title="配装运单" style="width:100%;height:250px;bdocument-top:0px;" toolbar="#document-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'DocumentId',width:150">货单号</th>
+            <th data-options="field:'CustomerId',width:200">客户编号</th>
+            <th data-options="field:'RegionId',width:100">小区</th>
+            <th data-options="field:'DeliverAddress',width:300">送货地址</th>
+            <th data-options="field:'Piece',width:80">数量</th>
+            <th data-options="field:'weight',width:80">重量</th>
+            <th data-options="field:'Volume',width:80">体积</th>
+            <th data-options="field:'DeliverStartDateTime',width:300">开始送货时间</th>
+            <th data-options="field:'DeliverEndDateTime',width:300">结束送货时间</th>
+            <th data-options="field:'Remark',width:300">备注</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="document-tbr">
+    <input id="document-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="document-date-startDate" class="easyui-datebox" style="width:130px;" data-options="prompt: '输入开始时间'">
+    <input id="document-date-endDate" class="easyui-datebox" style="width:130px;" data-options="prompt: '输入结束时间'">
+    <a id="document-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="document-cg-staffId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择送货人',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'ItemValue',
+                    textField: 'ItemText',
+                    url: '/staff/getStaff',
+                    method: 'get',
+                    columns: [[
+                        {field:'ItemValue',title:'员工编号',width:100},
+                        {field:'ItemText',title:'员工名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="documentLoadAdd()">配装运单</a>
+</div>
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+
+
+    $(function () {
+
+        //-----
+
+        /* $('#document-txt-documentId').textbox({
+             prompt: '仓库编号',
+             icons: [{
+                 iconCls: 'icon-filter'
+             }]
+         }).textbox('addClearBtn', 'icon-clear');
+ */
+
+        //------
+
+
+        //search
+
+        $("#document-btn-search").click(function () {
+            var warehouseId = $('#document-cg-warehouseId').val();
+            if (!warehouseId) {
+                $.messager.alert('消息提示:', "<center>请选择一个仓库</center>");
+                return;
+            }
+            var startDate = $('#document-date-startDate').val();
+            if (!startDate) {
+                $.messager.alert('消息提示:', "<center>输入开始时间</center>");
+                return;
+            }
+            var endDate = $('#document-date-endDate').val();
+            if (!warehouseId) {
+                $.messager.alert('消息提示:', "<center>请输入结束时间</center>");
+                return;
+            }
+            $('#document-dg').datagrid({
+                url: '/document/getDocument',
+                queryParams: {
+                    warehouseId: warehouseId,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                pagePosition: 'bottom',
+                rownumbers: true,
+                singleSelect: false
+            });
+
+        })
+        //end search
+    });
+
+    function documentLoadAdd() {
+        var warehouseId = $('#document-cg-warehouseId').val();
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库</center>");
+            return;
+        }
+        var rows = $('#document-dg').datagrid('getSelections')
+        if (rows.length<1) {
+            $.messager.alert('消息提示:', "<center>请选择货单（可多选）</center>");
+            return;
+        }
+        var deliveryManId = $('#document-cg-staffId').val();
+        if (!deliveryManId) {
+            $.messager.alert('消息提示:', "<center>请选择送货人</center>");
+            return;
+        }
+        var docs = '';
+        for (var i in rows) {
+            var row = rows[i]
+            if (i < rows.length - 1) {
+                docs = docs + row.DocumentId + ",";
+            } else {
+                docs = docs + row.DocumentId;
+            }
+        }
+        $.post("/document/addLoadDocument", { deliveryManId: deliveryManId, docs: docs, warehouseId: warehouseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#document-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function Search() {
+
+    }
+
+
+</script>
+
+<style type="text/css">
+    .c-label {
+        display: inline-block;
+        width: 100px;
+        font-weight: bold;
+    }
+</style>

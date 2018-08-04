@@ -1,0 +1,178 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="货单" style="width:400px;height:350px;">
+        <table id="settleCheck-dg" class="easyui-datagrid" style="width:100%;height:400px;border-top:0px;" toolbar="#settleCheck-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false">
+            <thead>
+                <tr>
+                    <th data-options="field:'WarehouseName',width:80">仓库</th>
+                    <th data-options="field:'LoadId',width:150">装运单</th>
+                    <th data-options="field:'RealName',width:80">实际送货人</th>
+                    <th data-options="field:'CreateUser',width:120">建立者</th>
+                    <th data-options="field:'CreateDate',width:120">建立时间</th>
+                    <th data-options="field:'UpdateUser',width:120">更新人</th>
+                    <th data-options="field:'UpdateDate',width:120">更新时间</th>
+                    <th data-options="field:'CheckOutDate',width:120">出仓时间</th>
+                    <th data-options="field:'CheckOutStatus',width:120">出库状态</th>
+                    <th data-options="field:'BalanceStatus',width:120">平衡状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <table id="settleCheck-detail-dg" class="easyui-datagrid" style="width:100%;height:250px;border-top:0px;" toolbar="#settleCheck-detail-tbr"
+            data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="货单明细">
+            <thead>
+                <tr>
+                    <th data-options="field:'goodsId',width:120">商品编号</th>
+                    <th data-options="field:'Name',width:250">商品名称</th>
+                    <th data-options="field:'SumPiece',width:100">差异数量</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="settleCheck-tbr">
+    <input id="settleCheck-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //receive false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="settleCheck-txt-loadId" style="width:120px;height:25px">
+       <select id="settleCheck-cbb-status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="-1">选择状态</option>
+        <option value="1">1-显示已平衡</option>
+        <option value="0">0-所有</option>
+    </select>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="settleCheckSearch()">查询</a>
+</div>
+
+<div id="settleCheck-detail-tbr">
+    <span id="settleCheck-detail-span-msg">-</span>
+</div>
+
+{{!-- 对话框 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#settleCheck-txt-loadId').textbox({
+            prompt: '装运单号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+    });
+
+    function receiveAdd() {
+        var fromWarehouseId = $('#settleCheck-cg-fromWarehouseId').combogrid('getValue');
+        var toWarehouseId = $('#settleCheck-cg-toWarehouseId').combogrid('getValue');
+        if (fromWarehouseId == "") {
+            $.messager.alert('消息提示:', "<center>请选择发出仓库</center>");
+            return;
+        }
+        if (toWarehouseId == "") {
+            $.messager.alert('消息提示:', "<center>请选择接收仓库</center>");
+            return;
+        }
+        $.post("/warehouse/addreceive", { fromWarehouseId: fromWarehouseId, toWarehouseId: toWarehouseId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#settleCheck-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function settleCheckSearch() {
+        var warehouseId = $('#settleCheck-cg-warehouseId').val();
+        var loadId = $('#settleCheck-txt-loadId').val();
+        var status = $('#settleCheck-cbb-status').val();
+
+        warehouseId = warehouseId ? warehouseId : -1;
+        loadId = loadId ? loadId : 0;
+        status = status ? status : 0;
+        $('#settleCheck-dg').datagrid({
+            url: '/document/getLoadForCheck',
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true,
+            queryParams: {
+                warehouseId: warehouseId,
+                loadId: loadId,
+                status: status
+            },
+            onSelect: function (index, row) {
+                settleCheckLoad(row);
+            }
+
+        });
+    }
+    function settleCheckLoad(row) {
+        var loadId = row.LoadId;
+        $.ajax({
+                url: "/document/checkLoad",
+                 type: "post",
+                data: { loadId: loadId },
+                success: function (data) {
+                    //console.log(data[1][0]['pramResult']);
+                    $('#settleCheck-detail-span-msg').text(data[1][0]['pramResult']);
+                    $('#settleCheck-detail-dg').datagrid({
+                        data: data[0],
+                        pagePosition: 'bottom',
+                        rownumbers: true,
+                        singleSelect: true
+                    });
+                }
+            });
+    }
+
+//usage
+//wait for 3 seconds
+
+</script>

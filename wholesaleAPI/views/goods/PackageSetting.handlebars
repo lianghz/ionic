@@ -1,0 +1,358 @@
+{{!-- 数据格 --}}
+
+<div class="easyui-layout" style="width:100%;height:100%;">
+    <div data-options="region:'north',split:true" title="管理转包装规则" style="width:400px;height:350px;">
+        <table id="package-dg" style="width:100%;height:400px;border-top:0px;" toolbar="#package-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+            <thead>
+                <tr>
+                    <th data-options="field:'RuleId',width:150">规则编号</th>
+                    <th data-options="field:'RuleDesc',width:150">规则名称</th>
+                    <th data-options="field:'UpdateUser',width:150">更新用户</th>
+                    <th data-options="field:'UpdateDate',width:150">更新时间</th>
+                    <th data-options="field:'Status',width:150">状态</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+    <div data-options="region:'center',split:true" style="height:300px;">
+        <div class="easyui-layout" data-options="fit:true">
+            <div data-options="region:'west',split:true" style="width:50%;border:0px 0px 0px 0px;">
+                <table id="package-oringin-dg" style="width:100%;height:250px;border-top:0px;" toolbar="#package-oringin-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="源商品">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'GoodsId',width:150">商品编号</th>
+                            <th data-options="field:'Name',width:150">商品名称</th>
+                            <th data-options="field:'Quantity',width:150">数量</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+            <div data-options="region:'center'">
+                <table id="package-destination-dg" style="width:100%;height:250px;border-top:0px;" toolbar="#package-destinction-tbr" data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false," title="目的商品">
+                    <thead>
+                        <tr>
+                            <th data-options="field:'GoodsId',width:150">商品编号</th>
+                            <th data-options="field:'Name',width:150">商品名称</th>
+                            <th data-options="field:'Quantity',width:150">数量</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{{!-- 工具栏 --}}
+<div id="package-tbr">
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="openDialogpackageAdd()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="openDialogpackageEdit()">修改</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <input id="package-txt-name" style="width:120px;height:25px">
+    <select id="package-cb-status" class="easyui-combobox" panelHeight="auto" style="width:100px">
+        <option value="-1">选择状态</option>
+        <option value="1">1-有效</option>
+        <option value="0">0-无效</option>
+    </select>
+    <a onclick="packageSearch();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+</div>
+
+{{!-- 工具栏 --}}
+<div id="package-oringin-tbr">
+    <input id="package-oringin-txt-goodsId" style="width:200px;height:25px">
+    <input id="package-oringin-txt-quantity" style="width:120px;height:25px" data-options="validType:'number'">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a onclick="addOringin();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add">添加</a>
+</div>
+
+<div id="package-destinction-tbr">
+    <input id="package-destinction-txt-goodsId" style="width:200px;height:25px">
+    <input id="package-destinction-txt-quantity" style="width:120px;height:25px" data-options="validType:'number'">
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a onclick="addDistinct();" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-add">添加</a>
+</div>
+
+{{!-- 对话框 --}}
+<div id="package-dlg" class="easyui-dialog" title="添加商品组" style="width:400px;height:200px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#package-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#package-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="package-ff" method="post">
+        <table>
+            <tr>
+                <td>
+                    <input id="package-ff-txt-name" name="name" style="width:300px" class="f1 easyui-textbox" data-options="label:'商品组名称:',prompt:'输入商品组名称',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <select id="package-ff-cbb-status" data-options="label:'状态:'" style="width:300px" name="status" class="easyui-combobox" panelHeight="auto"
+                        style="width:100px">
+                        <option value="1">1-有效</option>
+                        <option value="0">0-无效</option>
+                    </select>
+                </td>
+            </tr>
+            <input id="package-ff-txt-ruleId" name="ruleId" type="hidden" value=""></input>
+        </table>
+    </form>
+</div>
+{{!-- 脚本 --}}
+<script>
+
+
+    $('#package-oringin-dg').datagrid({
+        url: '/goods/getpackageodetail',
+        queryParams: {
+            barCode: -11
+        },
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: false
+
+    });
+
+    $('#package-destination-dg').datagrid({
+        url: '/goods/getpackageddetail',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true
+
+    });
+
+    $('#package-dg').datagrid({
+        url: '/goods/getpackagerule',
+        pagePosition: 'bottom',
+        rownumbers: true,
+        singleSelect: true,
+        onSelect: function (index, row) {
+            $('#package-oringin-dg').datagrid('load', {
+                ruleId: row.RuleId
+            });
+            $('#package-destination-dg').datagrid('load', {
+                ruleId: row.RuleId
+            });
+        }
+
+    });
+
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+
+    $(function () {
+
+        //-----
+        $('#package-txt-name').textbox({
+            prompt: '规则名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#package-oringin-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#package-oringin-txt-quantity').textbox({
+            prompt: '商品数量',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#package-destinction-txt-goodsId').textbox({
+            prompt: '商品编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#package-destinction-txt-quantity').textbox({
+            prompt: '商品数量',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+        $('#package-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                if (data[0]['pramCode'] == "1") {
+                    $('#goods-ff-add').form('clear');
+                    $('#package-dlg').dialog('close');
+                    $('#package-dg').datagrid('reload');
+                }
+            },
+        });
+    });
+
+
+    function packageSearch() {
+        $('#package-dg').datagrid('load', {
+            name: $('#package-txt-name').textbox('getValue'),
+            status: $('#package-cb-status').combobox('getValue')
+        });
+    }
+
+    function openDialogpackageAdd() {
+        $('#package-ff').form({
+            url: '/goods/addpackagerule',
+        });
+        $('#package-dlg').dialog({
+            modal: true,
+            title: '添加商品组'
+        }).dialog('open');
+    }
+    function openDialogpackageEdit() {
+        var row = $('#package-dg').datagrid('getSelected');
+        if(!row){
+             $.messager.alert('消息提示:', "<center>请选择规则</center>");
+             return;
+        }
+        $('#package-ff').form({
+            url: '/goods/modifypackagerule',
+        });
+        $('#package-ff').form('load', {
+            name: row.RuleDesc
+        });
+        $('#package-ff-txt-ruleId').val(row.RuleId);
+        $('#package-dlg').dialog({
+            modal: true,
+            title: '修改商品组'
+        }).dialog('open');
+    }
+
+    function packageDetailAdd() {
+        var goodsRows = $('#package-goods-dg').datagrid('getSelections');
+        var packageRow = $('#package-dg').datagrid('getSelected');
+        if (goodsRows.length < 1) {
+            $.messager.alert('消息提示:', "<center>请选择商品</center>");
+            return;
+        }
+        if (!packageRow) {
+            $.messager.alert('消息提示:', "<center>请选择商品组</center>");
+            return;
+        }
+        var packageId = packageRow.GoodspackageId
+        var goodsIds = "";
+        for (var i in goodsRows) {
+            if (i < goodsRows.length - 1) {
+                goodsIds = goodsIds + goodsRows[i].GoodsId + ",";
+            } else {
+                goodsIds = goodsIds + goodsRows[i].GoodsId;
+            }
+        }
+        $.post("/goods/addpackagedetail", { packageId: packageId, goodsIds: goodsIds },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#package-detail-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function addOringin() {
+        var ruleRow = $('#package-dg').datagrid('getSelected');
+        var goodsId = $('#package-oringin-txt-goodsId').val();
+        var quantity = $('#package-oringin-txt-quantity').val();
+        if (!ruleRow) {
+            $.messager.alert('消息提示:', "<center>请选择规则</center>");
+            return;
+        }
+        if (goodsId == "") {
+            $.messager.alert('消息提示:', "<center>请输入商品编号</center>");
+            return;
+        }
+        if (quantity == "") {
+            $.messager.alert('消息提示:', "<center>请输入商品数量</center>");
+            return;
+        }
+        var ruleId = ruleRow.RuleId;
+        $.post("/goods/addpackageodetail", { ruleId: ruleId, goodsId: goodsId, quantity: quantity },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#package-oringin-dg').datagrid('reload');
+            }
+        );
+    }
+    function addDistinct() {
+        var ruleRow = $('#package-dg').datagrid('getSelected');
+        var goodsId = $('#package-destinction-txt-goodsId').val();
+        var quantity = $('#package-destinction-txt-quantity').val();
+        if (!ruleRow) {
+            $.messager.alert('消息提示:', "<center>请选择规则</center>");
+            return;
+        }
+        if (goodsId == "") {
+            $.messager.alert('消息提示:', "<center>请输入商品编号</center>");
+            return;
+        }
+        if (quantity == "") {
+            $.messager.alert('消息提示:', "<center>请输入商品数量</center>");
+            return;
+        }
+        var ruleId = ruleRow.RuleId;
+        $.post("/goods/addpackageddetail", { ruleId: ruleId, goodsId: goodsId, quantity: quantity },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#package-destination-dg').datagrid('reload');
+            }
+        );
+    }
+//usage
+//wait for 3 seconds
+
+</script>

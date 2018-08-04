@@ -1,0 +1,193 @@
+{{!-- 数据格 --}}
+<table id="order-dg" class="easyui-datagrid" title="订单转货单" style="width:100%;height:250px;border-top:0px;" toolbar="#order-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,border:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'CreateDate',width:150">订单日期</th>
+            <th data-options="field:'OrderId',width:200">订单号</th>
+            <th data-options="field:'Linkman',width:100">收件人</th>
+            <th data-options="field:'DeliverAddress',width:300">地址</th>
+            <th data-options="field:'Remark',width:300">备注</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="order-tbr">
+    <input id="order-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //return false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <a id="order-btn-search" href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="orderConvert()">订单转货单</a>
+</div>
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+    var orderData;
+
+    $(function () {
+
+        //-----
+
+        $('#order-txt-orderId').textbox({
+            prompt: '仓库编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#order-txt-name').textbox({
+            prompt: '仓库名称',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#order-txt-address').textbox({
+            prompt: '仓库地址',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#order-date-priceListId').textbox({
+            prompt: '价表编号',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        //------
+
+        //search
+        
+        $("#order-btn-search").click(function () {
+            var warehouseId = $('#order-cg-warehouseId').val();
+            if (!warehouseId) {
+                $.messager.alert('消息提示:', "<center>请选择一个仓库</center>");
+                return;
+            }
+            $.ajax({
+                url: "/document/getOrderByWarehouse",
+                data: { warehouseId: warehouseId },
+                success: function (data) {
+                    orderData = data[1];
+                    $('#order-dg').datagrid({
+                        data: data[0],
+                        view: cardview,
+                        pagePosition: 'bottom',
+                        rownumbers: true,
+                        singleSelect: true
+                    });
+                }
+            });
+
+        })
+        //end search
+    });
+
+
+    var cardview = $.extend({}, $.fn.datagrid.defaults.view, {
+        renderRow: function (target, fields, frozen, rowIndex, rowData) {
+            var cc = [];
+
+            cc.push('<td colspan=' + fields.length + ' style="padding:10px 5px;border:0;">');
+            if (!frozen && rowData.OrderId) {
+                cc.push('<div style="float:left;margin-left:20px;">');
+                for (var i = 0; i < fields.length; i++) {
+                    var copts = $(target).datagrid('getColumnOption', fields[i]);
+                    //alert(copts.title);
+                    cc.push('<p><span class="c-label">' + copts.title + ':</span> ' + rowData[fields[i]] + '</p>');
+                }
+                cc.push('<p><b>商品明细：</b></p>');
+                for (var i in orderData) {
+                    var order = orderData[i];
+                    //alert("o="+orderData[i].toString())
+                    if(order.OrderId==rowData.OrderId)
+                        cc.push('<p><span class="c-label">' + order.GoodsId + ':</span> ' + order.Name + '</p>'
+                        +'<p><span class="c-label"> 单价：</span>' + order.Price+' '
+                        +'<span class="c-label"> 数量：</span>' + order.Piece+' '
+                        +'<span class="c-label"> 合计：</span>' + order.Total+'</p>'
+                        );
+                        //cc.push('<p><span class="c-label"> 单价：' + order.Price + ' 数量:'+order.Piece+' 合计：'+order.Total+'</span> ' + order.Name + '</p>');
+                        //cc.push('<p><span class="c-label"> 单价：</span>' + order.Price+'</p>');
+                }
+                cc.push('</div>');
+            }
+            cc.push('</td>');
+            //alert(cc.join(''));
+            return cc.join('');
+        }
+    });
+
+    function orderConvert() {
+        var warehouseId = $('#order-cg-warehouseId').val();
+        if (!warehouseId) {
+            $.messager.alert('消息提示:', "<center>请选择一个仓库</center>");
+            return;
+        }
+        var customerId = "";
+        $.post("/document/convertDocument", { warehouseId: warehouseId, customerId: customerId },
+            function (data) {
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                $('#order-dg').datagrid('reload');
+            }
+        );
+    }
+
+    function Search() {
+
+    }
+
+
+</script>
+
+    <style type="text/css">
+        .c-label{
+            display:inline-block;
+            width:100px;
+            font-weight:bold;
+        }
+    </style>

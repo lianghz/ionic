@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> {{!--
+    <title>买到家管理系统</title> --}}
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/default/easyui.css"> {{!--
+    <link rel="stylesheet" type="text/css" href="/easyui/ui-sunny/easyui.css">--}}
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/themes/color.css">
+    <link rel="stylesheet" type="text/css" href="/easyui/texteditor.css">
+
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    <script type="text/javascript" src="/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="/easyui/locale/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="/easyui/jquery.texteditor.js"></script>
+
+    <script type="text/javascript" src="/js/my.js"></script>
+    <script>
+        /**  
+         * 日期格式化（原型扩展或重载）  
+         * 格式 YYYY/yyyy/ 表示年份  
+         * MM/M 月份  
+         * dd/DD/d/D 日期  
+         * @param {formatStr} 格式模版  
+         * @type string  
+         * @returns 日期字符串  
+         */
+        Date.prototype.format = function (formatStr) {
+            var str = formatStr;
+            var Week = ['日', '一', '二', '三', '四', '五', '六'];
+            str = str.replace(/yyyy|YYYY/, this.getFullYear());
+            str = str.replace(/MM/, (this.getMonth() + 1) > 9 ? (this.getMonth() + 1).toString() : '0' + (this.getMonth() + 1));
+            str = str.replace(/dd|DD/, this.getDate() > 9 ? this.getDate().toString() : '0' + this.getDate());
+            return str;
+        }
+
+        function getNowFormatDate() {
+            var date = new Date();
+            var seperator1 = "-";
+            var seperator2 = ":";
+            var month = date.getMonth() + 1;
+            var strDate = date.getDate();
+            if (month >= 1 && month <= 9) {
+                month = "0" + month;
+            }
+            if (strDate >= 0 && strDate <= 9) {
+                strDate = "0" + strDate;
+            }
+            var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+                + " " + date.getHours() + seperator2 + date.getMinutes()
+                + seperator2 + date.getSeconds();
+            return currentdate;
+        }
+    </script>
+</head>
+
+<body style="margin:0px" class="easyui-layout" id="main-layout">
+    {{!--
+    <div data-options="region:'north'" style="height:50px;background-color: rgb(45, 62, 80);">--}}
+        <div data-options="region:'north'" style="height:50px;background-color:rgb(45, 62, 80);padding-top: 5px;padding-left: 7px">
+            <span style="font-size: 22pt;margin-top: 20px;padding-top:10px">
+                {{!--
+                <font color="#ffffff" style="padding-top:100px">买到家管理系统</font> --}}
+            </span>
+        </div>
+        <div data-options="region:'south'" style="height:30px;text-align: center;">
+            <span style="margin-top: 10px;">Copyright © 买到家 v2018.04.15</span>
+        </div>
+
+        <div data-options="region:'center'" style="padding:5px;background-color:rgb(244, 244, 244);">
+            <div id="main-tab" class="easyui-tabs" data-options="fit:true,plain:true">
+                <div title="首页">
+                    {{{body}}}
+                </div>
+            </div>
+        </div>
+        <div data-options="region:'west',split:true" title="功能菜单" style="width:250px;">
+            <ul id="main-tree">
+                <li>
+                    <span>买到家管理系统</span>
+                    <ul>
+                        <li data-options="state:'closed'">
+                            <span>1.权限管理</span>
+                            <ul>
+                                <li data-options="url:'/outletgrid'">1.1.权限定义</li>
+                                <li data-options="url:'/setargeementgrid'">1.2.员工权限管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>2.员工管理</span>
+                            <ul>
+                                <li data-options="url:'/case2/outletgetgrid'">2.1.员工查询</li>
+                                <li data-options="url:'/case2/skugetgrid'">2.2.职位管理</li>
+                                <li data-options="url:'/case2/packagegetgrid'">2.3.员工管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>3.商品管理</span>
+                            <ul>
+                                <li data-options="url:'/goods/brand'">3.1.品牌管理</li>
+                                <li data-options="url:'/goods/categroy'">3.2.产品分类</li>
+                                <li data-options="url:'/goods/goods'">3.3.商品管理</li>
+                                <li data-options="url:'/goods/group'">3.4.分组管理</li>
+                                <li data-options="url:'/goods/package'">3.5.转包装规则管理</li>
+                                <li data-options="url:'/goods/promgoods'">3.6.首页促销商品管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>4.价格管理</span>
+                            <ul>
+                                <li data-options="url:'/price/price'">4.1.价格表管理</li>
+                                <li data-options="url:'/price/promotion'">4.2.促销因子维护</li>
+                                <li data-options="url:'/price/create'">4.3.促销价格生成</li>
+                                <li data-options="url:'/price/priceprint'">4.4.价格牌打印</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>5.仓库管理</span>
+                            <ul>
+                                <li data-options="url:'/warehouse/warehouse'">5.1.添加仓库</li>
+                                <li data-options="url:'/warehouse/check'">5.2.商品盘点</li>
+                                <li data-options="url:'/warehouse/transfer'">5.3.移库管理</li>
+                                <li data-options="url:'/warehouse/changepackage'">5.4.转换包装管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>6.客户管理</span>
+                            <ul>
+                                <li data-options="url:'/case6/outletgrid'">6.1.小区管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>7.货单管理</span>
+                            <ul>
+                                <li data-options="url:'/document/order'">7.1.订单转货单</li>
+                                <li data-options="url:'/document/document'">7.2.配装运单</li>
+                                <li data-options="url:'/document/load'">7.3.装运单管理</li>
+                                <li data-options="url:'/document/return'">7.4.回库单管理</li>
+                                <li data-options="url:'/document/returndoc'">7.5.退货管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>8.结算管理</span>
+                            <ul>
+                                <li data-options="url:'/settle/docmod'">8.1.货单修改</li>
+                                <li data-options="url:'/settle/receive'">8.2.缴款单</li>
+                                <li data-options="url:'/settle/check'">8.3.结算复核</li>
+                                <li data-options="url:'/settle/settle'">8.4.结算删档</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>9.供应链管理</span>
+                            <ul>
+                                <li data-options="url:'/supplier/supplier'">9.1.供应商管理</li>
+                                <li data-options="url:'/supplier/supplierprice'">9.2.供应商价格管理</li>
+                                <li data-options="url:'/supplier/purchase'">9.3.采购单管理</li>
+                                <li data-options="url:'/supplier/instore'">9.4.采购入库管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>10.社区管理</span>
+                            <ul>
+                                <li data-options="url:'/case7/setargeementgrid'">10.1.广告管理</li>
+                                <li data-options="url:'/case7/checkresultgrid'">10.2.公告管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>11.财务管理</span>
+                            <ul>
+                                <li data-options="url:'/finance/record'">11.1.其它资金记录管理</li>
+                                <li data-options="url:'/finance/payment'">11.2.付款单管理</li>
+                                <li data-options="url:'/finance/cash'">11.3.现金盘点管理</li>
+                            </ul>
+                        </li>
+                        <li data-options="state:'closed'">
+                            <span>12.报表</span>
+                            <ul>
+                                <li data-options="url:'/case7/setargeementgrid'">11.1.货单分析报表</li>
+                                <li data-options="url:'/case7/checkresultgrid'">11.2.货单分析报表2</li>
+                                <li data-options="url:'/case7/checkresultgrid'">11.3.货单时间分析报表</li>
+                                <li data-options="url:'/case7/salesgrid'">11.4.库存报表</li>
+                                <li data-options="url:'/case7/checkresultgrid'">11.5.价格调查</li>
+                                <li data-options="url:'/case7/setargeementgrid'">11.6.建议补货报表</li>
+                                <li data-options="url:'/case7/checkresultgrid'">11.7.交班表</li>
+                                <li data-options="url:'/case7/salesgrid'">11.8.送货分析</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <script type="text/javascript">
+            $('#main-tree').tree({
+                onClick: function (node) {
+                    if (node.url) {
+                        if ($('#main-tab').tabs('exists', node.text)) {
+                            $('#main-tab').tabs('select', node.text);
+                            console.log(node.text);
+                        } else {
+                            $('#main-tab').tabs('add', {
+                                title: node.text,
+                                iconCls: node.iconCls,
+                                closable: true,
+                                href: node.url
+                            });
+                        }
+                    }
+                }
+            });
+        </script>
+
+</body>
+
+</html>
