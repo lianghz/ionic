@@ -33,10 +33,21 @@ function setFunctionCtroll(inParams,cb) {
     });
 }
 
+function getArea(inParams,cb) {
+    var sql = 'CALL P_GetArea(?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("errrrrrr=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
 
 var methods = {
     'getItemData': getItemData,
     'getFunctionCtroll':getFunctionCtroll,
-    'setFunctionCtroll':setFunctionCtroll
+    'setFunctionCtroll':setFunctionCtroll,
+    'getArea':getArea
 };
 module.exports = methods;

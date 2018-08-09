@@ -18,6 +18,10 @@ module.exports = {
 		//调用功能
 		app.get('/common/getCashLock', this.getCashLock);
 		app.post('/common/setCashLock', this.setCashLock);
+
+		//客户端
+		app.get('/common/getArea', this.getArea);
+
 	},
 
 	getUserWarehouse: function (req, res, next) {
@@ -143,6 +147,15 @@ module.exports = {
 		var warehouseId = req.body.warehouseId;
 		var inParams = [functionId,lockStatus, warehouseId];
 		Common.setFunctionCtroll(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+	//=============客户端==========
+	getArea: function (req, res, next) {
+		var level = req.query.level;
+		var parentId = req.query.parentId;
+		var inParams = [level,parentId];
+		Common.getArea(inParams, function (rows) {
 			res.json(rows[0]);
 		});
 	},

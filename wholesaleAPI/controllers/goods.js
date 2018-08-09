@@ -25,8 +25,8 @@ module.exports = {
 
 	getGoodsInfoPage: function (req, res, next) {
 
-		var levelId = req.query.name ? req.query.name : 0;
-		var warehouseId = req.query.company ? req.query.company : 1;
+		var levelId = req.query.levelId ? req.query.levelId : 0;
+		var warehouseId = req.query.warehouseId ? req.query.warehouseId : 1;
 		var categroyId = req.query.categroyId ? req.query.categroyId : 0;
 		var brandId = req.query.brandId ? req.query.brandId : 0;
 		var goodsId = req.query.goodsId ? req.query.goodsId : 0;
@@ -34,7 +34,7 @@ module.exports = {
 		var description = req.query.description ? req.query.description : "";
 		var pageNo = req.query.pageNo ? req.query.pageNo : 1;
 		//var pageSize = req.query.pageSize ? req.query.pageSize : "";
-		var pageSize = 100;
+		var pageSize = 20;
 
 
 		var inParams = [levelId, warehouseId, categroyId, brandId,goodsId,name,description,pageNo,pageSize]

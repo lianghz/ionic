@@ -26,6 +26,8 @@ function getGoodsInfoPage(inParams,cb) {
 }
 
 
+
+
 var methods = {
     'getNavigation': getNavigation,
     'getGoodsInfoPage':getGoodsInfoPage,

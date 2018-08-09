@@ -187,8 +187,49 @@ function checkLoad(inParams,cb) {
     });
 }
 
+//========客户端======================
+function addShoppingCar(inParams,cb) {
+    var sql = 'CALL P_AddShoppingCar(?,?,?,?,?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("errrrrrr=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
+function getCarGoods(inParams,cb) {
+    var sql = 'CALL P_GetCarGoods(?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("errrrrrr=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
 
+function getCarCount(inParams,cb) {
+    var sql = 'CALL P_GetCarCount(?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("ERR P_GetCarCount=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
 
+function convertOrder(inParams,cb) {
+    var sql = 'CALL P_GetCarCount(?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("ERR P_GetCarCount=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
 
 
 var methods = {
@@ -210,5 +251,11 @@ var methods = {
     'modifyDocument':modifyDocument,
     'getLoadForCheck':getLoadForCheck,
     'checkLoad':checkLoad,
+    //==================客户端开始
+    'addShoppingCar':addShoppingCar,
+    'getCarGoods':getCarGoods,
+    'getCarCount':getCarCount,
+    'convertOrder':convertOrder
+
 };
 module.exports = methods;
