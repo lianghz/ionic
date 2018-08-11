@@ -1,3 +1,3 @@
-cd C:\dev\ionic\wholesale
+cd C:\dev\ionic\wholesaleAPP
 ionic serve
 pause
