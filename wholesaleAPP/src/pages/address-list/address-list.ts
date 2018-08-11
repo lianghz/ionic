@@ -19,7 +19,7 @@ export class AddressListPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad AddressListPage');
+    console.log('ionViewDidLoad AddressListPages');
   }
 
 }
