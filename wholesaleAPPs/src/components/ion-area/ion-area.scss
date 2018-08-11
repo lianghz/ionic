@@ -1,0 +1,74 @@
+ion-area {
+    .showChose{
+        width:100%;
+        height:100%;
+        position:fixed;
+        top:0;
+        left:0;
+        z-index:120;
+        background:rgba(77,82,113,0.8);
+      }
+      .address{
+        position:absolute;
+        bottom:0px;
+        left:0;
+        z-index:121;
+        background:#fff;
+        width:100%;
+        height: 60%;
+      }
+ 
+      .area{
+        display:inline-block;
+        // font-size:0.24rem;
+        // line-height:0.88rem;
+        margin-left:0px;
+        margin-right:20px;
+        color:#333;
+        height: 40px;
+      }
+    
+      .addList{
+        width:100%;
+        padding-left:0;
+        // font-size:0.34rem;
+        // line-height:0.88rem;
+        color:#333;
+      }
+      /* 修改的格式 */
+      .address ul{
+        width:95%;
+        height:80%;
+        margin:0;
+        padding: 0%;
+        // max-height: 4.4rem;
+        overflow:auto;
+      }
+      .address ul li{
+        margin-left:0px;
+        font-size:9pt;
+      }
+      .address {
+        font-size:9pt;
+        .addrTitle {
+          margin-left:2px;
+          .active{
+            // color:#0071B8;
+            border-bottom:2px solid red;
+             color:rgb(245, 64, 9);
+             height: 27px;
+            // border: 0 0 1px 0 solid rgb(248, 8, 8);
+          }
+        }
+      }
+      .address ul .active{
+        color:red;
+      }
+      .addrTitle{
+        border: 1px solid rgb(233, 231, 231);
+        padding-top:11px;
+        border-left:0;
+        border-right: 0;
+        height: 40px;
+      }
+}

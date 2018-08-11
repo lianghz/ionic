@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      购物车
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->
+    <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let goods of cartGoods;">
+      <ion-thumbnail item-start>
+        <img src="img/thumbnail-totoro.png">
+      </ion-thumbnail>
+      <h2>{{goods.Name}}</h2>
+      <p>{{goods.Description}}</p>
+      <ion-row>
+        <ion-col text-start>
+          <span class="price">￥{{goods.Price}}</span>
+          <ul class="btn-numbox">
+            <li>
+              <ul class="count">
+                <li>
+                  <span id="num-add" class="num-add" (click)="addCart(goods)">+</span>
+                </li>
+                <li>
+                  <span class="input-num" id="input-num" (click)="showConfirm(goods)">{{goods.Piece}}</span>
+                </li>
+                <li>
+                  <span id="num-remove" class="num-remove" (click)="removeCart(goods)">-</span>
+                </li>
+              </ul>
+            </li>
+            </ul>
+          <!-- <button ion-button icon-end clear (click)="addCart(good)">
+            <ion-icon name="remove" color="danger"></ion-icon>
+          </button>
+          <input type="text"  value="{{good.Piece}}" class="num"/>
+          <span>{{good.Piece}}</span>
+          <button ion-button icon-end clear (click)="addCart(good)">
+            <ion-icon name="add" color="danger"></ion-icon>
+          </button> -->
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+
+ 
+
+</ion-content>
+<ion-footer no-padding style="padding: 0px">
+  <ion-toolbar no-padding style="padding: 0px">
+    合计：{{sumPrice|number:'.2'}}
+    <br>总额：优惠
+    <ion-buttons end>
+      <button ion-button color="danger" (click)="goOrder()">
+        去结算
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      商品分类
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content fullscreen>
+    <ion-grid no-padding>
+    <ion-row>
+      <ion-col col-3 class="menus">
+        <ion-scroll scrollY="true" style="height:100%">
+          <ion-list>
+            <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->
+              <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let sort of sorts;let i=index" [ngClass]="{'active': i==0}" text-center (click)="getGoods(sort,$event)">
+                {{sort.Description}}
+              </ion-item>
+          </ion-list>
+        </ion-scroll>
+      </ion-col>
+      <ion-col class="items">
+          <ion-scroll scrollY="true" #scroll style="height:100%">
+            <ion-goods [goods]="goods"></ion-goods>
+            <ion-row>
+              <ion-col class="nodata" text-center *ngIf="!hasmore">
+                没有商品啦 ♪(^∇^*)
+              </ion-col>
+            </ion-row>
+            <ion-row #spinner *ngIf="hasmore">
+              <ion-col text-center>
+                <ion-spinner>数据加载中</ion-spinner>
+              </ion-col>
+            </ion-row>
+          </ion-scroll>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

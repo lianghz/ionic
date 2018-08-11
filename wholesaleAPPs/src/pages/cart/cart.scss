@@ -1,0 +1,58 @@
+page-cart {
+    ul,
+    .btn-numbox li {
+        list-style: none;
+    }
+    
+    
+    .btn-numbox {
+        overflow: hidden;
+    }
+    
+    .btn-numbox li {
+        float: right;
+    }
+    
+    .btn-numbox .count {
+        overflow: hidden;
+    }
+    
+    .btn-numbox .count .num-remove,
+    .input-num,
+    .num-add {
+        display: inline-block;
+        width: 28px;
+        height: 28px;
+        line-height: 28px;
+        text-align: center;
+        font-size: 18px;
+        cursor: pointer;
+        border: 1px solid red;
+    }
+    .btn-numbox .count .input-num {
+        width: 30px;
+        height: 28px;
+        color: #333;
+        border-left: 0;
+        border-right: 0;
+    }
+    .num-add,.num-remove{
+        background: red;
+        color:white;
+        font-size: 12pt;
+    }
+
+    .price {
+        display: block;
+        -webkit-margin-before: 1em;
+        -webkit-margin-after: 1em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        -webkit-padding-start: 0px;
+        float: left;
+        color:red;
+    }
+    .input-num{
+        font-size:9pt;
+    }
+}

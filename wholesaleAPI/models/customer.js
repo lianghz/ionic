@@ -12,6 +12,6 @@ function addAddress(inParams,cb) {
 }
 
 var methods = {
-    'addAddress': addAddress,
+    'addAddress': addAddress
 };
 module.exports = methods;

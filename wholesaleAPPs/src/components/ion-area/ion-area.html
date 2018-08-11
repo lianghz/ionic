@@ -1,0 +1,31 @@
+ <!--地址请选择-->
+ <div class="showChose" [hidden]="hiddenAddr">
+  <div class="address">
+    <!-- <div class="title">
+      <h4>配送至</h4>
+      <span (click)="closeAddr()">×</span>
+    </div> -->
+    <ion-toolbar>
+        <ion-title text-center style="font-size:9pt;">配送至{{text}}</ion-title>
+        <ion-buttons end>
+          <button ion-button icon-only color="royal" (click)="closeAddr()">
+            <ion-icon name="close"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+
+    <div class="addrTitle">
+      <div class="area" (click)="getArea(0)" [ngClass]="{'active': addrLevelId==0}">{{addrLevelNames[0]?addrLevelNames[0]:'请选择'}}</div>
+      <div class="area" (click)="getArea(1)" [ngClass]="{'active': addrLevelId==1}" [hidden]="addrLevelHiddens[1]">{{addrLevelNames[1]?addrLevelNames[1]:'请选择'}}</div>
+      <div class="area" (click)="getArea(2)" [ngClass]="{'active': addrLevelId==2}" [hidden]="addrLevelHiddens[2]">{{addrLevelNames[2]?addrLevelNames[2]:'请选择'}}</div>
+      <div class="area" (click)="getArea(3)" [ngClass]="{'active': addrLevelId==3}" [hidden]="addrLevelHiddens[3]">{{addrLevelNames[3]?addrLevelNames[3]:'请选择'}}</div>
+    </div>
+    <ul>
+      <ion-list>
+        <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let item of areaList;">
+          <li class="addList" [ngClass]="{'active': addrId==item.Id}" (click)="getNextArea(item)">{{item.Name}}</li>
+        </ion-item>
+      </ion-list>
+    </ul>
+  </div>
+</div>
