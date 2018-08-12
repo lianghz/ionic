@@ -18,13 +18,15 @@
     <ion-card-header>
       <ion-item style="padding: 0">
         <ion-icon name="mail"> 收货地址</ion-icon>
-        <button ion-button icon-only clear item-end icon-end>
+        <button ion-button icon-only clear item-end icon-end (click)="goAddressList()">
           <ion-icon name="create"></ion-icon>
         </button>
       </ion-item>
     </ion-card-header>
     <ion-card-content>
-      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+      {{addrParams.linkMan}} {{addrParams.phone}}<br>
+      {{addrParams.regionName}}<br>
+      {{addrParams.address}}
     </ion-card-content>
   </ion-card>
   <ion-card>

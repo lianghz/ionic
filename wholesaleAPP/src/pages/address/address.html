@@ -7,12 +7,41 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>address</ion-title>
+    <ion-title>新建收货地址</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+  <ion-list>
+    <ion-item>
+      <ion-label color="primary">收&nbsp;&nbsp;货&nbsp;&nbsp;人</ion-label>
+      <ion-input maxlength="50" placeholder="请输入姓名" clearInput="true" [(ngModel)]="addrParams.linkMan"></ion-input>
+    </ion-item>
+  
+    <ion-item>
+      <ion-label color="primary">手机号码</ion-label>
+      <ion-input type="number" placeholder="请输入" clearInput="true"  [(ngModel)]="addrParams.phone"></ion-input>
+    </ion-item>
+    <ion-item (click)="showArea()">
+        <ion-icon name="more" item-end (click)="showArea()"></ion-icon>
+      <ion-label color="primary">所在地区</ion-label>
+      <ion-input placeholder="请选择" value="{{addrAreas}}" readonly="true"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary">详细地址</ion-label>
+      <ion-textarea maxlength="200" placeholder="街道、楼牌号等" clearInput="true" [(ngModel)]="addrParams.address"></ion-textarea>
+    </ion-item>
+  
+  </ion-list>
 
+  <ion-area [hiddenAddr]="hiddenAddr" ></ion-area>
 </ion-content>
+<ion-footer>
+    <ion-toolbar>
+      <button ion-button full (click)="addAddr()">
+        <ion-icon name="save">保存并使用</ion-icon>
+      </button>
+    </ion-toolbar>
+  </ion-footer>

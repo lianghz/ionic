@@ -13,6 +13,11 @@ import 'rxjs/add/operator/map';
 export class WholesaleProvider {
   data: any;
   cartEvent: EventEmitter<number> = new EventEmitter();
+  hiddenAddrEvent: EventEmitter<boolean> = new EventEmitter();
+  addrNameEvent: EventEmitter<string[]> = new EventEmitter();
+  addrIdEvent: EventEmitter<number[]> = new EventEmitter();
+  addrPostParamsEvent: EventEmitter<AddrPostParams> = new EventEmitter();
+
   requestParams: RequestOptionsArgs;
 
   constructor(public http: Http) {
@@ -68,11 +73,37 @@ export class WholesaleProvider {
 
   }
 
-  addCart(params){
-    return this.postReview('/api/document/addShoppingCar',params); 
+  addCart(params) {
+    return this.postReview('/api/document/addShoppingCar', params);
   }
-  getArea(params){
-    return this.getReviews('/api/common/getArea',params);
+  getArea(params) {
+    return this.getReviews('/api/common/getArea', params);
   }
-
+  getAddress(params) {
+    return this.getReviews('/api/customer/getAddress', params);
+  }
+  getDefaultAddress(params) {
+    return this.getReviews('/api/customer/getDefaultAddress', params);
+  }
+  addAddress(params) {
+    return this.postReview('/api/customer/addAddress', params);
+  }
 }
+
+export class AddrPostParams {
+  constructor(
+    public addressId: number,
+    public regionId1: number,
+    public regionId2: number,
+    public regionId3: number,
+    public regionId4: number,
+    public regionId5: number,
+    public regionName1: string,
+    public regionName2: string,
+    public regionName3: string,
+    public regionName4: string,
+    public regionName5: string,
+    public address: string,
+    public phone: string,
+    public linkMan: string) { }
+};

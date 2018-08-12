@@ -7,12 +7,29 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>addressList</ion-title>
+    <ion-title>收货地址</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-
+<ion-list>
+  <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let address of addressList" [ngClass]="{'active': i==0}"  (click)="goAddr(address)">
+    <ion-icon name="create" item-end></ion-icon>
+    <h2>{{address.LinkMan}} {{address.Phone}}</h2>
+    <!-- <ion-label item-end>
+      {{address.Phone}}
+    </ion-label> -->
+    <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}<br>{{address.Address}}</p>
+  </ion-item>
+</ion-list>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <button ion-button full (click)="goAddr()">
+      <ion-icon name="add">新建收货地址</ion-icon>
+    </button>
+  </ion-toolbar>
+</ion-footer>

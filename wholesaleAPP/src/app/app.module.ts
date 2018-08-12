@@ -21,6 +21,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { WholesaleProvider } from '../providers/wholesale/wholesale';
 import { IonAreaComponent } from '../components/ion-area/ion-area';
 import { FillOrderPage } from '../pages/fill-order/fill-order';
+import { AddressListPage } from '../pages/address-list/address-list';
+import { AddressPage } from '../pages/address/address';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { FillOrderPage } from '../pages/fill-order/fill-order';
     TabsPage,
     IonGoodsComponent,
     IonAreaComponent,
-    FillOrderPage
+    FillOrderPage,
+    AddressListPage,
+    AddressPage
   ],
   imports: [
     BrowserModule,
@@ -49,7 +53,9 @@ import { FillOrderPage } from '../pages/fill-order/fill-order';
     HomePage,
     TabsPage,
     IonGoodsComponent,
-    FillOrderPage
+    FillOrderPage,
+    AddressListPage,
+    AddressPage
     // IonAreaComponent
   ],
   providers: [
