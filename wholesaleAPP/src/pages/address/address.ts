@@ -58,9 +58,9 @@ export class AddressPage {
       this.addrNameParams.regionName = this.addrAreas;
     })
 
-    this.addrParams.linkMan = this.navParams.get("linkMan");
-    this.addrParams.phone = this.navParams.get("phone");
-    this.addrParams.address = this.navParams.get("address");
+    this.addrParams.linkMan = this.navParams.get("linkMan")||"";
+    this.addrParams.phone = this.navParams.get("phone")||"";
+    this.addrParams.address = this.navParams.get("address")||"";
 
     this.addrPostParams = new AddrPostParams(
       this.navParams.get("addressId") || 0,
