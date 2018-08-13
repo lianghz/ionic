@@ -50,14 +50,15 @@ var AddressListPage = /** @class */ (function () {
         this.navParams = navParams;
         this.service = service;
         this.addrparams = { id: Math.random() };
+        this.addressId = -1;
     }
     AddressListPage.prototype.ionViewDidLoad = function () {
         this.getAddr();
     };
     AddressListPage.prototype.goAddr = function (item) {
-        console.log("item=" + item);
+        // console.log("item=" + item);
         if (item) {
-            this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["a" /* AddrPostParams */](item.AddressId || 0, item.RegionId1 || 0, item.RegionId2 || 0, item.RegionId3 || 0, item.RegionId4 || 0, item.RegionId5 || 0, item.Name1 || "", item.Name2 || "", item.Name3 || "", item.Name4 || "", item.Name5 || "", item.Address || "", item.Phone || "", item.LinkMan || "");
+            this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["a" /* AddrPostParams */](item.AddressId || 0, item.RegionId1 || 0, item.RegionId2 || 0, item.RegionId3 || 0, item.RegionId4 || 0, item.RegionId5 || 0, item.Name1 || "", item.Name2 || "", item.Name3 || "", item.Name4 || "", item.Name5 || "", item.Address || "", item.Phone || "", item.LinkMan || "", 1);
             this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__address_address__["a" /* AddressPage */], this.addrPostParams);
         }
         else {
@@ -90,12 +91,11 @@ var AddressListPage = /** @class */ (function () {
     };
     AddressListPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-address-list',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/'<!--\n  Generated template for the AddressListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<ion-list>\n  <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let address of addressList" [ngClass]="{\'active\': i==0}"  (click)="goAddr(address)">\n    <ion-icon name="create" item-end></ion-icon>\n    <h2>{{address.LinkMan}} {{address.Phone}}</h2>\n    <!-- <ion-label item-end>\n      {{address.Phone}}\n    </ion-label> -->\n    <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}<br>{{address.Address}}</p>\n  </ion-item>\n</ion-list>\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <button ion-button full (click)="goAddr()">\n      <ion-icon name="add">新建收货地址</ion-icon>\n    </button>\n  </ion-toolbar>\n</ion-footer>\n'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/,
+            selector: 'page-address-list',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/'<!--\n  Generated template for the AddressListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n<ion-list>\n  <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let address of addressList" [ngClass]="{\'active\': i==0}"  (click)="goAddr(address)">\n    <ion-badge item-end color="danger" *ngIf="address.isDefault==1">默认</ion-badge>\n    <ion-icon name="create" item-end></ion-icon>\n    <h2>{{address.LinkMan}} {{address.Phone}}</h2>\n    <!-- <ion-label item-end>\n      {{address.Phone}}\n    </ion-label> -->\n    <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}<br>{{address.Address}}</p>\n  </ion-item>\n</ion-list>\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <button ion-button full (click)="goAddr()">\n      <ion-icon name="add">新建收货地址</ion-icon>\n    </button>\n  </ion-toolbar>\n</ion-footer>\n'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["b" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["b" /* WholesaleProvider */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["b" /* WholesaleProvider */]])
     ], AddressListPage);
     return AddressListPage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=address-list.js.map
@@ -138,14 +138,15 @@ var AddressPage = /** @class */ (function () {
         this.hiddenAddr = true;
         this.addrAreas = "";
         this.addrParams = {
-            regionId1: "",
-            regionId2: "",
-            regionId3: "",
-            regionId4: "",
-            regionId5: "",
+            regionId1: 0,
+            regionId2: 0,
+            regionId3: 0,
+            regionId4: 0,
+            regionId5: 0,
             address: "",
             phone: "",
-            linkMan: ""
+            linkMan: "",
+            isDefault: 0
         };
         this.addrNameParams = {
             address: "",
@@ -153,27 +154,38 @@ var AddressPage = /** @class */ (function () {
             linkMan: "",
             regionName: ""
         };
+        this.defaultAddr = false;
     }
     AddressPage.prototype.ionViewDidLoad = function () {
         var _this = this;
         this.service.addrIdEvent.subscribe(function (data) {
-            _this.addrParams.regionId1 = data[0];
-            _this.addrParams.regionId2 = data[1];
-            _this.addrParams.regionId3 = data[2];
-            _this.addrParams.regionId4 = data[3];
-            _this.addrParams.regionId5 = data[4];
+            _this.addrPostParams.regionId1 = data[1];
+            _this.addrPostParams.regionId2 = data[2];
+            _this.addrPostParams.regionId3 = data[3];
+            // this.addrPostParams.regionId4 = data[4];
+            // this.addrPostParams.regionId5 = data[5];
         });
         this.service.addrNameEvent.subscribe(function (data) {
             _this.addrAreas = "";
             for (var i = 0; i < 4; i++) {
                 _this.addrAreas += data[i];
             }
+            _this.addrPostParams.regionName1 = data[0];
+            _this.addrPostParams.regionName2 = data[1];
+            _this.addrPostParams.regionName3 = data[2];
+            _this.addrPostParams.regionName4 = "";
+            _this.addrPostParams.regionName5 = "";
             _this.addrNameParams.regionName = _this.addrAreas;
         });
+        this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["a" /* AddrPostParams */](this.navParams.get("addressId") || 0, this.navParams.get("regionId1") || 0, this.navParams.get("regionId2") || 0, this.navParams.get("regionId3") || 0, this.navParams.get("regionId4") || 0, this.navParams.get("regionId5") || 0, this.navParams.get("regionName1") || "", this.navParams.get("regionName2") || "", this.navParams.get("regionName3") || "", this.navParams.get("regionName4") || "", this.navParams.get("regionName5") || "", this.navParams.get("address"), this.navParams.get("phone") || "", this.navParams.get("linkMan") || "", this.defaultAddr ? 1 : 0);
         this.addrParams.linkMan = this.navParams.get("linkMan") || "";
         this.addrParams.phone = this.navParams.get("phone") || "";
         this.addrParams.address = this.navParams.get("address") || "";
-        this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["a" /* AddrPostParams */](this.navParams.get("addressId") || 0, this.navParams.get("regionId1") || 0, this.navParams.get("regionId2") || 0, this.navParams.get("regionId3") || 0, this.navParams.get("regionId4") || 0, this.navParams.get("regionId5") || 0, this.navParams.get("regionName1") || "", this.navParams.get("regionName2") || "", this.navParams.get("regionName3") || "", this.navParams.get("regionName4") || "", this.navParams.get("regionName5") || "", this.navParams.get("address"), this.navParams.get("phone") || "", this.navParams.get("linkMan") || "");
+        this.addrParams.regionId1 = this.addrPostParams.regionId1;
+        this.addrParams.regionId2 = this.addrPostParams.regionId2;
+        this.addrParams.regionId3 = this.addrPostParams.regionId3;
+        this.addrParams.regionId4 = this.addrPostParams.regionId4;
+        this.addrParams.regionId5 = this.addrPostParams.regionId5;
         // this.addrPostParams.address = this.navParams.get("address");
         // this.addrPostParams.addressId = this.navParams.get("addressId") || 0;
         // this.addrPostParams.linkMan = this.navParams.get("linkMan") || "";
@@ -201,22 +213,26 @@ var AddressPage = /** @class */ (function () {
     };
     AddressPage.prototype.addAddr = function () {
         var _this = this;
-        // console.log("linkman="+this.addrParams.linkMan)
-        this.addrNameParams.address = this.addrParams.address;
-        this.addrNameParams.linkMan = this.addrParams.linkMan;
-        this.addrNameParams.phone = this.addrParams.phone;
-        this.service.addAddress(this.addrParams).then(function (data) {
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__fill_order_fill_order__["a" /* FillOrderPage */], _this.addrNameParams);
+        console.log("this.addrParams.address=" + this.addrParams.address);
+        this.addrPostParams.address = this.addrParams.address;
+        this.addrPostParams.linkMan = this.addrParams.linkMan;
+        this.addrPostParams.phone = this.addrParams.phone;
+        this.service.addAddress(this.addrPostParams).then(function (data) {
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__fill_order_fill_order__["a" /* FillOrderPage */], _this.addrPostParams);
         });
+    };
+    AddressPage.prototype.setDefault = function () {
+        // console.log("this.defaultAddr="+this.defaultAddr);
+        this.defaultAddr = !this.defaultAddr;
+        this.addrPostParams.isDefault = this.defaultAddr ? 1 : 0;
     };
     AddressPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-address',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address\address.html"*/'<!--\n  Generated template for the AddressPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>新建收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n    <ion-item>\n      <ion-label color="primary">收&nbsp;&nbsp;货&nbsp;&nbsp;人</ion-label>\n      <ion-input maxlength="50" placeholder="请输入姓名" clearInput="true" [(ngModel)]="addrParams.linkMan"></ion-input>\n    </ion-item>\n  \n    <ion-item>\n      <ion-label color="primary">手机号码</ion-label>\n      <ion-input type="number" placeholder="请输入" clearInput="true"  [(ngModel)]="addrParams.phone"></ion-input>\n    </ion-item>\n    <ion-item (click)="showArea()">\n        <ion-icon name="more" item-end (click)="showArea()"></ion-icon>\n      <ion-label color="primary">所在地区</ion-label>\n      <ion-input placeholder="请选择" value="{{addrAreas}}" readonly="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label color="primary">详细地址</ion-label>\n      <ion-textarea maxlength="200" placeholder="街道、楼牌号等" clearInput="true" [(ngModel)]="addrParams.address"></ion-textarea>\n    </ion-item>\n  \n  </ion-list>\n\n  <ion-area [hiddenAddr]="hiddenAddr" ></ion-area>\n</ion-content>\n<ion-footer>\n    <ion-toolbar>\n      <button ion-button full (click)="addAddr()">\n        <ion-icon name="save">保存并使用</ion-icon>\n      </button>\n    </ion-toolbar>\n  </ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address\address.html"*/,
+            selector: 'page-address',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address\address.html"*/'<!--\n  Generated template for the AddressPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>新建收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n    <ion-item>\n      <ion-label color="primary">收&nbsp;&nbsp;货&nbsp;&nbsp;人</ion-label>\n      <ion-input maxlength="50" placeholder="请输入姓名" clearInput="true" [(ngModel)]="addrParams.linkMan"></ion-input>\n    </ion-item>\n  \n    <ion-item>\n      <ion-label color="primary">手机号码</ion-label>\n      <ion-input type="number" placeholder="请输入" clearInput="true"  [(ngModel)]="addrParams.phone"></ion-input>\n    </ion-item>\n    <ion-item (click)="showArea()">\n        <ion-icon name="more" item-end (click)="showArea()"></ion-icon>\n      <ion-label color="primary">所在地区</ion-label>\n      <ion-input placeholder="请选择" value="{{addrAreas}}" readonly="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label color="primary">详细地址</ion-label>\n      <ion-textarea maxlength="200" placeholder="街道、楼牌号等" clearInput="true" [(ngModel)]="addrParams.address"></ion-textarea>\n    </ion-item>\n  \n  </ion-list>\n  <ion-item>\n    <ion-label>设为默认地址</ion-label>\n    <ion-toggle checked="{{defaultAddr}}" (click)="setDefault()"></ion-toggle>\n  </ion-item>\n  <ion-area [hiddenAddr]="hiddenAddr" ></ion-area>\n</ion-content>\n<ion-footer>\n    <ion-toolbar>\n      <button ion-button full (click)="addAddr()">\n        <ion-icon name="save">保存并使用</ion-icon>\n      </button>\n    </ion-toolbar>\n  </ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address\address.html"*/,
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* WholesaleProvider */]) === "function" && _c || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* WholesaleProvider */]])
     ], AddressPage);
     return AddressPage;
-    var _a, _b, _c;
 }());
 
 //# sourceMappingURL=address.js.map
@@ -815,7 +831,7 @@ var WholesaleProvider = /** @class */ (function () {
 }());
 
 var AddrPostParams = /** @class */ (function () {
-    function AddrPostParams(addressId, regionId1, regionId2, regionId3, regionId4, regionId5, regionName1, regionName2, regionName3, regionName4, regionName5, address, phone, linkMan) {
+    function AddrPostParams(addressId, regionId1, regionId2, regionId3, regionId4, regionId5, regionName1, regionName2, regionName3, regionName4, regionName5, address, phone, linkMan, isDefault) {
         this.addressId = addressId;
         this.regionId1 = regionId1;
         this.regionId2 = regionId2;
@@ -830,6 +846,7 @@ var AddrPostParams = /** @class */ (function () {
         this.address = address;
         this.phone = phone;
         this.linkMan = linkMan;
+        this.isDefault = isDefault;
     }
     return AddrPostParams;
 }());
@@ -1127,7 +1144,7 @@ var IonAreaComponent = /** @class */ (function () {
             _this.addrLevelHiddens[0] = _this.addrPostParams.regionId1 == 0 ? true : false;
             _this.addrLevelHiddens[1] = _this.addrPostParams.regionId2 == 0 ? true : false;
             _this.addrLevelHiddens[2] = _this.addrPostParams.regionId3 == 0 ? true : false;
-            _this.addrLevelHiddens[3] = _this.addrPostParams.regionId4 == 0 ? true : false;
+            // this.addrLevelHiddens[3] = this.addrPostParams.regionId4 == 0 ? true : false;
             // this.addrLevelHiddens[4] = this.addrPostParams.regionId1==0?true:false;
             // this.addrParentIds[0]=this.addrPostParams.regionId1;
             // this.addrParentIds[1]=this.addrPostParams.regionId2;
@@ -1140,7 +1157,7 @@ var IonAreaComponent = /** @class */ (function () {
             _this.addrLevelNames[0] = _this.addrPostParams.regionName1;
             _this.addrLevelNames[1] = _this.addrPostParams.regionName2;
             _this.addrLevelNames[2] = _this.addrPostParams.regionName3;
-            _this.addrLevelNames[3] = _this.addrPostParams.regionName4;
+            // this.addrLevelNames[3] = this.addrPostParams.regionName4;
             for (var index = 0; index < _this.addrLevelNames.length; index++) {
                 console.log("this.addrLevelHiddens[index]=" + _this.addrLevelHiddens[index]);
                 if (!_this.addrLevelHiddens[index]) {
@@ -1158,7 +1175,7 @@ var IonAreaComponent = /** @class */ (function () {
     IonAreaComponent.prototype.getArea = function (levelId) {
         var _this = this;
         this.addrParams.parentId = this.addrParentIds[levelId];
-        this.addrId = this.addrParentIds[levelId];
+        this.addrId = this.addrParentIds[levelId + 1];
         // console.log('this.addrId='+this.addrId);
         this.addrParams.level = levelId;
         this.addrLevelId = levelId;
@@ -1201,12 +1218,11 @@ var IonAreaComponent = /** @class */ (function () {
     ], IonAreaComponent.prototype, "hiddenAddr", void 0);
     IonAreaComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'ion-area',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\components\ion-area\ion-area.html"*/' <!--地址请选择-->\n <div class="showChose" [hidden]="hiddenAddr">\n  <div class="address">\n    <!-- <div class="title">\n      <h4>配送至</h4>\n      <span (click)="closeAddr()">×</span>\n    </div> -->\n    <ion-toolbar>\n        <ion-title text-center style="font-size:9pt;">配送至{{text}}</ion-title>\n        <ion-buttons end>\n          <button ion-button icon-only color="royal" (click)="closeAddr()">\n            <ion-icon name="close"></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-toolbar>\n\n    <div class="addrTitle">\n      <div class="area" (click)="getArea(0)" [ngClass]="{\'active\': addrLevelId==0}">{{addrLevelNames[0]?addrLevelNames[0]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(1)" [ngClass]="{\'active\': addrLevelId==1}" [hidden]="addrLevelHiddens[1]">{{addrLevelNames[1]?addrLevelNames[1]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(2)" [ngClass]="{\'active\': addrLevelId==2}" [hidden]="addrLevelHiddens[2]">{{addrLevelNames[2]?addrLevelNames[2]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(3)" [ngClass]="{\'active\': addrLevelId==3}" [hidden]="addrLevelHiddens[3]">{{addrLevelNames[3]?addrLevelNames[3]:\'请选择\'}}</div>\n    </div>\n    <ul>\n      <ion-list>\n        <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let item of areaList;">\n          <li class="addList" [ngClass]="{\'active\': addrId==item.Id}" (click)="getNextArea(item)">{{item.Name}}</li>\n        </ion-item>\n      </ion-list>\n    </ul>\n  </div>\n</div>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\components\ion-area\ion-area.html"*/
+            selector: 'ion-area',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\components\ion-area\ion-area.html"*/' <!--地址请选择-->\n <div class="showChose" [hidden]="hiddenAddr">\n  <div class="address">\n    <!-- <div class="title">\n      <h4>配送至</h4>\n      <span (click)="closeAddr()">×</span>\n    </div> -->\n    <ion-toolbar>\n        <ion-title text-center style="font-size:9pt;">配送至{{text}}</ion-title>\n        <ion-buttons end>\n          <button ion-button icon-only color="royal" (click)="closeAddr()">\n            <ion-icon name="close"></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-toolbar>\n\n    <div class="addrTitle">\n      <div class="area" (click)="getArea(0)" [ngClass]="{\'active\': addrLevelId==0}">{{addrLevelNames[0]?addrLevelNames[0]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(1)" [ngClass]="{\'active\': addrLevelId==1}" [hidden]="addrLevelHiddens[1]">{{addrLevelNames[1]?addrLevelNames[1]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(2)" [ngClass]="{\'active\': addrLevelId==2}" [hidden]="addrLevelHiddens[2]">{{addrLevelNames[2]?addrLevelNames[2]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(3)" [ngClass]="{\'active\': addrLevelId==3}" [hidden]="addrLevelHiddens[3]">{{addrLevelNames[3]?addrLevelNames[3]:\'请选择\'}}</div>\n    </div>\n    <ul>\n      <ion-list>\n        <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let item of areaList;">\n          <!-- <li class="addList" [ngClass]="{\'active\': addrId==item.Id}" (click)="getNextArea(item)">{{item.Name}}</li> -->\n          <ion-label>{{item.Name}}</ion-label>\n    <ion-radio checked="{{addrId==item.Id}}" value="item.Id" (click)="getNextArea(item)"></ion-radio>\n        </ion-item>\n      </ion-list>\n    </ul>\n  </div>\n</div>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\components\ion-area\ion-area.html"*/
         }),
-        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1__providers_wholesale_wholesale__["b" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1__providers_wholesale_wholesale__["b" /* WholesaleProvider */]) === "function" && _a || Object])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__providers_wholesale_wholesale__["b" /* WholesaleProvider */]])
     ], IonAreaComponent);
     return IonAreaComponent;
-    var _a;
 }());
 
 //# sourceMappingURL=ion-area.js.map
@@ -1263,21 +1279,23 @@ var FillOrderPage = /** @class */ (function () {
     }
     FillOrderPage.prototype.ionViewDidLoad = function () {
         var _this = this;
-        // console.log('ionViewDidLoad FillOrderPage');
+        console.log('this.navParams.get("address")=' + this.navParams.get("address"));
         // this.addrParams.linkMan = "梁鸿铮222";
         if (!this.navParams.get("address")) {
             this.service.getDefaultAddress(this.params).then(function (data) {
-                _this.addrParams.regionName = data[0].Name1 + data[0].Name2 + data[0].Name3 + data[0].Name4 + data[0].Name5;
-                _this.addrParams.address = data[0].Address;
-                _this.addrParams.phone = data[0].Phone;
-                _this.addrParams.linkMan = data[0].LinkMan;
+                if (data != "") {
+                    _this.addrParams.regionName = data[0].Name1 + data[0].Name2 + data[0].Name3 + data[0].Name4 + data[0].Name5;
+                    _this.addrParams.address = data[0].Address;
+                    _this.addrParams.phone = data[0].Phone;
+                    _this.addrParams.linkMan = data[0].LinkMan;
+                }
             });
         }
         else {
             this.addrParams.address = this.navParams.get("address") || '';
             this.addrParams.phone = this.navParams.get("phone") || '';
             this.addrParams.linkMan = this.navParams.get("linkMan") || '';
-            this.addrParams.regionName = this.navParams.get("regionName") || '';
+            this.addrParams.regionName = this.navParams.get("regionName1") + this.navParams.get("regionName2") + this.navParams.get("regionName3") + this.navParams.get("regionName4") + this.navParams.get("regionName5") || '';
         }
     };
     FillOrderPage.prototype.goAddressList = function () {

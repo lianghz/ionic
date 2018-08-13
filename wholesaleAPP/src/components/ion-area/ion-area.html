@@ -23,7 +23,9 @@
     <ul>
       <ion-list>
         <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let item of areaList;">
-          <li class="addList" [ngClass]="{'active': addrId==item.Id}" (click)="getNextArea(item)">{{item.Name}}</li>
+          <!-- <li class="addList" [ngClass]="{'active': addrId==item.Id}" (click)="getNextArea(item)">{{item.Name}}</li> -->
+          <ion-label>{{item.Name}}</ion-label>
+    <ion-radio checked="{{addrId==item.Id}}" value="item.Id" (click)="getNextArea(item)"></ion-radio>
         </ion-item>
       </ion-list>
     </ul>

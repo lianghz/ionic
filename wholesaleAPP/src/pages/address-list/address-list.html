@@ -16,6 +16,7 @@
 <ion-content padding>
 <ion-list>
   <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let address of addressList" [ngClass]="{'active': i==0}"  (click)="goAddr(address)">
+    <ion-badge item-end color="danger" *ngIf="address.isDefault==1">默认</ion-badge>
     <ion-icon name="create" item-end></ion-icon>
     <h2>{{address.LinkMan}} {{address.Phone}}</h2>
     <!-- <ion-label item-end>

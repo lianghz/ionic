@@ -19,6 +19,7 @@ export class AddressListPage {
   addrparams = { id: Math.random() };
   addressList: any;
   addrPostParams: AddrPostParams;
+  addressId = -1;
   // addrPostParams = {
   //   addressId:"",
   //   regionId1: "",
@@ -44,7 +45,7 @@ export class AddressListPage {
   }
 
   goAddr(item) {
-    console.log("item=" + item);
+    // console.log("item=" + item);
     if (item) {
       this.addrPostParams = new AddrPostParams(
         item.AddressId || 0,
@@ -60,7 +61,8 @@ export class AddressListPage {
         item.Name5 || "",
         item.Address || "",
         item.Phone || "",
-        item.LinkMan || ""
+        item.LinkMan || "",
+        1
       )
       this.navCtrl.push(AddressPage, this.addrPostParams);
     } else {

@@ -17,14 +17,19 @@ module.exports = {
 		var address  =req.body.address;
 		var phone  =req.body.phone;
 		var linkMan  =req.body.linkMan;
+		var addressId = req.body.addressId;
+		var isDefault = req.body.isDefault;
 		customerId = customerId?customerId:'lhz';
 		regionId1 = regionId1?regionId1:0;
 		regionId2 = regionId2?regionId2:0;
 		regionId3 = regionId3?regionId3:0;
 		regionId4 = regionId4?regionId4:0;
 		regionId5 = regionId5?regionId5:0;
+		addressId = addressId||0;
+		isDefault = isDefault||0;
+		
 
-		var inParams = [customerId, regionId1, regionId2,regionId3,regionId4,regionId5,address,phone,linkMan];
+		var inParams = [customerId, regionId1, regionId2,regionId3,regionId4,regionId5,address,phone,linkMan,addressId,isDefault];
 		
 		customer.addAddress(inParams, function (rows) {
 			res.json(rows[0]);

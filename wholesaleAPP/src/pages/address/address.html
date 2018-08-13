@@ -35,7 +35,10 @@
     </ion-item>
   
   </ion-list>
-
+  <ion-item>
+    <ion-label>设为默认地址</ion-label>
+    <ion-toggle checked="{{defaultAddr}}" (click)="setDefault()"></ion-toggle>
+  </ion-item>
   <ion-area [hiddenAddr]="hiddenAddr" ></ion-area>
 </ion-content>
 <ion-footer>

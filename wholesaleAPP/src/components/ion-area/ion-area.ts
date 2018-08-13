@@ -48,7 +48,7 @@ export class IonAreaComponent {
         this.addrLevelHiddens[0] = this.addrPostParams.regionId1 == 0 ? true : false;
         this.addrLevelHiddens[1] = this.addrPostParams.regionId2 == 0 ? true : false;
         this.addrLevelHiddens[2] = this.addrPostParams.regionId3 == 0 ? true : false;
-        this.addrLevelHiddens[3] = this.addrPostParams.regionId4 == 0 ? true : false;
+        // this.addrLevelHiddens[3] = this.addrPostParams.regionId4 == 0 ? true : false;
         // this.addrLevelHiddens[4] = this.addrPostParams.regionId1==0?true:false;
         // this.addrParentIds[0]=this.addrPostParams.regionId1;
         // this.addrParentIds[1]=this.addrPostParams.regionId2;
@@ -62,7 +62,7 @@ export class IonAreaComponent {
         this.addrLevelNames[0] = this.addrPostParams.regionName1;
         this.addrLevelNames[1] = this.addrPostParams.regionName2;
         this.addrLevelNames[2] = this.addrPostParams.regionName3;
-        this.addrLevelNames[3] = this.addrPostParams.regionName4;
+        // this.addrLevelNames[3] = this.addrPostParams.regionName4;
         for (let index = 0; index < this.addrLevelNames.length; index++) {
           console.log("this.addrLevelHiddens[index]=" + this.addrLevelHiddens[index])
           if (!this.addrLevelHiddens[index]) {
@@ -82,7 +82,7 @@ export class IonAreaComponent {
   }
   getArea(levelId) {
     this.addrParams.parentId = this.addrParentIds[levelId];
-    this.addrId = this.addrParentIds[levelId];
+    this.addrId = this.addrParentIds[levelId+1];
     // console.log('this.addrId='+this.addrId);
     this.addrParams.level = levelId;
     this.addrLevelId = levelId;

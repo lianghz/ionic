@@ -1,7 +1,7 @@
 var db = require('./mysqlDal');
 //
 function addAddress(inParams,cb) {
-    var sql = 'CALL P_AddAddress(?,?,?,?,?,?,?,?,?)';
+    var sql = 'CALL P_AddAddress(?,?,?,?,?,?,?,?,?,?,?)';
     db.query(sql, inParams, function (err, rows, fields) {
         if (err) {
             console.log("errrrrrr=" + err);

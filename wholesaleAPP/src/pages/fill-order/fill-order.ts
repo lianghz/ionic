@@ -36,20 +36,21 @@ export class FillOrderPage {
   }
 
   ionViewDidLoad() {
-    // console.log('ionViewDidLoad FillOrderPage');
+    console.log('this.navParams.get("address")='+this.navParams.get("address"));
     // this.addrParams.linkMan = "梁鸿铮222";
     if (!this.navParams.get("address")) {
       this.service.getDefaultAddress(this.params).then(data => {
+        if(data!=""){
         this.addrParams.regionName=data[0].Name1+data[0].Name2+data[0].Name3+data[0].Name4+data[0].Name5;
         this.addrParams.address = data[0].Address;
         this.addrParams.phone = data[0].Phone;
-        this.addrParams.linkMan = data[0].LinkMan;
+        this.addrParams.linkMan = data[0].LinkMan;}
       });
     } else {
       this.addrParams.address = this.navParams.get("address") || '';
       this.addrParams.phone = this.navParams.get("phone") || '';
       this.addrParams.linkMan = this.navParams.get("linkMan") || '';
-      this.addrParams.regionName = this.navParams.get("regionName") || ''
+      this.addrParams.regionName = this.navParams.get("regionName1")+this.navParams.get("regionName2")+this.navParams.get("regionName3")+this.navParams.get("regionName4")+this.navParams.get("regionName5") || ''
     }
   }
   goAddressList() {

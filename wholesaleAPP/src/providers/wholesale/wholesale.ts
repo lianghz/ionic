@@ -105,5 +105,6 @@ export class AddrPostParams {
     public regionName5: string,
     public address: string,
     public phone: string,
-    public linkMan: string) { }
+    public linkMan: string,
+    public isDefault: number) { }
 };
