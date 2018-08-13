@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AddressListPage } from '../address-list/address-list';
-import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, AddrPostParams } from '../../providers/wholesale/wholesale';
 
 /**
  * Generated class for the FillOrderPage page.
@@ -31,6 +31,7 @@ export class FillOrderPage {
     id: Math.random()
   }
   defaultAddres: any;
+  addrPostParams:AddrPostParams;
   constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider) {
 
   }
@@ -52,6 +53,13 @@ export class FillOrderPage {
       this.addrParams.linkMan = this.navParams.get("linkMan") || '';
       this.addrParams.regionName = this.navParams.get("regionName1")+this.navParams.get("regionName2")+this.navParams.get("regionName3")+this.navParams.get("regionName4")+this.navParams.get("regionName5") || ''
     }
+
+    this.service.addrPostParamsEvent.subscribe(data=>{
+      this.addrParams.regionName=data.regionName1+data.regionName2+data.regionName3+data.regionName4+data.regionName5;
+      this.addrParams.address = data.address;
+      this.addrParams.phone = data.phone;
+      this.addrParams.linkMan = data.linkMan;
+    })
   }
   goAddressList() {
     this.navCtrl.push(AddressListPage)

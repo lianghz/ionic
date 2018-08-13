@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, Item } from 'ionic-angular';
 import { WholesaleProvider, AddrPostParams } from '../../providers/wholesale/wholesale';
 import { FillOrderPage } from '../fill-order/fill-order';
 
@@ -27,7 +27,7 @@ export class AddressPage {
     address: "",
     phone: "",
     linkMan: "",
-    isDefault:0
+    isDefault: 0
   };
   addrNameParams = {
     address: "",
@@ -35,7 +35,7 @@ export class AddressPage {
     linkMan: "",
     regionName: ""
   };
-  defaultAddr=false;
+  defaultAddr = false;
   addrPostParams: AddrPostParams;
   constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider) {
 
@@ -64,31 +64,31 @@ export class AddressPage {
       this.addrNameParams.regionName = this.addrAreas;
     })
 
-     this.addrPostParams = new AddrPostParams(
+    this.addrPostParams = new AddrPostParams(
       this.navParams.get("addressId") || 0,
-      this.navParams.get("regionId1")||0,
-      this.navParams.get("regionId2")||0,
-      this.navParams.get("regionId3")||0,
-      this.navParams.get("regionId4")||0,
-      this.navParams.get("regionId5")||0,
+      this.navParams.get("regionId1") || 0,
+      this.navParams.get("regionId2") || 0,
+      this.navParams.get("regionId3") || 0,
+      this.navParams.get("regionId4") || 0,
+      this.navParams.get("regionId5") || 0,
       this.navParams.get("regionName1") || "",
       this.navParams.get("regionName2") || "",
       this.navParams.get("regionName3") || "",
       this.navParams.get("regionName4") || "",
       this.navParams.get("regionName5") || "",
       this.navParams.get("address"),
-      this.navParams.get("phone")|| "",
+      this.navParams.get("phone") || "",
       this.navParams.get("linkMan") || "",
-      this.defaultAddr?1:0
+      this.defaultAddr ? 1 : 0
     );
-    this.addrParams.linkMan = this.navParams.get("linkMan")||"";
-    this.addrParams.phone = this.navParams.get("phone")||"";
-    this.addrParams.address = this.navParams.get("address")||"";
-    this.addrParams.regionId1=  this.addrPostParams.regionId1;
-    this.addrParams.regionId2=  this.addrPostParams.regionId2;
-    this.addrParams.regionId3=  this.addrPostParams.regionId3;
-    this.addrParams.regionId4=  this.addrPostParams.regionId4;
-    this.addrParams.regionId5=  this.addrPostParams.regionId5;
+    this.addrParams.linkMan = this.navParams.get("linkMan") || "";
+    this.addrParams.phone = this.navParams.get("phone") || "";
+    this.addrParams.address = this.navParams.get("address") || "";
+    this.addrParams.regionId1 = this.addrPostParams.regionId1;
+    this.addrParams.regionId2 = this.addrPostParams.regionId2;
+    this.addrParams.regionId3 = this.addrPostParams.regionId3;
+    this.addrParams.regionId4 = this.addrPostParams.regionId4;
+    this.addrParams.regionId5 = this.addrPostParams.regionId5;
 
     // this.addrPostParams.address = this.navParams.get("address");
     // this.addrPostParams.addressId = this.navParams.get("addressId") || 0;
@@ -120,21 +120,37 @@ export class AddressPage {
   }
 
   addAddr() {
-    console.log("this.addrParams.address="+this.addrParams.address)
+    console.log("this.addrParams.address=" + this.addrParams.address)
     this.addrPostParams.address = this.addrParams.address;
     this.addrPostParams.linkMan = this.addrParams.linkMan;
     this.addrPostParams.phone = this.addrParams.phone;
-    
+
     this.service.addAddress(this.addrPostParams).then(data => {
-      this.navCtrl.push(FillOrderPage, this.addrPostParams);
+      this.service.addrPostParamsEvent.emit(this.addrPostParams);
+      // this.navCtrl.popTo(this.navCtrl.getByIndex(1));
+      // for (let index = 0; index < this.navCtrl.getViews().length; index++) {
+      //   const element = this.navCtrl.getByIndex(index);
+      //   console.log("view="+index+"-"+element.name);
+        
+      // }
+      this.popToPage(this.navCtrl,"FillOrderPage");
+
     })
   }
 
-  setDefault(){
+  setDefault() {
     // console.log("this.defaultAddr="+this.defaultAddr);
     this.defaultAddr = !this.defaultAddr;
-    this.addrPostParams.isDefault = this.defaultAddr?1:0;
-    
+    this.addrPostParams.isDefault = this.defaultAddr ? 1 : 0;
+
+  }
+
+  popToPage(navCtrl:NavController,pageName:string){
+    navCtrl.getViews().forEach(item => {
+      if (item.name == pageName) {
+        this.navCtrl.popTo(item);
+      }
+    });
   }
 
 }

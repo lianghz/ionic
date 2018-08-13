@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AddressPage } from '../address/address';
 import { WholesaleProvider, AddrPostParams } from '../../providers/wholesale/wholesale';
+import { FillOrderPage } from '../fill-order/fill-order';
 
 /**
  * Generated class for the AddressListPage page.
@@ -92,6 +93,29 @@ export class AddressListPage {
     this.service.getAddress(this.addrparams).then(data => {
       this.addressList = data;
     })
+  }
+  goFillOrder(item){
+    if (item) {
+      this.addrPostParams = new AddrPostParams(
+        item.AddressId || 0,
+        item.RegionId1 || 0,
+        item.RegionId2 || 0,
+        item.RegionId3 || 0,
+        item.RegionId4 || 0,
+        item.RegionId5 || 0,
+        item.Name1 || "",
+        item.Name2 || "",
+        item.Name3 || "",
+        item.Name4 || "",
+        item.Name5 || "",
+        item.Address || "",
+        item.Phone || "",
+        item.LinkMan || "",
+        1
+      )
+    } 
+    this.service.addrPostParamsEvent.emit(this.addrPostParams)
+    this.navCtrl.pop();
   }
 }
 

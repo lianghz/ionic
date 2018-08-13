@@ -7,24 +7,32 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>收货地址</ion-title>
+    <ion-title>选择收货地址</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-<ion-list>
-  <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let address of addressList" [ngClass]="{'active': i==0}"  (click)="goAddr(address)">
-    <ion-badge item-end color="danger" *ngIf="address.isDefault==1">默认</ion-badge>
-    <ion-icon name="create" item-end></ion-icon>
-    <h2>{{address.LinkMan}} {{address.Phone}}</h2>
-    <!-- <ion-label item-end>
-      {{address.Phone}}
-    </ion-label> -->
-    <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}<br>{{address.Address}}</p>
-  </ion-item>
-</ion-list>
+<ion-content>
+  <ion-list>
+    <ion-grid style="padding: 0px;">
+      <ion-item style="padding: 0px;" *ngFor="let address of addressList">
+        <ion-row style="padding: 0px;">
+          <ion-col style="padding: 0px;" col-9 (click)="goFillOrder(address)">
+            
+            <h2>{{address.LinkMan}} {{address.Phone}}<ion-badge item-end color="danger" *ngIf="address.isDefault==1">默认</ion-badge></h2>
+            <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}
+              <br>{{address.Address}}</p>
+          </ion-col>
+          <ion-col col-3 text-end style="padding: 0px;">
+            <button ion-button icon-only clear item-end (click)="goAddr(address)" style="padding: 0px;">
+              <ion-icon name="create"></ion-icon>
+            </button>
+          </ion-col>
+        </ion-row>
+      </ion-item>
+    </ion-grid>
+  </ion-list>
 </ion-content>
 
 <ion-footer>
