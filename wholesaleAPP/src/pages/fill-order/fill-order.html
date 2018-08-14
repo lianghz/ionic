@@ -24,25 +24,25 @@
       </ion-item>
     </ion-card-header>
     <ion-card-content>
-      {{addrParams.linkMan}} {{addrParams.phone}}<br>
-      {{addrParams.regionName}}<br>
-      {{addrParams.address}}
+      {{addrParams.linkMan}} {{addrParams.phone}}
+      <br> {{addrParams.regionName}}
+      <br> {{addrParams.address}}
     </ion-card-content>
   </ion-card>
   <ion-card>
     <ion-card-header>
       <ion-item style="padding: 0">
-        <ion-icon name="card"> 支付方式</ion-icon>
-        <button ion-button icon-only clear item-end icon-end>
-          <ion-icon name="create"></ion-icon>
-        </button>
+        <ion-label> <ion-icon name="card"> 支付方式</ion-icon></ion-label>
+        <ion-select [(ngModel)]="payType" multiple="false" cancelText="取消" okText="确定">
+          <ion-option *ngFor="let item of payTypes" value="{{item.MoneyType}}">{{item.TypeDescription}}</ion-option>
+        </ion-select>
       </ion-item>
     </ion-card-header>
     <ion-card-content>
-      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+      选择您使用的支付方式，支持微信、支付宝、货到付款
     </ion-card-content>
   </ion-card>
-  <ion-card>
+  <!-- <ion-card>
     <ion-card-header>
         <ion-item style="padding: 0">
             <ion-icon name="time"> 收货时间</ion-icon>
@@ -54,18 +54,32 @@
     <ion-card-content>
       The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
     </ion-card-content>
-  </ion-card>
+  </ion-card> -->
   <ion-card>
     <ion-card-header>
-        <ion-item style="padding: 0">
-            <ion-icon name="cart"> 商品信息</ion-icon>
-            <button ion-button icon-only clear item-end icon-end>
-              <ion-icon name="more"></ion-icon>
-            </button>
-          </ion-item>
+      <ion-item style="padding: 0">
+        <ion-icon name="cart"> 商品信息</ion-icon>
+        <button ion-button icon-only clear item-end icon-end>
+          <ion-icon name="more"></ion-icon>
+        </button>
+      </ion-item>
     </ion-card-header>
     <ion-card-content>
-      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.
+      商品数量:{{sumPiece}} <br>
+      商品金额:{{sumPrice}}<br>
+      运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费:0;
+
     </ion-card-content>
   </ion-card>
 </ion-content>
+<ion-footer no-padding style="padding: 0px">
+  <ion-toolbar no-padding style="padding: 0px">
+    ￥:{{sumPrice|number:'.2'}}
+    <ion-buttons end>
+      <button ion-button color="danger" (click)="convertOrder()">
+        提交订单
+        <ion-icon name="send"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

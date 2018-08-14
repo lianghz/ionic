@@ -24,6 +24,7 @@ export class CartPage {
   
   cartGoods: any;
   sumPrice = 0;
+  sumPiece = 0;
  
   // areaList:any;
   // addrParentIds =[-1,-1,-1,-1];
@@ -64,6 +65,7 @@ export class CartPage {
 
   getTotal() {
     this.sumPrice = this.cartGoods.reduce((result, item) => item.Price * item.Piece + result, 0);
+    this.sumPiece = this.cartGoods.reduce((result, item) => item.Piece + result, 0);
   }
 
 
@@ -140,7 +142,7 @@ export class CartPage {
 
   //去填写订单页面
   goOrder() {
-    this.appCtrl.getRootNav().push(FillOrderPage);
+    this.appCtrl.getRootNav().push(FillOrderPage,{sumPrice:this.sumPrice,sumPiece:this.sumPiece});
     // this.navCtrl.push(FillOrderPag);
  }
 

@@ -22,6 +22,7 @@ module.exports = {
 		app.get('/finance/getCheckCashDetail', this.getCheckCashDetail);
 		app.post('/finance/checkCashWithTransation', this.checkCashWithTransation);
 		app.post('/finance/endCash', this.endCash);
+		app.get('/finance/getMoneyType', this.getMoneyType);
 	},
 
 	getOtherBankrollRecord: function (req, res, next) {
@@ -117,6 +118,14 @@ module.exports = {
 		var method  = req.body.method;
 		var inParams = [warehouseId,userName,method];
 		Finance.endCash(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+
+	//=====================客户端
+	getMoneyType: function (req, res, next) {
+		var inParams = [];
+		Finance.getMoneyType(inParams, function (rows) {
 			res.json(rows[0]);
 		});
 	},

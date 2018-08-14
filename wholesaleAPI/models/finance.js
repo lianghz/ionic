@@ -92,6 +92,17 @@ function endCash(inParams,cb) {
     });
 }
 
+//===============客户端===============
+function getMoneyType(inParams,cb) {
+    var sql = 'CALL P_GetMoneyType()';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("getMoneyType=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
 
 var methods = {
     'addOtherBankrollRecord': addOtherBankrollRecord,
@@ -102,6 +113,7 @@ var methods = {
     'addCheckCashData':addCheckCashData,
     'getCheckCashDetail':getCheckCashDetail,
     'checkCashWithTransation':checkCashWithTransation,
-    'endCash':endCash
+    'endCash':endCash,
+    "getMoneyType":getMoneyType
 };
 module.exports = methods;

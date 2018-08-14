@@ -88,6 +88,12 @@ export class WholesaleProvider {
   addAddress(params) {
     return this.postReview('/api/customer/addAddress', params);
   }
+  getPayType(params){
+    return this.getReviews('/api/finance/getMoneyType',params);
+  }
+  convertOrder(params) {
+    return this.postReview('/api/document/convertOrder', params);
+  }
 }
 
 export class AddrPostParams {

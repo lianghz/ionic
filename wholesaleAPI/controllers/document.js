@@ -23,9 +23,10 @@ module.exports = {
 		app.get('/document/getLoadForCheck', this.getLoadForCheck);
 		app.post('/document/checkLoad', this.checkLoad);
 		//==================================
-		app.get('/document/getCarGoods',this.getCarGoods);
-		app.post('/document/addShoppingCar',this.addShoppingCar);
-		app.get('/document/getCarCount',this.getCarCount);
+		app.get('/document/getCarGoods', this.getCarGoods);
+		app.post('/document/addShoppingCar', this.addShoppingCar);
+		app.get('/document/getCarCount', this.getCarCount);
+		app.post('/document/convertOrder', this.convertOrder);
 	},
 
 	getOrderByWarehouse: function (req, res, next) {
@@ -215,72 +216,74 @@ module.exports = {
 		});
 	},
 
-//======================客户端
-addShoppingCar: function (req, res, next) {
-	str = "";
-	console.log('body='+JSON.stringify(req.body));
-	var addType = req.body.addType;
-	var customerId = req.session.userName;
-	var goodsId = req.body.goodsId;
-	var cases = req.body.cases;
-	var piece = req.body.piece;
-	var levelId = req.body.levelId;
-	var warehouseId = req.body.warehouseId;
-	customerId = customerId?customerId:'lhz';
-	levelId = levelId?levelId:0;
-	warehouseId = warehouseId?warehouseId:1;
+	//======================客户端
+	addShoppingCar: function (req, res, next) {
+		str = "";
+		console.log('body=' + JSON.stringify(req.body));
+		var addType = req.body.addType;
+		var customerId = req.session.userName;
+		var goodsId = req.body.goodsId;
+		var cases = req.body.cases;
+		var piece = req.body.piece;
+		var levelId = req.body.levelId;
+		var warehouseId = req.body.warehouseId;
+		customerId = customerId ? customerId : 'lhz';
+		levelId = levelId ? levelId : 0;
+		warehouseId = warehouseId ? warehouseId : 1;
 
 
-	var inParams = [addType, customerId,goodsId,cases,piece,levelId,warehouseId];
-	Document.addShoppingCar(inParams, function (rows) {
-		res.json(rows[0]);
-	});
-},
+		var inParams = [addType, customerId, goodsId, cases, piece, levelId, warehouseId];
+		Document.addShoppingCar(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
 
-getCarGoods: function (req, res, next) {
-	var customerId = req.session.userName;
-	customerId = customerId?customerId:'lhz';
-	var inParams = [customerId];
-	Document.getCarGoods(inParams, function (rows) {
-		res.json(rows[0]);
-	});
-},
+	getCarGoods: function (req, res, next) {
+		var customerId = req.session.userName;
+		customerId = customerId ? customerId : 'lhz';
+		var inParams = [customerId];
+		Document.getCarGoods(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
 
-getCarCount:function (req, res, next) {
-	var customerId = req.session.userName;
-	customerId = customerId?customerId:'lhz';
-	var inParams = [customerId];
-	Document.getCarCount(inParams, function (rows) {
-		res.json(rows[0]);
-	});
-},
+	getCarCount: function (req, res, next) {
+		var customerId = req.session.userName;
+		customerId = customerId ? customerId : 'lhz';
+		var inParams = [customerId];
+		Document.getCarCount(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
 
-convertOrder:function (req, res, next) {
-	var customerId = req.session.userName;
-	var warehouseId =req.body.warehouseId;
-	var levelId =req.body.warehouseId;
-	var paidWay =req.body.paidWay;
-	var deliverStartDateTime =req.body.deliverStartDateTime;
-	var deliverEndDateTime =req.body.deliverEndDateTime;
-	var deliveryAddress=req.body.deliveryAddress;
-	var mobile=req.body.mobile;
-	var linkman=req.body.linkman;
-	var remark =req.body.remark;
-	var method=req.body.method;
-	var regionId =req.body.regionId;
-	var orderType =req.body.orderType;
-	var userId =req.body.orderType;
+	convertOrder: function (req, res, next) {
+		var customerId = req.session.userName;
+		var warehouseId = req.body.warehouseId;
+		var levelId = req.body.warehouseId;
+		var paidWay = req.body.paidWay;
+		var deliverStartDateTime = req.body.deliverStartDateTime;
+		var deliverEndDateTime = req.body.deliverEndDateTime;
+		var deliveryAddress = req.body.deliveryAddress;
+		var mobile = req.body.mobile;
+		var linkman = req.body.linkman;
+		var remark = req.body.remark;
+		var method = req.body.method;
+		var regionId = req.body.regionId;
+		var orderType = req.body.orderType;
+		var userId = req.body.orderType;
 
-	customerId = customerId?customerId:'lhz';
-	levelId = levelId?levelId:0;
-	paidWay = paidWay?paidWay:0;
-	orderType =orderType?orderType :5;
-	userId = userId?userId:'0';
-	var inParams = [customerId,warehouseId,levelId,paidWay,deliverStartDateTime,deliverEndDateTime,deliveryAddress,mobile,linkman,remark,method,regionId,orderType];
-	Document.convertOrder(inParams, function (rows) {
-		res.json(rows[0]);
-	});
-},
+		customerId = customerId ? customerId : 'lhz';
+		levelId = levelId ? levelId : 0;
+		paidWay = paidWay ? paidWay : 0;
+		orderType = orderType ? orderType : 5;
+		userId = userId ? userId : 'sys';
+		deliverStartDateTime = deliverStartDateTime || Date.now();
+		deliverEndDateTime = deliverEndDateTime || Date.now();
+		var inParams = [customerId, warehouseId, levelId, paidWay, deliverStartDateTime, deliverEndDateTime, deliveryAddress, mobile, linkman, remark, method, regionId, orderType];
+		Document.convertOrder(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
 
 
 	///页面模板
