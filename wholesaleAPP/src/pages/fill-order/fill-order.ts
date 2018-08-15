@@ -84,7 +84,7 @@ export class FillOrderPage {
   }
   convertOrder() {
     this.payParams = new PayParams(
-      0, 0,
+      1, 0,
       this.payType,
       this.addrParams.address,
       this.addrParams.phone,
@@ -101,9 +101,9 @@ export class FillOrderPage {
       return;
     }
     
-    // console.log("paytype=" + this.payType);
-    this.service.convertOrder(this.params).then(data => {
-      this.showAlert('订单提交结果',JSON.parse(JSON.stringify(data)).pramResult);
+    // console.log("this.payParams=" + JSON.stringify(this.payParams));
+    this.service.convertOrder(this.payParams).then(data => {
+      this.showAlert('订单提交结果',JSON.parse(JSON.stringify(data))[0].pramResult);
       }
     )
   }
@@ -118,19 +118,19 @@ export class FillOrderPage {
   }
 }
 
-export class PayParams {
+ class PayParams {
   constructor(
-    warehouseId: number,
-    levelId: number,
-    paidWay: number,
+    public warehouseId: number,
+    public levelId: number,
+    public paidWay: number,
     // deliverStartDateTime = req.body.deliverStartDateTime;
     // deliverEndDateTime = req.body.deliverEndDateTime;
-    deliveryAddress: string,
-    mobile: string,
-    linkman: string,
-    remark: string,
-    method: number,
-    regionId: number,
-    orderType: number,
-    userId: string) { }
+    public deliveryAddress: string,
+    public mobile: string,
+    public linkman: string,
+    public remark: string,
+    public method: number,
+    public regionId: number,
+    public orderType: number,
+    public userId: string) { }
 }

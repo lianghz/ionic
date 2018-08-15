@@ -221,10 +221,10 @@ function getCarCount(inParams,cb) {
 }
 
 function convertOrder(inParams,cb) {
-    var sql = 'CALL P_GetCarCount(?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    var sql = 'CALL P_ConvertOrder(?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
     db.query(sql, inParams, function (err, rows, fields) {
         if (err) {
-            console.log("ERR P_GetCarCount=" + err);
+            console.log("ERR P_ConvertOrder=" + err);
             return;
         }
         cb(rows);

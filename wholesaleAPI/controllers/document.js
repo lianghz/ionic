@@ -1,4 +1,5 @@
 var Document = require('../models/document');
+var moment = require('moment');
 module.exports = {
 
 	Routes: function (app) {
@@ -277,9 +278,10 @@ module.exports = {
 		paidWay = paidWay ? paidWay : 0;
 		orderType = orderType ? orderType : 5;
 		userId = userId ? userId : 'sys';
-		deliverStartDateTime = deliverStartDateTime || Date.now();
-		deliverEndDateTime = deliverEndDateTime || Date.now();
-		var inParams = [customerId, warehouseId, levelId, paidWay, deliverStartDateTime, deliverEndDateTime, deliveryAddress, mobile, linkman, remark, method, regionId, orderType];
+		deliverStartDateTime = deliverStartDateTime || moment().format("YYYY-MM-DD HH:mm:ss");
+		deliverEndDateTime = deliverEndDateTime || moment().format("YYYY-MM-DD HH:mm:ss");
+		console.log("Date.now()="+moment().format("YYYY-MM-DD HH:mm:ss"));
+		var inParams = [customerId, warehouseId, levelId, paidWay, deliverStartDateTime, deliverEndDateTime, deliveryAddress, mobile, linkman, remark, method, regionId, orderType,userId];
 		Document.convertOrder(inParams, function (rows) {
 			res.json(rows[0]);
 		});
