@@ -23,6 +23,9 @@ import { IonAreaComponent } from '../components/ion-area/ion-area';
 import { FillOrderPage } from '../pages/fill-order/fill-order';
 import { AddressListPage } from '../pages/address-list/address-list';
 import { AddressPage } from '../pages/address/address';
+import { ResultPage } from '../pages/result/result';
+import { ResultOkPage } from '../pages/result-ok/result-ok';
+import { OrderPage } from '../pages/order/order';
 
 @NgModule({
   declarations: [
@@ -36,7 +39,10 @@ import { AddressPage } from '../pages/address/address';
     IonAreaComponent,
     FillOrderPage,
     AddressListPage,
-    AddressPage
+    AddressPage,
+    ResultPage,
+    ResultOkPage,
+    OrderPage
   ],
   imports: [
     BrowserModule,
@@ -55,7 +61,10 @@ import { AddressPage } from '../pages/address/address';
     IonGoodsComponent,
     FillOrderPage,
     AddressListPage,
-    AddressPage
+    AddressPage,
+    ResultPage,
+    ResultOkPage,
+    OrderPage
     // IonAreaComponent
   ],
   providers: [

@@ -28,6 +28,7 @@ module.exports = {
 		app.post('/document/addShoppingCar', this.addShoppingCar);
 		app.get('/document/getCarCount', this.getCarCount);
 		app.post('/document/convertOrder', this.convertOrder);
+		app.get('/document/getOrderList', this.getOrderList);
 	},
 
 	getOrderByWarehouse: function (req, res, next) {
@@ -283,10 +284,23 @@ module.exports = {
 		console.log("Date.now()="+moment().format("YYYY-MM-DD HH:mm:ss"));
 		var inParams = [customerId, warehouseId, levelId, paidWay, deliverStartDateTime, deliverEndDateTime, deliveryAddress, mobile, linkman, remark, method, regionId, orderType,userId];
 		Document.convertOrder(inParams, function (rows) {
-			res.json(rows[0]);
+			res.json(rows);
 		});
 	},
 
+	getOrderList: function (req, res, next) {
+		var customerId = req.session.userName;
+		customerId = customerId ? customerId : 'lhz';
+		var status = -1;
+		var pageNo = req.query.pageNo;
+		var pageSize = 20;
+		var inParams = [customerId,status,pageNo,pageSize];
+		Document.getOrderList(inParams, function (rows) {
+			res.json(rows);
+		});
+	},
+
+	
 
 	///页面模板
 	order: function (req, res, next) {

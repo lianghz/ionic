@@ -1,0 +1,71 @@
+<!--
+  Generated template for the OrderPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>我的订单</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content no-padding no-margin>
+  <ion-list no-lines>
+    <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->
+    <ion-item no-padding no-margin *ngFor="let order of orders;">
+      <ion-card>
+        <ion-card-header>
+          <span float-left>{{order.header.CreateDate| date:'yyyy-MM-dd HH:mm'}}</span>
+          <span float-right>{{order.header.OrderStatusName}}</span>
+
+        </ion-card-header>
+
+        <ion-card-content>
+          <ion-list>
+            <ion-item *ngFor="let detail of order.detail;">
+              <ion-avatar item-start>
+                <img src="img/thumbnail-totoro.png">
+              </ion-avatar>
+              <h2>{{detail.Name}}</h2>
+              <h3 text-right color="danger">￥{{detail.Price}}x{{detail.Piece}}</h3>
+            </ion-item>
+            <ion-item>
+              <h3 color="danger">
+                <span float-left>总数量:{{order.sumQuantity}}</span>
+                <span float-right>总额:￥{{order.sumAmount | number: '0.2'}}</span>
+              </h3>
+            </ion-item>
+            <ion-item>
+              <button ion-button small outline float-left>取消订单</button>
+              <button ion-button small outline float-right (click)="buyMore(order.detail)">再次购买</button>
+            </ion-item>
+          </ion-list>
+        </ion-card-content>
+      </ion-card>
+      <!-- <ion-row>
+        <ion-col text-start>
+          <span class="price">￥{{goods.Price}}</span>
+          <ul class="btn-numbox">
+            <li>
+              <ul class="count">
+                <li>
+                  <span id="num-add" class="num-add" (click)="addCart(goods)">+</span>
+                </li>
+                <li>
+                  <span class="input-num" id="input-num" (click)="showConfirm(goods)">{{goods.Piece}}</span>
+                </li>
+                <li>
+                  <span id="num-remove" class="num-remove" (click)="removeCart(goods)">-</span>
+                </li>
+              </ul>
+            </li>
+            </ul>
+        </ion-col>
+      </ion-row> -->
+    </ion-item>
+  </ion-list>
+</ion-content>

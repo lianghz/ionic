@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, ToastController, App } from 'ionic-angular';
-import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, CartParams } from '../../providers/wholesale/wholesale';
 import { RequestOptionsArgs } from '@angular/http';
 import { FillOrderPage } from '../fill-order/fill-order';
 
@@ -13,14 +13,16 @@ export class CartPage {
   // text:string;
   params = { id: Math.random() };
   // addrParams={"level":0,"parentId":-1}
-  cartParams = {
-    "addType": 0,
-    "goodsId": 0,
-    "cases": 0,
-    "piece": 1,
-    "levelId": 0,
-    "warehouseId": 1
-  }
+  cartParams = new CartParams(0,0,0,1,0,1);
+
+  //  {
+  //   "addType": 0,
+  //   "goodsId": 0,
+  //   "cases": 0,
+  //   "piece": 1,
+  //   "levelId": 0,
+  //   "warehouseId": 1
+  // }
   
   cartGoods: any;
   sumPrice = 0;

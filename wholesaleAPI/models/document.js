@@ -230,6 +230,17 @@ function convertOrder(inParams,cb) {
         cb(rows);
     });
 }
+function getOrderList(inParams,cb) {
+    var sql = 'CALL P_GetOrderList(?,?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("ERR P_GetOrderList=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
+
 
 
 var methods = {
@@ -255,7 +266,8 @@ var methods = {
     'addShoppingCar':addShoppingCar,
     'getCarGoods':getCarGoods,
     'getCarCount':getCarCount,
-    'convertOrder':convertOrder
+    'convertOrder':convertOrder,
+    'getOrderList':getOrderList
 
 };
 module.exports = methods;

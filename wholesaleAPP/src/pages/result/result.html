@@ -7,12 +7,61 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>result</ion-title>
+    <ion-title>商品有缺货</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <!-- <ion-list *ngIf="!hasmore"> -->
+  <ion-list radio-group [(ngModel)]="method">
+    <ion-list-header>
+      {{result}}
+    </ion-list-header>
+    <ion-item>
+        <ion-label>只订有货的产品</ion-label>
+        <ion-radio value="1"></ion-radio>
+    </ion-item>
+    <ion-item>
+        <ion-label>按最大可满足数订货</ion-label>
+        <ion-radio value="2"></ion-radio>
+    </ion-item>
+    <ion-item>
+        <ion-label>放弃购买</ion-label>
+        <ion-radio value="3"></ion-radio>
+    </ion-item>
+  </ion-list>
 
+  <ion-list>
+      <ion-list-header>
+        缺货商品
+      </ion-list-header>
+      <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let good of goods;let i=index">
+          <ion-thumbnail item-start>
+            <img src="img/thumbnail-totoro.png">
+          </ion-thumbnail>
+          <h2>{{good.Goodsname}}</h2>
+          <p>{{good.Description}}</p>
+          <ion-row>
+            <ion-col text-start>
+                  购买数:{{good.BookPiece}}
+            </ion-col>
+            <ion-col text-start>
+                库存数:{{good.InvalidStockPiece}}
+            </ion-col>
+          </ion-row>
+        </ion-item>
+    </ion-list>
+    <ion-footer no-padding style="padding: 0px">
+      <ion-toolbar no-padding style="padding: 0px">
+        ￥:{{results.amount|number:'.2'}}
+        <ion-buttons end>
+          <button ion-button color="danger" (click)="convertOrder()">
+            请选择提交
+            <ion-icon name="send"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
 </ion-content>

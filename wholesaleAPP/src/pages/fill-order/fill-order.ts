@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { AddressListPage } from '../address-list/address-list';
-import { WholesaleProvider, AddrPostParams } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, AddrPostParams, PayParams } from '../../providers/wholesale/wholesale';
+import { ResultPage } from '../result/result';
+import { ResultOkPage } from '../result-ok/result-ok';
 
 /**
  * Generated class for the FillOrderPage page.
@@ -38,13 +40,13 @@ export class FillOrderPage {
   payTypes: any;
   payType: any;
   payParams: PayParams;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider, public alertCtrl: AlertController) {
     this.sumPiece = navParams.get("sumPiece") || 0;
     this.sumPrice = navParams.get("sumPrice") || 0;
   }
 
   ionViewDidLoad() {
-    console.log('this.navParams.get("address")=' + this.navParams.get("address"));
+    // console.log('this.navParams.get("address")=' + this.navParams.get("address"));
     // this.addrParams.linkMan = "梁鸿铮222";
 
 
@@ -92,23 +94,29 @@ export class FillOrderPage {
       "", 0, this.addrParams.addressId, 0, "sys"
     )
 
-    if(!this.addrParams.address){
-      this.showAlert('信息不完整','请选择一个收货地址');
+    if (!this.addrParams.address) {
+      this.showAlert('信息不完整', '请选择一个收货地址');
       return;
     }
-    if(!this.payType){
-      this.showAlert('信息不完整','请选择一个付款方式');
+    if (!this.payType) {
+      this.showAlert('信息不完整', '请选择一个付款方式');
       return;
     }
-    
-    // console.log("this.payParams=" + JSON.stringify(this.payParams));
+
     this.service.convertOrder(this.payParams).then(data => {
-      this.showAlert('订单提交结果',JSON.parse(JSON.stringify(data))[0].pramResult);
+      let dataResult = JSON.parse(JSON.stringify(data));
+
+      if (dataResult[0][0].pramCode == 0) {
+        this.navCtrl.push(ResultPage, { data: data });
       }
+      else {
+        this.navCtrl.push(ResultOkPage, { data: data });
+      }
+    }
     )
   }
 
-  showAlert(title,subTitle) {
+  showAlert(title, subTitle) {
     const alert = this.alertCtrl.create({
       title: title,
       subTitle: subTitle,
@@ -118,19 +126,4 @@ export class FillOrderPage {
   }
 }
 
- class PayParams {
-  constructor(
-    public warehouseId: number,
-    public levelId: number,
-    public paidWay: number,
-    // deliverStartDateTime = req.body.deliverStartDateTime;
-    // deliverEndDateTime = req.body.deliverEndDateTime;
-    public deliveryAddress: string,
-    public mobile: string,
-    public linkman: string,
-    public remark: string,
-    public method: number,
-    public regionId: number,
-    public orderType: number,
-    public userId: string) { }
-}
+

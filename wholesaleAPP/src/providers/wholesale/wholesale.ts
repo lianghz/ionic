@@ -12,12 +12,16 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class WholesaleProvider {
   data: any;
+
+  //===event===============================
   cartEvent: EventEmitter<number> = new EventEmitter();
   hiddenAddrEvent: EventEmitter<boolean> = new EventEmitter();
   addrNameEvent: EventEmitter<string[]> = new EventEmitter();
   addrIdEvent: EventEmitter<number[]> = new EventEmitter();
   addrPostParamsEvent: EventEmitter<AddrPostParams> = new EventEmitter();
-
+  convertOrderResultEvent: EventEmitter<any> = new EventEmitter();
+  orderEvent:EventEmitter<any> = new EventEmitter();
+  //============params
   requestParams: RequestOptionsArgs;
 
   constructor(public http: Http) {
@@ -73,9 +77,17 @@ export class WholesaleProvider {
 
   }
 
-  addCart(params) {
+  addCart(params:CartParams) {
+    
     return this.postReview('/api/document/addShoppingCar', params);
   }
+
+  modifyCart(params:CartParams) {
+    
+    return this.postReview('/api/document/addShoppingCar', params);
+  }
+
+
   getArea(params) {
     return this.getReviews('/api/common/getArea', params);
   }
@@ -87,12 +99,35 @@ export class WholesaleProvider {
   }
   addAddress(params) {
     return this.postReview('/api/customer/addAddress', params);
+    
   }
-  getPayType(params){
-    return this.getReviews('/api/finance/getMoneyType',params);
+  getPayType(params) {
+    return this.getReviews('/api/finance/getMoneyType', params);
   }
   convertOrder(params) {
     return this.postReview('/api/document/convertOrder', params);
+  }
+  getOrderList(params) {
+    let headers:any;
+    this.getReviews('/api/document/getOrderList', params).then(data => {
+      headers = data[0];
+      let details = JSON.parse(JSON.stringify(data[1]));
+      
+      headers = headers.map(item => {
+        let sumAmount = 0;
+        let sumQuantity = 0;
+        let detail= details.filter(detail => {
+          if (detail.OrderId == item.OrderId) {
+            sumAmount += detail.Price * detail.Piece;
+            sumQuantity +=detail.Piece*1;
+            return detail;
+          }
+        })
+        item = {"header":item,"detail":detail,"sumAmount":sumAmount,"sumQuantity":sumQuantity};
+        return item;
+      })
+    this.orderEvent.emit(headers);
+    });
   }
 }
 
@@ -114,3 +149,30 @@ export class AddrPostParams {
     public linkMan: string,
     public isDefault: number) { }
 };
+
+export class PayParams {
+  constructor(
+    public warehouseId: number,
+    public levelId: number,
+    public paidWay: number,
+    // deliverStartDateTime = req.body.deliverStartDateTime;
+    // deliverEndDateTime = req.body.deliverEndDateTime;
+    public deliveryAddress: string,
+    public mobile: string,
+    public linkman: string,
+    public remark: string,
+    public method: number,
+    public regionId: number,
+    public orderType: number,
+    public userId: string) { }
+}
+
+export class CartParams {
+  constructor(
+  public addType: number,
+  public goodsId: number,
+  public cases: number,
+  public piece: number,
+  public levelId: number,
+  public warehouseId: number){}
+}
