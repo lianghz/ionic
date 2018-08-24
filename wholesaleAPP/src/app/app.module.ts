@@ -26,6 +26,7 @@ import { AddressPage } from '../pages/address/address';
 import { ResultPage } from '../pages/result/result';
 import { ResultOkPage } from '../pages/result-ok/result-ok';
 import { OrderPage } from '../pages/order/order';
+import { LoginPage } from '../pages/login/login';
 
 @NgModule({
   declarations: [
@@ -42,7 +43,8 @@ import { OrderPage } from '../pages/order/order';
     AddressPage,
     ResultPage,
     ResultOkPage,
-    OrderPage
+    OrderPage,
+    LoginPage 
   ],
   imports: [
     BrowserModule,
@@ -64,7 +66,8 @@ import { OrderPage } from '../pages/order/order';
     AddressPage,
     ResultPage,
     ResultOkPage,
-    OrderPage
+    OrderPage,
+    LoginPage
     // IonAreaComponent
   ],
   providers: [

@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title>登陆</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -17,18 +17,18 @@
   <ion-list>
 
     <ion-item>
-      <ion-label>用户名</ion-label>
-      <ion-input type="text"></ion-input>
+      <ion-label>用户名:</ion-label>
+      <ion-input type="text" [(ngModel)]="userName"></ion-input>
     </ion-item>
   
     <ion-item>
-      <ion-label>密码</ion-label>
-      <ion-input type="password"></ion-input>
+      <ion-label>密&nbsp;&nbsp;&nbsp;&nbsp;码:</ion-label>
+      <ion-input type="password" [(ngModel)]="password"></ion-input>
     </ion-item>
   
   </ion-list>
   
   <div padding>
-    <button block>登陆</button>
+    <button ion-button color="primary" block (click)="login()">登陆</button>
   </div>
 </ion-content>

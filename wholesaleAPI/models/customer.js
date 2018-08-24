@@ -30,10 +30,46 @@ function getDefaultAddress(inParams,cb) {
         cb(rows);
     });
 }
+function modfiyCustomerToken(inParams,cb) {
+    var sql = 'CALL P_ModfiyCustomerToken(?,?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("P_ModfiyCustomerToken=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
+
+function getCustomerToken(inParams,cb) {
+    var sql = 'CALL P_GetCustomerToken(?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("P_GetCustomerToken=" + err);
+            return;
+        }
+        cb(rows[0]);
+    });
+}
+function login(inParams,cb) {
+    var sql = 'CALL P_Login(?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("P_Login=" + err);
+            return;
+        }
+        cb(rows[0]);
+    });
+}
+
+
 
 var methods = {
     'addAddress': addAddress,
     'getAddress':getAddress,
-    'getDefaultAddress':getDefaultAddress
+    'getDefaultAddress':getDefaultAddress,
+    'modfiyCustomerToken':modfiyCustomerToken,
+    'getCustomerToken':getCustomerToken,
+    'login':login
 };
 module.exports = methods;

@@ -35,8 +35,10 @@ export class WholesaleProvider {
     // }
 
     return new Promise(resolve => {
-
-      this.requestParams = { params: args };
+      let headers = new Headers();
+      let token = window.localStorage.getItem('token');
+      headers.append('authorization', token);
+      this.requestParams = { params: args,headers: headers };
       this.data = this.http.get(url, this.requestParams)
         .map(res => res.json())
         .subscribe(data => {
@@ -49,7 +51,9 @@ export class WholesaleProvider {
   postReview(url: string, args: any) {
     this.requestParams = { params: args };
     let headers = new Headers();
+    let token = window.localStorage.getItem('token');
     headers.append('Content-Type', 'application/json');
+    headers.append('authorization', token);
     return new Promise(resolve => {
       this.data = this.http.post(url, args, { headers: headers })
         .map(res => res.json())
@@ -129,6 +133,19 @@ export class WholesaleProvider {
     this.orderEvent.emit(headers);
     });
   }
+
+  login(params:LoginParams) {
+    return this.postReview('/api/customer/login', params);
+  }
+
+  refreshToken() {
+    return this.postReview('/api/customer/refresh', {id:0});
+  }
+
+  getToken(){
+    return this.postReview('/api/customer/gettoken', {id:0});
+  }
+
 }
 
 export class AddrPostParams {
@@ -176,3 +193,11 @@ export class CartParams {
   public levelId: number,
   public warehouseId: number){}
 }
+
+export class LoginParams {
+  constructor(
+  public userName: string,
+  public password: string
+){}
+}
+

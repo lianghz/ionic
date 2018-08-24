@@ -1,5 +1,5 @@
 module.exports = {
-    cookieSecret: ' 把你的cookie 秘钥放在这里',
+    appSecret: 'buy2homeAppSecret',
     mysql: {
             connectionString: {
                 host: '127.0.0.1',
