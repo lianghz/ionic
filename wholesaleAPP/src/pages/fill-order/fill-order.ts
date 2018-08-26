@@ -4,6 +4,7 @@ import { AddressListPage } from '../address-list/address-list';
 import { WholesaleProvider, AddrPostParams, PayParams } from '../../providers/wholesale/wholesale';
 import { ResultPage } from '../result/result';
 import { ResultOkPage } from '../result-ok/result-ok';
+import { AuthorizationProvider } from '../../providers/authorization/authorization';
 
 /**
  * Generated class for the FillOrderPage page.
@@ -40,11 +41,15 @@ export class FillOrderPage {
   payTypes: any;
   payType: any;
   payParams: PayParams;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider, public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider, 
+    public alertCtrl: AlertController,public authorization:AuthorizationProvider) {
     this.sumPiece = navParams.get("sumPiece") || 0;
     this.sumPrice = navParams.get("sumPrice") || 0;
   }
-
+  ionViewWillEnter() {
+    this.authorization.verifyToken(this.navCtrl);
+  }
+  
   ionViewDidLoad() {
     // console.log('this.navParams.get("address")=' + this.navParams.get("address"));
     // this.addrParams.linkMan = "梁鸿铮222";

@@ -27,6 +27,7 @@ import { ResultPage } from '../pages/result/result';
 import { ResultOkPage } from '../pages/result-ok/result-ok';
 import { OrderPage } from '../pages/order/order';
 import { LoginPage } from '../pages/login/login';
+import { AuthorizationProvider } from '../providers/authorization/authorization';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,8 @@ import { LoginPage } from '../pages/login/login';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     WholesaleProvider,
+    AuthorizationProvider,
+    
     // HttpClient
   ]
 })

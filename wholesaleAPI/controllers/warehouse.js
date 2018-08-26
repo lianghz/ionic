@@ -41,7 +41,7 @@ module.exports = {
 		var warehouseId = req.body.warehouseId;
 		var warehouseName = req.body.name;
 		var address = req.body.address;
-		var userName = req.session.userName;
+		var userName = req.userName;
 
 		var inParams = [priceListId, warehouseId, warehouseName,address,userName];
 		Warehouse.addWarehouse(inParams, function (rows) {
@@ -71,7 +71,7 @@ module.exports = {
 		var warehouseId = req.body.warehouseId;
 		var warehouseName = req.body.name;
 		var address = req.body.address;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var status = req.body.status;
 
 		var inParams = [priceListId, warehouseId, warehouseName,address,userName,status];
@@ -94,7 +94,7 @@ module.exports = {
 		var produceDate;
 		var quantity= req.body.quantity;
 		var updateMethod= req.body.updateMethod;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [warehouseId,goodsId,produceDate,quantity,updateMethod,userName];
 		Warehouse.addCheckStockData(inParams, function (rows) {
 			res.json(rows[0]);
@@ -107,7 +107,7 @@ module.exports = {
 	
 	endStock: function (req, res, next) {
 		var warehouseId = req.body.warehouseId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var method = req.body.method;
 		var inParams = [warehouseId,userName, method];
 		Warehouse.endStock(inParams, function (rows) {
@@ -118,7 +118,7 @@ module.exports = {
 	addTransferHeader: function (req, res, next) {
 		var fromWarehouseId = req.body.fromWarehouseId;
 		var toWarehouseId= req.body.toWarehouseId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [fromWarehouseId,toWarehouseId, userName];
 		Warehouse.addTransferHeader(inParams, function (rows) {
 			res.json(rows[0]);
@@ -126,7 +126,7 @@ module.exports = {
 	},
 	addTransferDetail: function (req, res, next) {
 		var transferNo = req.body.transferNo;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var goodsId= req.body.goodsId;
 		var cases= req.body.cases;
 		var piece= req.body.piece;
@@ -158,7 +158,7 @@ module.exports = {
 
 	checkOutTransfer: function (req, res, next) {
 		var transferNo = req.body.transferNo;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [transferNo,userName];
 		Warehouse.checkOutTransfer(inParams, function (rows) {
 			res.json(rows[0]);
@@ -166,7 +166,7 @@ module.exports = {
 	},
 	receiveTransfer: function (req, res, next) {
 		var transferNo = req.body.transferNo;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [transferNo,userName];
 		Warehouse.receiveTransfer(inParams, function (rows) {
 			res.json(rows[0]);
@@ -181,7 +181,7 @@ module.exports = {
 	},
 	printTransfer: function (req, res, next) {
 		var transferNos = req.body.transferNos;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [transferNos,userName];
 		Warehouse.printTransfer(inParams, function (rows) {
 			res.json(rows[0]);
@@ -201,7 +201,7 @@ module.exports = {
 		var ruleId = req.body.ruleId;
 		var quantity= req.body.quantity;
 		var direction= req.body.direction;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var warehouseId = req.body.warehouseId;
 		var inParams = [ruleId,quantity,direction,userName,warehouseId];
 		Warehouse.changePackage(inParams, function (rows) {

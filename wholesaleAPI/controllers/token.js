@@ -1,19 +1,17 @@
-import jwt from 'jsonwebtoken';
-var token = require('../models/token');
+var jwt = require('jsonwebtoken');
+var credentials = require('../credentials');
 module.exports = {
-
-    Routes: function (app) {
-        app.get('/token/update', this.modfiyCustomerToken);
-    },
-    modfiyCustomerToken: function (req, res, next) {
-		var name = 12;
-		var tokenId = req.session.userName;
-        var tokenIdOld = "";
-        var pwd = "";
-
-		var inParams = [name, tokenId, tokenIdOld,pwd];
-		token.modfiyCustomerToken(inParams, function (rows) {
-			res.json(rows[0]);
-		});
-	},
+	setTokenUserName: function (req, res, next) {
+		//做欸一个中间件，解密token，把用户名放到 req.userName，以便后续路由获取
+		var tokenId = req.headers['authorization'];
+		console.log("tokenId=" + tokenId);
+		jwt.verify(tokenId, credentials.appSecret, function (err, decoded) {
+			if (err) {
+				req.userName = "";
+			} else {
+				req.userName = decoded.userName;
+			}
+		})
+		next();
+	}
 }

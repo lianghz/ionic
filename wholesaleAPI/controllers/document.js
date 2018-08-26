@@ -45,7 +45,7 @@ module.exports = {
 
 
 	convertDocument: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var warehouseId = req.body.warehouseId;
 		var customerId = req.body.customerId;
 		customerId = customerId ? customerId : '';
@@ -67,7 +67,7 @@ module.exports = {
 
 	addLoadDocument: function (req, res, next) {
 		var deliveryManId = req.body.deliveryManId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var docs = req.body.docs;
 		var warehouseId = req.body.warehouseId;
 		var inParams = [deliveryManId, userName, docs, warehouseId];
@@ -103,7 +103,7 @@ module.exports = {
 	},
 
 	deleteDocumentFromLoad: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var documentId = req.body.documentId;
 		var loadId = req.body.loadId;
 		var inParams = [userName, documentId, loadId];
@@ -114,7 +114,7 @@ module.exports = {
 
 	setLoadCheckOut: function (req, res, next) {
 		var loadId = req.body.loadId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [loadId, userName];
 		Document.setLoadCheckOut(inParams, function (rows) {
 			res.json(rows[0]);
@@ -151,7 +151,7 @@ module.exports = {
 		var cases = req.body.cases;
 		var piece = req.body.piece;
 		var realDeliveryManId = req.body.realDeliveryManId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var checkInDate = req.body.checkInDate;
 		var inParams = [warehouseId, loadId, goodsId, cases, piece, realDeliveryManId, userName, checkInDate];
 		Document.addReturn(inParams, function (rows) {
@@ -183,7 +183,7 @@ module.exports = {
 		var documentId = req.body.documentId;
 		var goodsIds = req.body.goodsIds;
 		var quantitys = req.body.quantitys;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [documentId, goodsIds, quantitys, userName];
 		Document.createReturnDocument(inParams, function (rows) {
 			res.json(rows[0]);
@@ -192,7 +192,7 @@ module.exports = {
 	modifyDocument: function (req, res, next) {
 		var goodsId = req.body.goodsId;
 		var documentId = req.body.documentId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var piece = req.body.piece;
 		var inParams = [goodsId, documentId, userName, piece];
 		Document.modifyDocument(inParams, function (rows) {
@@ -211,7 +211,7 @@ module.exports = {
 
 	checkLoad: function (req, res, next) {
 		var loadId = req.body.loadId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [loadId, userName];
 		Document.checkLoad(inParams, function (rows) {
 			res.json(rows);
@@ -223,13 +223,12 @@ module.exports = {
 		str = "";
 		console.log('body=' + JSON.stringify(req.body));
 		var addType = req.body.addType;
-		var customerId = req.session.userName;
+		var customerId = req.userName;
 		var goodsId = req.body.goodsId;
 		var cases = req.body.cases;
 		var piece = req.body.piece;
 		var levelId = req.body.levelId;
 		var warehouseId = req.body.warehouseId;
-		customerId = customerId ? customerId : 'lhz';
 		levelId = levelId ? levelId : 0;
 		warehouseId = warehouseId ? warehouseId : 1;
 
@@ -241,8 +240,7 @@ module.exports = {
 	},
 
 	getCarGoods: function (req, res, next) {
-		var customerId = req.session.userName;
-		customerId = customerId ? customerId : 'lhz';
+		var customerId = req.userName;
 		var inParams = [customerId];
 		Document.getCarGoods(inParams, function (rows) {
 			res.json(rows[0]);
@@ -250,8 +248,7 @@ module.exports = {
 	},
 
 	getCarCount: function (req, res, next) {
-		var customerId = req.session.userName;
-		customerId = customerId ? customerId : 'lhz';
+		var customerId = req.userName;
 		var inParams = [customerId];
 		Document.getCarCount(inParams, function (rows) {
 			res.json(rows[0]);
@@ -259,7 +256,7 @@ module.exports = {
 	},
 
 	convertOrder: function (req, res, next) {
-		var customerId = req.session.userName;
+		var customerId = req.userName;
 		var warehouseId = req.body.warehouseId;
 		var levelId = req.body.warehouseId;
 		var paidWay = req.body.paidWay;
@@ -274,7 +271,6 @@ module.exports = {
 		var orderType = req.body.orderType;
 		var userId = req.body.orderType;
 
-		customerId = customerId ? customerId : 'lhz';
 		levelId = levelId ? levelId : 0;
 		paidWay = paidWay ? paidWay : 0;
 		orderType = orderType ? orderType : 5;
@@ -289,8 +285,7 @@ module.exports = {
 	},
 
 	getOrderList: function (req, res, next) {
-		var customerId = req.session.userName;
-		customerId = customerId ? customerId : 'lhz';
+		var customerId = req.userName;
 		var status = -1;
 		var pageNo = req.query.pageNo;
 		var pageSize = 20;

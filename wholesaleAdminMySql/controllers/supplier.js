@@ -35,7 +35,7 @@ module.exports = {
 		var supplierId = req.query.supplierId;
 		var status = req.query.status;
 		var name = req.query.name;
-		//var userName = req.session.userName;
+		//var userName = req.userName;
 
 		var inParams = [supplierId, status, name];
 		Supplier.getSupplier(inParams, function (rows) {
@@ -52,10 +52,10 @@ module.exports = {
 		var linkMobile= req.body.linkMobile;
 		var inCharge= req.body.inCharge;
 		var linkMan= req.body.linkMan;
-		var updateUser=req.session.userName;
+		var updateUser=req.userName;
 		var status= req.body.status;
 
-		//var userName = req.session.userName;
+		//var userName = req.userName;
 
 		var inParams = [supplierId, name, address,telephone,chargeMobile,linkMobile,inCharge,linkMan,updateUser,status];
 		Supplier.modifySupplier(inParams, function (rows) {
@@ -67,7 +67,7 @@ module.exports = {
 		var supplierId = req.query.supplierId;
 		var goodsId = req.query.goodsId;
 		var currentNo = req.query.currentNo;
-		//var userName = req.session.userName;
+		//var userName = req.userName;
 		var inParams = [supplierId, goodsId, currentNo];
 		Supplier.getSupplierGoodsPrice(inParams, function (rows) {
 			res.json(rows[0]);
@@ -77,7 +77,7 @@ module.exports = {
 		var supplierId = req.body.supplierId;
 		var goodsId = req.body.goodsId;
 		var price = req.body.price;
-		var userName = req.session.userName;
+		var userName = req.userName;
 
 		var inParams = [supplierId, goodsId, price,userName];
 		Supplier.modifySupplierGoodsPrice(inParams, function (rows) {
@@ -87,7 +87,7 @@ module.exports = {
 	deleteSupplierGoodsPrice: function (req, res, next) {
 		var supplierId = req.body.supplierId;
 		var goodsId = req.body.goodsId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [supplierId, goodsId, userName];
 		Supplier.deleteSupplierGoodsPrice(inParams, function (rows) {
 			res.json(rows[0]);
@@ -116,7 +116,7 @@ module.exports = {
 	addPurchaseHeader: function (req, res, next) {
 		var warehouseId = req.body.warehouseId;
 		var supplierId = req.body.supplierId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		
 		var inParams = [warehouseId, supplierId, userName];
 		Supplier.addPurchaseHeader(inParams, function (rows) {
@@ -125,7 +125,7 @@ module.exports = {
 	},
 	addPurchaseDetail: function (req, res, next) {
 		var purchaseId = req.body.purchaseId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var goodsId = req.body.goodsId;
 		var piece = req.body.piece;
 		var cases = req.body.cases;
@@ -136,7 +136,7 @@ module.exports = {
 		});
 	},
 	setPurchaseStatus: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var purchaseId = req.body.purchaseId;
 		var status = req.body.status;
 		var cancelReason = req.body.cancelReason;
@@ -160,7 +160,7 @@ module.exports = {
 	},
 	setInstore: function (req, res, next) {
 		var inStoreId = req.body.inStoreId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var type = 0;//req.body.type;
 		var inParams = [inStoreId, userName, type];
 		Supplier.setInstore(inParams, function (rows) {
@@ -169,7 +169,7 @@ module.exports = {
 	},
 	convertInStore: function (req, res, next) {
 		var purchaseId = req.body.purchaseId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [purchaseId, userName];
 		Supplier.convertInStore(inParams, function (rows) {
 			res.json(rows[0]);

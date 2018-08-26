@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { AddressPage } from '../address/address';
 import { WholesaleProvider, AddrPostParams } from '../../providers/wholesale/wholesale';
 import { FillOrderPage } from '../fill-order/fill-order';
+import { AuthorizationProvider } from '../../providers/authorization/authorization';
 
 /**
  * Generated class for the AddressListPage page.
@@ -38,9 +39,12 @@ export class AddressListPage {
   //   linkMan: ""
   // };
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider,
+  public authorization:AuthorizationProvider) {
   }
-
+  ionViewWillEnter() {
+    this.authorization.verifyToken(this.navCtrl);
+  }
   ionViewDidLoad() {
     this.getAddr();
   }

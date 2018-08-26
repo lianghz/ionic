@@ -49,7 +49,7 @@ module.exports = {
 		var payer = req.body.payer;
 		var amount = req.body.amount;
 		var remark = req.body.remark;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [warehouseId, accountId, recordTypeId, cashOrSavingSign, recordTypeId2, referenceNO, receiver, payer, amount, remark, userName];
 		Finance.addOtherBankrollRecord(inParams, function (rows) {
 			res.json(rows[0]);
@@ -78,7 +78,7 @@ module.exports = {
 		});
 	},
 	setPaymentStatus: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var paymentId = req.body.paymentId;
 		var status = req.body.status;
 		var warehouseId = req.body.warehouseId;
@@ -91,7 +91,7 @@ module.exports = {
 		var warehouseId = req.body.warehouseId;
 		var totalCash = req.body.totalCash;
 		var updateMethod = req.body.updateMethod;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [warehouseId,totalCash,updateMethod,userName];
 		Finance.addCheckCashData(inParams, function (rows) {
 			res.json(rows[0]);
@@ -106,7 +106,7 @@ module.exports = {
 	},
 	checkCashWithTransation: function (req, res, next) {
 		var warehouseId = req.body.warehouseId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [warehouseId,userName];
 		Finance.checkCashWithTransation(inParams, function (rows) {
 			res.json(rows[0]);
@@ -114,7 +114,7 @@ module.exports = {
 	},
 	endCash: function (req, res, next) {
 		var warehouseId = req.body.warehouseId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var method  = req.body.method;
 		var inParams = [warehouseId,userName,method];
 		Finance.endCash(inParams, function (rows) {

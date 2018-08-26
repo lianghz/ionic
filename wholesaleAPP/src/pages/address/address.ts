@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, Item } from 'ionic-angular';
 import { WholesaleProvider, AddrPostParams } from '../../providers/wholesale/wholesale';
 import { FillOrderPage } from '../fill-order/fill-order';
+import { AuthorizationProvider } from '../../providers/authorization/authorization';
 
 /**
  * Generated class for the AddressPage page.
@@ -37,9 +38,13 @@ export class AddressPage {
   };
   defaultAddr = false;
   addrPostParams: AddrPostParams;
-  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider,
+  public authorization : AuthorizationProvider) {
 
 
+  }
+  ionViewWillEnter() {
+    this.authorization.verifyToken(this.navCtrl);
   }
 
   ionViewDidLoad() {

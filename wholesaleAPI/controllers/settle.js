@@ -33,7 +33,7 @@ module.exports = {
 	modifyReceive: function (req, res, next) {
 		var loadId = req.body.loadId;
 		var realDeliveryManId = req.body.realDeliveryManId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var monneyType = req.body.monneyType;
 		var amount = req.body.amount;
 		var inParams = [loadId, realDeliveryManId, userName,monneyType,amount];
@@ -65,7 +65,7 @@ module.exports = {
 	},
 
 	setReceiveHeaderStatus: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var receiveId = req.body.receiveId;
 		var status = req.body.status;
 		var warehouseId = req.body.warehouseId;
@@ -77,7 +77,7 @@ module.exports = {
 	backupSettlementedData: function (req, res, next) {
 		var warehouseId = req.body.warehouseId;
 		var settlementDate =  req.body.settlementDate;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [warehouseId, settlementDate, userName];
 		Settle.backupSettlementedData(inParams, function (rows) {
 			res.json(rows[0]);

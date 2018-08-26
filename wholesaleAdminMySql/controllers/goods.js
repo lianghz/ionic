@@ -60,7 +60,7 @@ module.exports = {
 	},
 
 	addBrand: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams2 = [req.body.name, req.body.company, userName];
 		Goods.addBrand(inParams2, function (rows) {
 			res.json(rows[0]);
@@ -79,7 +79,7 @@ module.exports = {
 	},
 
 	modifyBrand: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [req.body.brandId, req.body.name, req.body.company, req.body.status, userName]
 		Goods.modifyBrand(inParams, function (rows) {
 			res.json(rows[0]);
@@ -93,7 +93,7 @@ module.exports = {
 			var filepath = files.filename.path;
 			var now = new Date();
 			var imageName = "s" + now.getFullYear() + now.getMonth() + now.getDate() + now.getTime() + now.getMilliseconds() + ".jpg";
-			var userName = req.session.userName;
+			var userName = req.userName;
 
 			var goodsId = fields.barCode
 			var name = fields.name;
@@ -149,7 +149,7 @@ module.exports = {
 			if (filename != "") {
 				var imageName = "s" + now.getFullYear() + now.getMonth() + now.getDate() + now.getTime() + now.getMilliseconds() + ".jpg";
 			}
-			var userName = req.session.userName;
+			var userName = req.userName;
 
 			var goodsId = fields.barCode
 			var name = fields.name;
@@ -191,7 +191,7 @@ module.exports = {
 	},
 
 	modifyWebPromotion: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var warehouseId = req.body.warehouseId;
 		var promotionType = req.body.promotionType;
 		var goodsId = req.body.goodsId;
@@ -256,7 +256,7 @@ module.exports = {
 	},
 	addCategory: function (req, res, next) {
 		var description = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var fid = req.body.fid;
 		var inParams = [description, userName, fid];
 		Goods.addCategory(inParams, function (rows) {
@@ -267,7 +267,7 @@ module.exports = {
 		var id = req.body.id;
 		var fid = req.body.fid;
 		var description = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var status = req.body.status;
 		id = id ? id : -1;
 		status = status ? status : -1;
@@ -296,7 +296,7 @@ module.exports = {
 	addGroup: function (req, res, next) {
 		var groupId = req.body.groupId;
 		var description = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [description, userName];
 		Goods.addGoodsGroup(inParams, function (rows) {
 			res.json(rows[0]);
@@ -331,7 +331,7 @@ module.exports = {
 	modifyGroup: function (req, res, next) {
 		var groupId = req.body.groupId;
 		var description = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var status = req.body.status;
 		status = status ? status : 1;
 		var inParams = [groupId, description, userName, status];
@@ -370,7 +370,7 @@ module.exports = {
 
 	addPackageChangeRuleHeader: function (req, res, next) {
 		var ruleDesc = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [ruleDesc, userName];
 		Goods.addPackageChangeRuleHeader(inParams, function (rows) {
 			res.json(rows[0]);
@@ -380,7 +380,7 @@ module.exports = {
 		var ruleId = req.body.ruleId;
 		var ruleDesc = req.body.name;
 		var status = req.body.status;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [ruleId, ruleDesc, status, userName];
 		Goods.modifyPackageChangeRuleHeader(inParams, function (rows) {
 			res.json(rows[0]);
@@ -390,7 +390,7 @@ module.exports = {
 		var ruleId = req.body.ruleId;
 		var goodsId = req.body.goodsId;
 		var quantity = req.body.quantity;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [ruleId, goodsId, quantity, userName];
 		Goods.addPackageRuleOringinDetail(inParams, function (rows) {
 			res.json(rows[0]);
@@ -401,7 +401,7 @@ module.exports = {
 		var ruleId = req.body.ruleId;
 		var goodsId = req.body.goodsId;
 		var quantity = req.body.quantity;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [ruleId, goodsId, quantity, userName];
 		Goods.addPackageRuleDestinationDetail(inParams, function (rows) {
 			res.json(rows[0]);

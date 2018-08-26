@@ -22,7 +22,7 @@ module.exports = {
 
 	getUserWarehouse: function (req, res, next) {
 		var itemType = 12;
-		var filter1 = req.session.userName;
+		var filter1 = req.userName;
 		var filter2 = "";
 		var inParams2 = [itemType, filter1, filter2];
 		Common.getItemData(inParams2, function (rows) {

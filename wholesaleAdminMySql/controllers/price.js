@@ -30,7 +30,7 @@ module.exports = {
 	addPriceList: function (req, res, next) {
 		var priceListId = req.body.priceListId;
 		var name = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var status = req.body.status;
 		var inParams = [priceListId, name, userName, status];
 		Price.addPriceList(inParams, function (rows) {
@@ -71,7 +71,7 @@ module.exports = {
 	modifyPriceList: function (req, res, next) {
 		var priceListId = req.body.priceListId;
 		var name = req.body.name;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var status = req.body.status;
 		var inParams = [priceListId, name, userName, status]
 		Price.modifyPriceList(inParams, function (rows) {
@@ -83,7 +83,7 @@ module.exports = {
 		var priceListId = req.body.priceListId;
 		var goodsId = req.body.goodsId;
 		var price = req.body.price;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [priceListId, goodsId, price, userName]
 		Price.modifyPriceListDetails(inParams, function (rows) {
 			res.json(rows[0]);
@@ -105,7 +105,7 @@ module.exports = {
 		var effectTotalAmount = req.body.effectTotalAmount;
 		var minLevelId = req.body.minLevelId;
 		var specialPriceStatus = req.body.specialPriceStatus;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var status = req.body.status;
 		var type = req.body.type; //#1 添加，2修改
 		var inParams = [adjustId, name,warehouseId,priceListId,adjustMethodId,effectGoodsGroupId,effectQuantity,adjustRate,giveGoodsGroupId,beginDate,endDate,effectTotalAmount,minLevelId,specialPriceStatus,userName,status,type ]

@@ -10,7 +10,7 @@ module.exports = {
 		app.get('/customer/getDefaultAddress', this.getDefaultAddress);
 		app.post('/customer/refresh', this.refreshCustomerToken);
 		app.post('/customer/login', this.login);
-		app.post('/customer/gettoken', this.getCustomerToken);
+		app.post('/customer/verifytoken', this.verifyToken);
 		// app.post('/token/update', this.modfiyCustomerToken);
 
 	},
@@ -26,7 +26,6 @@ module.exports = {
 		var linkMan = req.body.linkMan;
 		var addressId = req.body.addressId;
 		var isDefault = req.body.isDefault;
-		customerId = customerId ? customerId : 'lhz';
 		regionId1 = regionId1 ? regionId1 : 0;
 		regionId2 = regionId2 ? regionId2 : 0;
 		regionId3 = regionId3 ? regionId3 : 0;
@@ -45,8 +44,7 @@ module.exports = {
 
 
 	getAddress: function (req, res, next) {
-		var customerId = req.session.userName;
-		customerId = customerId ? customerId : 'lhz';
+		var customerId = req.userName;
 		var inParams = [customerId];
 		customer.getAddress(inParams, function (rows) {
 			res.json(rows[0]);
@@ -54,8 +52,7 @@ module.exports = {
 	},
 
 	getDefaultAddress: function (req, res, next) {
-		var customerId = req.session.userName;
-		customerId = customerId ? customerId : 'lhz';
+		var customerId = req.userName;
 		var inParams = [customerId];
 		customer.getDefaultAddress(inParams, function (rows) {
 			res.json(rows[0]);
@@ -63,7 +60,7 @@ module.exports = {
 	},
 	modfiyCustomerToken: function (req, res, next) {
 		var name = 12;
-		var tokenId = req.session.userName;
+		var tokenId = req.userName;
 		var tokenIdOld = "";
 		var pwd = "";
 
@@ -72,13 +69,13 @@ module.exports = {
 			res.json(rows[0]);
 		});
 	},
-	getCustomerToken: function (req, res, next) {
+	verifyToken: function (req, res, next) {
+		//在受限制页面进入前调用，检查token是否有效，并把检查结果返回。前端根据返回结果，如果status=err则转到login页面。
 		var tokenId = req.headers['authorization'];
 		var inParams = [tokenId];
 		customer.getCustomerToken(inParams, function (rows) {
 			// res.json(rows[0]);
 			if (rows[0]) {
-				//存在token，重新生成一个token，即延长期限
 				jwt.verify(rows[0].TokenId, credentials.appSecret, function (err, decoded) {
 					if (err) {
 						res.json({
@@ -107,21 +104,22 @@ module.exports = {
 			// res.json(rows[0]);
 			if (rows[0]) {
 				//存在token，重新生成一个token，即延长期限
-				jwt.verify(rows[0].tokenId, credentials.appSecret, function (err, decoded) {
+				jwt.verify(rows[0].TokenId, credentials.appSecret, function (err, decoded) {
 					if (err) {
 						res.json({
 							status: 'err',
-							token: ''
+							token: '',
+							message:err
 						});
 					} else {
 						//token正确，重新给token 10天有效期
 						var token = jwt.sign({ userName: decoded.userName }, credentials.appSecret, {
-							'expiresInMinutes': 60 * 60 * 10 // 设置过期时间10天
+							'expiresIn': 60 * 60 * 10 // 设置过期时间10天
 						});
 						var name = decoded.userName;
 						var tokenIdOld = tokenId;
 						tokenId = token;
-						var Pwd = "";
+						var pwd = "";
 						inParams = [name, tokenId, tokenIdOld, pwd];
 						customer.modfiyCustomerToken(inParams, function () {
 							res.json({
@@ -134,7 +132,8 @@ module.exports = {
 			} else {
 				res.json({
 					status: 'err',
-					token: ''
+					token: '',
+					message:'token不存在'
 				});
 			}
 		});

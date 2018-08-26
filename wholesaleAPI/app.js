@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var userToken = require('./controllers/token')
 // var goodsRouter = require('./controllers/goods');
 
 var app = express();
@@ -35,7 +36,7 @@ app.use(session({
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use(userToken.setTokenUserName);
 
 
 require('./routes/goods')(app);//goods route

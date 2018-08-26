@@ -3,6 +3,7 @@ import { NavController, AlertController, LoadingController, ToastController, App
 import { WholesaleProvider, CartParams } from '../../providers/wholesale/wholesale';
 import { RequestOptionsArgs } from '@angular/http';
 import { FillOrderPage } from '../fill-order/fill-order';
+import { AuthorizationProvider } from '../../providers/authorization/authorization';
 
 @Component({
   selector: 'page-cart',
@@ -43,7 +44,10 @@ export class CartPage {
 
 
   constructor(public navCtrl: NavController, public service: WholesaleProvider, public alertCtrl: AlertController, 
-    public loadingCtrl: LoadingController,public toastCtrl: ToastController,public appCtrl: App) {
+    public loadingCtrl: LoadingController,public toastCtrl: ToastController,public appCtrl: App,public authorization:AuthorizationProvider) {
+  }
+  ionViewWillEnter() {
+    this.authorization.verifyToken(this.navCtrl);
   }
   ionViewDidLoad() {
     // this.getCartGoods();

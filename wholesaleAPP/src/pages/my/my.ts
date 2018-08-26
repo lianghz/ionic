@@ -3,6 +3,7 @@ import { NavController } from 'ionic-angular';
 import { OrderPage } from '../order/order';
 import { LoginPage } from '../login/login';
 import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { AuthorizationProvider } from '../../providers/authorization/authorization';
 
 @Component({
   selector: 'page-my',
@@ -10,24 +11,12 @@ import { WholesaleProvider } from '../../providers/wholesale/wholesale';
 })
 export class MyPage {
 
-  constructor(public navCtrl: NavController,public service:WholesaleProvider) {
+  constructor(public navCtrl: NavController,public service:WholesaleProvider,public authorization:AuthorizationProvider) {
 
   }
 
   ionViewWillEnter() {
-    var token = window.localStorage.getItem('token');
-    // console.log("token="+token);
-    if(!token){
-      this.navCtrl.push(LoginPage);
-    }else{
-      this.service.getToken().then(data=>{
-        let rs = JSON.parse(JSON.stringify(data));
-        console.log("rs.status="+rs.status);
-        if(rs.status=="err"){
-          this.navCtrl.push(LoginPage);
-        }
-      })
-    }
+    this.authorization.verifyToken(this.navCtrl);
   }
 
   goOrder(){

@@ -19,6 +19,7 @@ export class LoginPage {
   userName = "";
   password = "";
   loginParams: LoginParams;
+  sign: string = "signin";
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider,public alertCtrl: AlertController) {
   }

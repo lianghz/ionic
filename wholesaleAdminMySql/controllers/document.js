@@ -44,7 +44,7 @@ module.exports = {
 
 
 	convertDocument: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var warehouseId = req.body.warehouseId;
 		var customerId = req.body.customerId;
 		customerId = customerId ? customerId : '';
@@ -66,7 +66,7 @@ module.exports = {
 
 	addLoadDocument: function (req, res, next) {
 		var deliveryManId = req.body.deliveryManId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var docs = req.body.docs;
 		var warehouseId = req.body.warehouseId;
 		var inParams = [deliveryManId, userName, docs, warehouseId];
@@ -102,7 +102,7 @@ module.exports = {
 	},
 
 	deleteDocumentFromLoad: function (req, res, next) {
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var documentId = req.body.documentId;
 		var loadId = req.body.loadId;
 		var inParams = [userName, documentId, loadId];
@@ -113,7 +113,7 @@ module.exports = {
 
 	setLoadCheckOut: function (req, res, next) {
 		var loadId = req.body.loadId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [loadId, userName];
 		Document.setLoadCheckOut(inParams, function (rows) {
 			res.json(rows[0]);
@@ -150,7 +150,7 @@ module.exports = {
 		var cases = req.body.cases;
 		var piece = req.body.piece;
 		var realDeliveryManId = req.body.realDeliveryManId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var checkInDate = req.body.checkInDate;
 		var inParams = [warehouseId, loadId, goodsId, cases, piece, realDeliveryManId, userName, checkInDate];
 		Document.addReturn(inParams, function (rows) {
@@ -182,7 +182,7 @@ module.exports = {
 		var documentId = req.body.documentId;
 		var goodsIds = req.body.goodsIds;
 		var quantitys = req.body.quantitys;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [documentId, goodsIds, quantitys, userName];
 		Document.createReturnDocument(inParams, function (rows) {
 			res.json(rows[0]);
@@ -191,7 +191,7 @@ module.exports = {
 	modifyDocument: function (req, res, next) {
 		var goodsId = req.body.goodsId;
 		var documentId = req.body.documentId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var piece = req.body.piece;
 		var inParams = [goodsId, documentId, userName, piece];
 		Document.modifyDocument(inParams, function (rows) {
@@ -210,7 +210,7 @@ module.exports = {
 
 	checkLoad: function (req, res, next) {
 		var loadId = req.body.loadId;
-		var userName = req.session.userName;
+		var userName = req.userName;
 		var inParams = [loadId, userName];
 		Document.checkLoad(inParams, function (rows) {
 			res.json(rows);

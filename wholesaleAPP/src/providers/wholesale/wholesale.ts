@@ -20,7 +20,7 @@ export class WholesaleProvider {
   addrIdEvent: EventEmitter<number[]> = new EventEmitter();
   addrPostParamsEvent: EventEmitter<AddrPostParams> = new EventEmitter();
   convertOrderResultEvent: EventEmitter<any> = new EventEmitter();
-  orderEvent:EventEmitter<any> = new EventEmitter();
+  orderEvent: EventEmitter<any> = new EventEmitter();
   //============params
   requestParams: RequestOptionsArgs;
 
@@ -38,7 +38,7 @@ export class WholesaleProvider {
       let headers = new Headers();
       let token = window.localStorage.getItem('token');
       headers.append('authorization', token);
-      this.requestParams = { params: args,headers: headers };
+      this.requestParams = { params: args, headers: headers };
       this.data = this.http.get(url, this.requestParams)
         .map(res => res.json())
         .subscribe(data => {
@@ -81,13 +81,13 @@ export class WholesaleProvider {
 
   }
 
-  addCart(params:CartParams) {
-    
+  addCart(params: CartParams) {
+
     return this.postReview('/api/document/addShoppingCar', params);
   }
 
-  modifyCart(params:CartParams) {
-    
+  modifyCart(params: CartParams) {
+
     return this.postReview('/api/document/addShoppingCar', params);
   }
 
@@ -103,7 +103,7 @@ export class WholesaleProvider {
   }
   addAddress(params) {
     return this.postReview('/api/customer/addAddress', params);
-    
+
   }
   getPayType(params) {
     return this.getReviews('/api/finance/getMoneyType', params);
@@ -112,39 +112,42 @@ export class WholesaleProvider {
     return this.postReview('/api/document/convertOrder', params);
   }
   getOrderList(params) {
-    let headers:any;
+    let headers: any;
     this.getReviews('/api/document/getOrderList', params).then(data => {
       headers = data[0];
       let details = JSON.parse(JSON.stringify(data[1]));
-      
+
       headers = headers.map(item => {
         let sumAmount = 0;
         let sumQuantity = 0;
-        let detail= details.filter(detail => {
+        let detail = details.filter(detail => {
           if (detail.OrderId == item.OrderId) {
             sumAmount += detail.Price * detail.Piece;
-            sumQuantity +=detail.Piece*1;
+            sumQuantity += detail.Piece * 1;
             return detail;
           }
         })
-        item = {"header":item,"detail":detail,"sumAmount":sumAmount,"sumQuantity":sumQuantity};
+        item = { "header": item, "detail": detail, "sumAmount": sumAmount, "sumQuantity": sumQuantity };
         return item;
       })
-    this.orderEvent.emit(headers);
+      this.orderEvent.emit(headers);
     });
   }
 
-  login(params:LoginParams) {
+  login(params: LoginParams) {
     return this.postReview('/api/customer/login', params);
   }
 
   refreshToken() {
-    return this.postReview('/api/customer/refresh', {id:0});
+    return this.postReview('/api/customer/refresh', { id: 0 });
   }
 
-  getToken(){
-    return this.postReview('/api/customer/gettoken', {id:0});
+  verifyToken() {
+
+    return this.postReview('/api/customer/verifytoken', { id: 0 });
   }
+
+
 
 }
 
@@ -186,18 +189,25 @@ export class PayParams {
 
 export class CartParams {
   constructor(
-  public addType: number,
-  public goodsId: number,
-  public cases: number,
-  public piece: number,
-  public levelId: number,
-  public warehouseId: number){}
+    public addType: number,
+    public goodsId: number,
+    public cases: number,
+    public piece: number,
+    public levelId: number,
+    public warehouseId: number) { }
 }
 
 export class LoginParams {
   constructor(
-  public userName: string,
-  public password: string
-){}
+    public userName: string,
+    public password: string
+  ) { }
+}
+
+export class TokenStatus {
+  constructor(
+    public status: string,
+    public message: string
+  ) { }
 }
 

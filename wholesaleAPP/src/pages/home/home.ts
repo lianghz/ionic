@@ -12,12 +12,6 @@ export class HomePage {
 
   }
 
-  ionViewWillEnter() {
-    // var token = window.localStorage.getItem('token');
-    // console.log("token="+token);
-    this.service.refreshToken().then(data=>{
-      
-    })
-  }
+
 
 }
