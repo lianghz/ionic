@@ -44,23 +44,23 @@
       <ion-list>
         <ion-item>
           <ion-label>用&nbsp;&nbsp;户&nbsp;&nbsp;名:</ion-label>
-          <ion-input type="text" [(ngModel)]="userName"></ion-input>
+          <ion-input type="text" [(ngModel)]="customerParams.customerId"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</ion-label>
-          <ion-input type="text" [(ngModel)]="email"></ion-input>
+          <ion-input type="text" [(ngModel)]="customerParams.email"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>手机号码:</ion-label>
-          <ion-input type="text" [(ngModel)]="phone"></ion-input>
+          <ion-input type="text" [(ngModel)]="customerParams.mobile"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</ion-label>
-          <ion-input type="password" [(ngModel)]="password"></ion-input>
+          <ion-input type="password" [(ngModel)]="customerParams.password"></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>重复密码:</ion-label>
-          <ion-input type="password2" [(ngModel)]="password2"></ion-input>
+          <ion-input type="password" [(ngModel)]="customerParams.password2"></ion-input>
         </ion-item>
       </ion-list>
       <div padding>

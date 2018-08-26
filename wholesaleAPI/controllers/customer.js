@@ -11,6 +11,8 @@ module.exports = {
 		app.post('/customer/refresh', this.refreshCustomerToken);
 		app.post('/customer/login', this.login);
 		app.post('/customer/verifytoken', this.verifyToken);
+		app.post('/customer/addCustomer', this.addCustomer);
+		
 		// app.post('/token/update', this.modfiyCustomerToken);
 
 	},
@@ -80,17 +82,21 @@ module.exports = {
 					if (err) {
 						res.json({
 							status: 'err',
+							userName:decoded.userName,
 							message:err
 						});
 					} else {
 						res.json({
-							status: 'success'
+							status: 'success',
+							userName:decoded.userName,
+							message:''
 						});
 					}
 				})
 			} else {
 				res.json({
 					status: 'err',
+					userName:'',
 					message:'不存在token'
 				});
 			}
@@ -109,7 +115,7 @@ module.exports = {
 						res.json({
 							status: 'err',
 							token: '',
-							message:err
+							message:err							
 						});
 					} else {
 						//token正确，重新给token 10天有效期
@@ -168,6 +174,44 @@ module.exports = {
 				});
 			}
 		});
-	}
+	},
+	addCustomer: function (req, res, next) {
+		var customerId = req.body.customerId;
+		var nickName = req.body.nickName;
+		var customerName = req.body.customerName;
+		var address1 = req.body.address1;
+		var address2 = req.body.address2;
+		var regionId = req.body.regionId;
+		var idcard = req.body.idcard;
+		var telphone = req.body.telphone;
+		var mobile = req.body.mobile;
+		var sex = req.body.sex;
+		var birthday = req.body.birthday;
+		var jobId = req.body.jobId;
+		var email = req.body.email;
+		var passCode = req.body.password;
+		var verify = new Buffer(generateMixed(10));
+		// console.log("verify1="+verify);
+		verify = verify.toString('base64');
+		// console.log("verify2="+verify);
+		var inParams = [customerId,nickName,customerName,address1,address2,regionId,idcard,telphone,mobile,sex,
+			birthday,jobId,email,passCode,verify];
 
+		customer.addCustomer(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+	
+
+}
+
+var chars = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z'];
+
+function generateMixed(n) {
+     var res = "";
+     for(var i = 0; i < n ; i ++) {
+         var id = Math.ceil(Math.random()*35);
+         res += chars[id];
+     }
+     return res;
 }

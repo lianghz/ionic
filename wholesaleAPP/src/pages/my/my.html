@@ -1,10 +1,14 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      我的
-    </ion-title>
-  </ion-navbar>
+  <ion-toolbar>
+    <ion-title>{{tokenParam.userName||"我的"}}</ion-title>
+    <ion-buttons end *ngIf="tokenParam.userName">
+      <button ion-button color="royal" (click)="logout()">注销&nbsp; 
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+  </ion-toolbar>
 </ion-header>
+
 
 <ion-content padding>
 <button ion-button full (click)="goOrder()">查看订单</button>

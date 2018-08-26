@@ -61,6 +61,17 @@ function login(inParams,cb) {
         cb(rows[0]);
     });
 }
+function addCustomer(inParams,cb) {
+    var sql = 'CALL P_AddCustomer(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("P_AddCustomer=" + err);
+            return;
+        }
+        cb(rows[0]);
+    });
+}
+
 
 
 
@@ -70,6 +81,7 @@ var methods = {
     'getDefaultAddress':getDefaultAddress,
     'modfiyCustomerToken':modfiyCustomerToken,
     'getCustomerToken':getCustomerToken,
-    'login':login
+    'login':login,
+    'addCustomer':addCustomer
 };
 module.exports = methods;

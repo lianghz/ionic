@@ -1,5 +1,5 @@
 // import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { LoginPage } from '../../pages/login/login';
 import { WholesaleProvider } from '../wholesale/wholesale';
@@ -13,6 +13,10 @@ import { WholesaleProvider } from '../wholesale/wholesale';
 @Injectable()
 export class AuthorizationProvider {
 
+  tokenEvent:EventEmitter<TokenParam> = new EventEmitter();
+  tokenParam:TokenParam = new TokenParam('','','','');
+
+
   constructor(public service:WholesaleProvider) {
     // console.log('Hello AuthorizationProvider Provider');
   }
@@ -24,11 +28,22 @@ export class AuthorizationProvider {
     }else{
       this.service.verifyToken().then(data=>{
         let rs = JSON.parse(JSON.stringify(data));
-        console.log("rs.status="+rs.status);
+        this.tokenParam = new TokenParam(rs.status,rs.userName,rs.message,rs.token);
         if(rs.status=="err"){
           navCtrl.push(LoginPage);
+        }else{
+          this.tokenEvent.emit(this.tokenParam);
         }
       })
     }
   }
+}
+
+export class TokenParam{
+  constructor(
+    public status:string,
+    public userName:string,
+    public message:string,
+    public token:string
+  ){};
 }

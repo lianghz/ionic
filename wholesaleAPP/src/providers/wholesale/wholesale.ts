@@ -147,6 +147,9 @@ export class WholesaleProvider {
     return this.postReview('/api/customer/verifytoken', { id: 0 });
   }
 
+  signout(customerParams:CustomerParams){
+    return this.postReview('/api/customer/addCustomer',customerParams);
+  }
 
 
 }
@@ -208,6 +211,26 @@ export class TokenStatus {
   constructor(
     public status: string,
     public message: string
+  ) { }
+}
+
+export class CustomerParams {
+  constructor(
+    public customerId:string,
+		public nickName:string,
+		public customerName:string,
+		public address1 :string,
+		public address2 :string,
+		public regionId:number=0,
+		public idcard:string,
+		public telphone:string,
+		public mobile:string,
+		public sex :string,
+		public birthday :string,
+		public jobId:number=0,
+		public email :string,
+    public password:string,
+    public password2:string
   ) { }
 }
 
