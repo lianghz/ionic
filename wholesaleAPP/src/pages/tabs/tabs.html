@@ -1,6 +1,6 @@
 <ion-tabs>
   <ion-tab [root]="tab1Root" tabTitle="首页" tabIcon="home"></ion-tab>
   <ion-tab [root]="tab2Root" tabTitle="分类" tabIcon="list"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="购物车" tabIcon="cart" [tabBadge]="goodsNum"></ion-tab>
+  <ion-tab [root]="tab3Root" tabTitle="购物车" tabIcon="cart" [tabBadge]="goodsNum" (ionSelect)="changeTab($event)"></ion-tab>
   <ion-tab [root]="tab4Root" tabTitle="我的" tabIcon="person"></ion-tab>
 </ion-tabs>

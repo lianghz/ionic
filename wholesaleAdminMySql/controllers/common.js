@@ -21,6 +21,7 @@ module.exports = {
 	},
 
 	getUserWarehouse: function (req, res, next) {
+		console.log('req.userName='+req.userName)
 		var itemType = 12;
 		var filter1 = req.userName;
 		var filter2 = "";

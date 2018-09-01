@@ -28,7 +28,9 @@ export class SortPage {
   }
 
   getCatagroyData() {
-    this.sortService.getReviews('/api/goods/getNavigation', this.params).then((data) => {
+      this.sortService.getNavigation(this.params).then((data) => {
+      //this.sortService.getReviews('http://192.168.0.153:8090/goods/getNavigation', this.params).then((data) => {
+      
       this.sorts = data;
       if (data[0]) {
         this.params.categroyId = data[0].CategroyId;
@@ -80,7 +82,8 @@ export class SortPage {
 
   getGoodsData() {
     // console.log("cate="+this.params);
-    this.sortService.getReviews('/api/goods/getGoodsInfoPage', this.params).then((data) => {
+    this.sortService.getGoodsPage(this.params).then((data) => {
+
       this.goods = data;
     });
     this.params.pageNo += 1;
@@ -94,7 +97,7 @@ export class SortPage {
       return;
     }
     this.islock = true;
-    this.sortService.getReviews('/api/goods/getGoodsInfoPage', this.params).then((data) => {
+    this.sortService.getGoodsPage(this.params).then((data) => {
       this.islock = false;
       if (data != "") {
         this.goods = this.goods.concat(data);

@@ -80,9 +80,10 @@ module.exports = {
 			if (rows[0]) {
 				jwt.verify(rows[0].TokenId, credentials.appSecret, function (err, decoded) {
 					if (err) {
+						console.log("err=="+err)
 						res.json({
 							status: 'err',
-							userName:decoded.userName,
+							userName:'',
 							message:err
 						});
 					} else {
@@ -120,7 +121,7 @@ module.exports = {
 					} else {
 						//token正确，重新给token 10天有效期
 						var token = jwt.sign({ userName: decoded.userName }, credentials.appSecret, {
-							'expiresIn': 60 * 60 * 10 // 设置过期时间10天
+							'expiresIn': 60 * 60 * 24 *10 // 设置过期时间10天
 						});
 						var name = decoded.userName;
 						var tokenIdOld = tokenId;

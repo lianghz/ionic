@@ -5,6 +5,7 @@ import { SortPage } from '../sort/sort';
 import { CartPage } from '../cart/cart';
 import { HomePage } from '../home/home';
 import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { NavController } from 'ionic-angular';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -13,24 +14,26 @@ export class TabsPage {
 
   tab1Root = HomePage;
   tab2Root = SortPage;
-  tab3Root = CartPage;
-  tab4Root = MyPage;
+  public tab3Root = CartPage;
+  public tab4Root = MyPage;
   goodsNum = 0;
   params = { id: 0 };
 
-  constructor(public tabService: WholesaleProvider) {
+  constructor(public tabService: WholesaleProvider,public navCtrl: NavController) {
 
   }
 
   ngOnInit() {
-    this.tabService.getReviews('/api/document/getCarCount', this.params).then((data => {
-      // console.log(JSON.stringify(data));
-      let count = JSON.parse(JSON.stringify(data))[0].goodsCount;
-      this.goodsNum = count ? count : 0;
-    }));
+    //this.tabService.getReviews('/api/document/getCarCount', this.params).then((data => {
+
     this.tabService.cartEvent.subscribe(
       data => {
-        this.goodsNum += data;
+        if (data == 0) {
+          this.goodsNum = 0;
+        } else {
+          this.goodsNum += data;
+        }
+        console.log("this.goodsNumEvent=" + data);
       }
     )
   }
@@ -42,4 +45,16 @@ export class TabsPage {
       window.localStorage.setItem('token', rs.token);
     })
   }
+  ionViewDidEnter() {
+    this.tabService.getCarCount(this.params);
+  }
+
+  changeTab(even){
+    // let title = even._app._title;
+    // console.log("even._app._title="+even._app._title);
+    // if(title=='登陆'){
+    //   this.navCtrl.;
+    // }
+  }
+ 
 }

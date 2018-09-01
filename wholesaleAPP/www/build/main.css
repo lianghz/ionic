@@ -25867,6 +25867,12 @@ page-fill-order .item-md.item-block .item-inner {
   padding: 0px;
 }
 
+page-home .gallery {
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
 page-sort {
   background: #efefef;
 }

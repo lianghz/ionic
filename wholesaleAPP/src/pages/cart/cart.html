@@ -11,7 +11,7 @@
     <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->
     <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let goods of cartGoods;">
       <ion-thumbnail item-start>
-        <img src="img/thumbnail-totoro.png">
+        <img src="{{imageUrl}}{{goods.ImageId}}">
       </ion-thumbnail>
       <h2>{{goods.Name}}</h2>
       <p>{{goods.Description}}</p>

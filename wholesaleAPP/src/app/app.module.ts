@@ -28,6 +28,7 @@ import { ResultOkPage } from '../pages/result-ok/result-ok';
 import { OrderPage } from '../pages/order/order';
 import { LoginPage } from '../pages/login/login';
 import { AuthorizationProvider } from '../providers/authorization/authorization';
+import { DetailsPage } from '../pages/details/details';
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { AuthorizationProvider } from '../providers/authorization/authorization'
     ResultPage,
     ResultOkPage,
     OrderPage,
-    LoginPage 
+    LoginPage,
+    DetailsPage
   ],
   imports: [
     BrowserModule,
@@ -68,7 +70,8 @@ import { AuthorizationProvider } from '../providers/authorization/authorization'
     ResultPage,
     ResultOkPage,
     OrderPage,
-    LoginPage
+    LoginPage,
+    DetailsPage
     // IonAreaComponent
   ],
   providers: [

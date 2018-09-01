@@ -25780,11 +25780,6 @@ ion-area .address ul {
 
 ion-area .address ul li {
   margin-left: 0px;
-  font-size: 9pt;
-}
-
-ion-area .address {
-  font-size: 9pt;
 }
 
 ion-area .address .addrTitle {
@@ -25866,6 +25861,16 @@ page-cart .price {
 
 page-cart .input-num {
   font-size: 9pt;
+}
+
+page-fill-order .item-md.item-block .item-inner {
+  padding: 0px;
+}
+
+page-home .gallery {
+  -webkit-flex-wrap: wrap;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 
 page-sort {

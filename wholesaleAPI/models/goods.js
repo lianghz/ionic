@@ -26,10 +26,20 @@ function getGoodsInfoPage(inParams,cb) {
 }
 
 
-
+function getWebGoodsInfo(inParams,cb) {
+    var sql = 'CALL P_GetWebGoodsInfo(?,?,?)';
+    db.query(sql, inParams, function (err, rows, fields) {
+        if (err) {
+            console.log("err modify goods=" + err);
+            return;
+        }
+        cb(rows);
+    });
+}
 
 var methods = {
     'getNavigation': getNavigation,
     'getGoodsInfoPage':getGoodsInfoPage,
+    'getWebGoodsInfo':getWebGoodsInfo
 };
 module.exports = methods;

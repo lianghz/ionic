@@ -1,0 +1,268 @@
+{{!-- 数据格 --}}
+<table id="advert-dg" class="easyui-datagrid" title="广告管理" style="width:100%;height:250px;badvert-top:0px;" toolbar="#advert-tbr"
+    data-options="singleSelect:true,collapsible:true,method:'get',fit:true,bdocument:false,">
+    <thead>
+        <tr>
+            <th data-options="field:'AdvertId',width:150">广告编号</th>
+            <th data-options="field:'Titel',width:200">主题</th>
+            <th data-options="field:'Descript',width:100">描述</th>
+            <th data-options="field:'ImageName',width:300">图片地址</th>
+            <th data-options="field:'WarehouseId',width:80">仓库</th>
+            <th data-options="field:'UrlAddr',width:80">仓库</th>
+            <th data-options="field:'EffectFrom',width:80">有效时间起</th>
+            <th data-options="field:'EffectTo',width:80">有效时间至</th>
+            <th data-options="field:'SortId',width:300">排序</th>
+            <th data-options="field:'Status',width:300">状态</th>
+            <th data-options="field:'UpdateUser',width:300">更新人</th>
+            <th data-options="field:'UpdateDate',width:300">更新时间</th>
+        </tr>
+    </thead>
+</table>
+{{!-- 工具栏 --}}
+<div id="advert-tbr">
+    {{!-- <input id="advert-cg-warehouseId" class="easyui-combogrid" style="width:150px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+    <input id="advert-date-startDate" class="easyui-datebox" style="width:130px;">
+    <input id="advert-date-endDate" class="easyui-datebox" style="width:130px;"> --}}
+    <select id="advert-cb-status" name="status" class="easyui-combobox" data-options="width:100">
+        <option value="-1">选择状态</option>
+        <option value="1">有效</option>
+        <option value="0">无效</option>
+    </select>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-search'" onclick="advertSearch()">查询</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-add'" onclick="advertOpenDialogAdd()">添加</a>
+    <a href="#" class="easyui-linkbutton" data-options="iconCls:'icon-edit'" onclick="advertOpenDialogEdit()">修改</a>
+    <span class="datagrid-btn-separator" style="vertical-align: middle;display:inline-block;float:none"></span>
+</div>
+{{!-- 对话框 --}}
+<div id="advert-dlg" class="easyui-dialog" title="添加因子" style="width:650px;height:350px;padding:10px" data-options="
+                closed: true,
+                iconCls: 'icon-add',
+                buttons: [{
+                    text:'提交',
+                    iconCls:'icon-ok',
+                    handler:function(){
+                        $('#advert-ff').submit();
+                        
+                    }
+                },{
+                    text:'取消',
+                    iconCls:'icon-cancel',
+                    handler:function(){
+                        $('#advert-dlg').dialog('close');
+                    }
+                }]
+            ">
+    <form id="advert-ff" action="/community/modifyadvert" enctype="multipart/form-data" method="post">
+        <table>
+            <tr>
+                <td>
+                    <span class="textbox-label textbox-label-before">主题图片:</span>
+                    <input name="filename" style="width:214px" class="easyui-filebox" labelPosition="top" data-options="lable:'图片:',prompt:'选择图片...'">
+                </td>
+                <td>
+                    <select id="advert-ff-cb-status" name="status" class="easyui-combobox" data-options="label:'状态:',width:300,prompt:'选择状态',required:true,validateOnCreate:false,err:err">
+                        <option value="1">1-有效</option>
+                        <option value="0">0-无效</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <input id="advert-ff-txt-title" name="title" style="width:300px" class="f1 easyui-textbox " data-options="label:
+                        '广告主题:',prompt: '输入广告主题',required:true,validateOnCreate:false,err:err "></input>
+                </td>
+                <td>
+                    <input id="advert-ff-txt-name" name="descript" style="width:300px" class="f1 easyui-textbox" data-options="label:
+                    '广告描述:',prompt:'输入广告描述',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="textbox-label textbox-label-before">开始时间:</span>
+                    <input id="advert-ff-date-startDate" name="effectFrom" data-options="required:true,validateOnCreate:false,err:err" class="easyui-datebox"
+                        style="width:214px;">
+                </td>
+                <td>
+                    <span class="textbox-label textbox-label-before">结束时间:</span>
+                    <input id="advert-ff-date-endDate" name="effectTo" data-options="required:true,validateOnCreate:false,err:err" class="easyui-datebox"
+                        style="width:214px;">
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="textbox-label textbox-label-before">仓库:</span>
+                    <input id="advert-ff-cg-warehouseId" name="warehouseId" class="easyui-combogrid" style="width:214px" data-options="prompt:'选择仓库',required:true,validateOnCreate:false,panelWidth: 200,
+                    idField: 'WarehouseId',
+                    textField: 'WarehouseName',
+                    url: '/warehouse/getWarehouse',
+                    method: 'get',
+                    columns: [[
+                        {field:'WarehouseId',title:'仓库编号',width:100},
+                        {field:'WarehouseName',title:'仓库名称',width:120}
+                    ]],
+                    onChange: function (q){  
+                        //Search();
+                        //returnDoc false;  
+                    },
+                    onSelect:function(index,row){
+                        //changeLogSearch();
+                    }
+                ">
+                </td>
+                <td>
+                    <input id="advert-ff-txt-sortId" name="sortId" style="width:300px" class="f1 easyui-textbox" data-options="label:
+                    '排序:',prompt:'输入排序',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+                <input id="advert-ff-txt-advertId" name="advertId" type="hidden"></input>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <input id="advert-ff-txt-urlAddr" name="urlAddr" style="width:100%" class="f1 easyui-textbox" data-options="label:
+                    '目标链接:',prompt:'输入目标链接',required:true,validateOnCreate:false,err:err"></input>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+
+{{!-- 数据上下文 --}} {{!-- 脚本 --}}
+<script>
+    $.extend($.fn.textbox.methods, {
+        addClearBtn: function (jq, iconCls) {
+            return jq.each(function () {
+                var t = $(this);
+                var opts = t.textbox('options');
+                opts.icons = opts.icons || [];
+                opts.icons.unshift({
+                    iconCls: iconCls,
+                    handler: function (e) {
+                        $(e.data.target).textbox('clear').textbox('textbox').focus();
+                        $(this).css('visibility', 'hidden');
+                    }
+                });
+                t.textbox();
+                if (!t.textbox('getText')) {
+                    t.textbox('getIcon', 0).css('visibility', 'hidden');
+                }
+                t.textbox('textbox').bind('keyup', function () {
+                    var icon = t.textbox('getIcon', 0);
+                    if ($(this).val()) {
+                        icon.css('visibility', 'visible');
+                    } else {
+                        icon.css('visibility', 'hidden');
+                    }
+                });
+            });
+        }
+    });
+
+    $(function () {
+
+        $('#advert-ff-date-startDate').textbox({
+            prompt: '开始时间',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+
+        $('#advert-ff-date-endDate').textbox({
+            prompt: '结束时间',
+            icons: [{
+                iconCls: 'icon-filter'
+            }]
+        }).textbox('addClearBtn', 'icon-clear');
+        //------
+
+        $('#advert-ff').form({
+            onSubmit: function () {
+                if ($(this).form('enableValidation').form('validate')) {
+                    $('#advert-dlg').dialog('close');
+                    MaskUtil.mask();
+                    return true;
+                } else {
+                    return false;
+                }
+            },
+            success: function (data) {
+                MaskUtil.unmask();
+                data = JSON.parse(data);
+                $.messager.alert('消息提示:', "<center>" + data[0]["pramResult"] + "</center>");
+                if (data[0]["pramCode"] == 1) {
+                    $('#advert-dg').datagrid('reload');
+                }
+            },
+
+        });
+    });
+
+    function advertSearch() {
+        //var warehouseId = $('#advert-cg-warehouseId').val();
+        //var stDate = $('#advert-date-startDate').val();
+        //var endDate = $('#advert-date-endDate').val();
+        var status = $('#advert-cb-status').val();
+
+        $('#advert-dg').datagrid({
+            url: '/community/getadvert',
+            queryParams: {
+                status: status
+            },
+            pagePosition: 'bottom',
+            rownumbers: true,
+            singleSelect: true
+        });
+    }
+
+    function advertOpenDialogAdd() {
+        $('#advert-ff-txt-advertId').val("0");
+        $('#advert-dlg').dialog({
+            title: "添加供应商",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function advertOpenDialogEdit() {
+        var row = $('#advert-dg').datagrid('getSelected');
+        if (!row) {
+            $.messager.alert('提示', '<center>请选择一个广告!</center>');
+        }
+        $('#advert-ff-txt-advertId').val(row.AdvertId);
+        $('#advert-ff').form('load', {
+            title: row.Titel,
+            descript: row.Descript,
+            warehouseId: row.WarehouseId,
+            effectFrom: row.EffectFrom,
+            effectTo: row.EffectTo,
+            sortId: row.SortId,
+            status: row.Status,
+            urlAddr: row.UrlAddr
+        });
+
+        $('#advert-dlg').dialog({
+            title: "修改供应商",
+            modal: true,
+        }).dialog('open');
+    }
+
+    function Search() {
+
+    }
+
+
+</script>

@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { WholesaleProvider } from '../../providers/wholesale/wholesale';
 import { LoadingController } from 'ionic-angular';
+import { DetailsPage } from '../../pages/details/details';
 
 
 /**
@@ -26,9 +27,10 @@ export class IonGoodsComponent {
     "levelId":0,
     "warehouseId":1
   }
-
+  imageUrl="";
   constructor(public navCtrl: NavController,public service: WholesaleProvider,public loadingCtrl: LoadingController) {
     // console.log('Hello IonGoodsComponent Component');
+    this.imageUrl = this.service.imageURl;
   }
 
   addCart(goods){
@@ -38,13 +40,16 @@ export class IonGoodsComponent {
     });
     loader.present();
     this.service.addCart(this.params).then((data=>{
-      console.log("data=="+JSON.stringify(goods));
+      // console.log("data=="+JSON.stringify(goods));
       loader.dismiss();
       this.service.cartEvent.emit(1);
     })); 
   }
-
+  goDetail(goods){
+    this.navCtrl.push(DetailsPage,{goods:goods});
+  }
 }
+
 
 // class Params{
 //   constructor(public addType: number,public goodsId: number,public cases: number,

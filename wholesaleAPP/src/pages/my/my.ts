@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import { NavController, App } from 'ionic-angular';
 import { OrderPage } from '../order/order';
 import { LoginPage } from '../login/login';
 import { WholesaleProvider } from '../../providers/wholesale/wholesale';
@@ -12,7 +12,8 @@ import { AuthorizationProvider, TokenParam } from '../../providers/authorization
 export class MyPage {
 
   tokenParam:TokenParam=new TokenParam('','','','');
-  constructor(public navCtrl: NavController,public service:WholesaleProvider,public authorization:AuthorizationProvider) {
+  constructor(public navCtrl: NavController,public service:WholesaleProvider,public authorization:AuthorizationProvider,
+  public appCtrl:App) {
 
   }
 
@@ -32,6 +33,7 @@ export class MyPage {
 
   logout(){
     window.localStorage.removeItem('token');
-    this.navCtrl.push(LoginPage);
+    this.navCtrl.setRoot(LoginPage);
+    this.service.cartEvent.emit(0);
   }
 }

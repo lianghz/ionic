@@ -14,6 +14,7 @@ module.exports = {
 		//调用模板
 		app.get('/goods/getNavigation', this.getNavigation);
 		app.get('/goods/getGoodsInfoPage', this.getGoodsInfoPage);
+		app.get('/goods/getwebgoods', this.getWebGoodsInfo);
 	},
 
 	getNavigation: function (req, res, next) {
@@ -39,6 +40,20 @@ module.exports = {
 
 		var inParams = [levelId, warehouseId, categroyId, brandId,goodsId,name,description,pageNo,pageSize]
 		Goods.getGoodsInfoPage(inParams, function (rows) {
+			res.json(rows[0]);
+		});
+	},
+
+	getWebGoodsInfo: function (req, res, next) {
+		var levelId = req.query.levelId;
+		var warehouseId = req.query.warehouseId;
+		var promotionType = req.query.promotionType;
+		if (levelId == "") levelId = 0;
+		if (warehouseId == "") warehouseId = 0;
+		if (promotionType == "") promotionType = 0;
+
+		var inParams = [levelId, warehouseId, promotionType];
+		Goods.getWebGoodsInfo(inParams, function (rows) {
 			res.json(rows[0]);
 		});
 	},

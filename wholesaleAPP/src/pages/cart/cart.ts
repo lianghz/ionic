@@ -14,7 +14,7 @@ export class CartPage {
   // text:string;
   params = { id: Math.random() };
   // addrParams={"level":0,"parentId":-1}
-  cartParams = new CartParams(0,0,0,1,0,1);
+  cartParams = new CartParams(0, 0, 0, 1, 0, 1);
 
   //  {
   //   "addType": 0,
@@ -24,30 +24,20 @@ export class CartPage {
   //   "levelId": 0,
   //   "warehouseId": 1
   // }
-  
+
   cartGoods: any;
   sumPrice = 0;
   sumPiece = 0;
- 
-  // areaList:any;
-  // addrParentIds =[-1,-1,-1,-1];
-  // addrLevelNames =['','','',''];
-  // addrLevelHiddens=[true,true,true,true];
-  // // addrLevelHiddens=[false,false,false,false];
-  // addrLevelId = 0;
-  // addrId=0;
-  // hiddenAddr = false;
+  imageUrl = "";
 
-
-
-  //end 
-
-
-  constructor(public navCtrl: NavController, public service: WholesaleProvider, public alertCtrl: AlertController, 
-    public loadingCtrl: LoadingController,public toastCtrl: ToastController,public appCtrl: App,public authorization:AuthorizationProvider) {
+  constructor(public navCtrl: NavController, public service: WholesaleProvider, public alertCtrl: AlertController,
+    public loadingCtrl: LoadingController, public toastCtrl: ToastController, public appCtrl: App, public authorization: AuthorizationProvider) {
+    this.imageUrl = this.service.imageURl;
+    // console.log("cartcartcartcartcartcartcartcartcartcartcartcartcartcartcartcart")
   }
   ionViewWillEnter() {
     this.authorization.verifyToken(this.navCtrl);
+
   }
   ionViewDidLoad() {
     // this.getCartGoods();
@@ -58,12 +48,9 @@ export class CartPage {
     // this.getArea(0);
   }
   //====自定义===========================
-  // closeAddr(){
-  //   this.hiddenAddr = true;
-  // }
 
   getCartGoods() {
-    this.service.getReviews("/api/document/getCarGoods", this.params).then((data) => {
+    this.service.getCarGoods(this.params).then((data) => {
       this.cartGoods = data;
       this.getTotal();
     })
@@ -148,8 +135,8 @@ export class CartPage {
 
   //去填写订单页面
   goOrder() {
-    this.appCtrl.getRootNav().push(FillOrderPage,{sumPrice:this.sumPrice,sumPiece:this.sumPiece});
+    this.appCtrl.getRootNav().push(FillOrderPage, { sumPrice: this.sumPrice, sumPiece: this.sumPiece });
     // this.navCtrl.push(FillOrderPag);
- }
+  }
 
 }

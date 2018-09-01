@@ -28,7 +28,7 @@
           <ion-list>
             <ion-item *ngFor="let detail of order.detail;">
               <ion-avatar item-start>
-                <img src="img/thumbnail-totoro.png">
+                <img src="{{imageUrl}}{{detail.ImageId}}">
               </ion-avatar>
               <h2>{{detail.Name}}</h2>
               <h3 text-right color="danger">￥{{detail.Price}}x{{detail.Piece}}</h3>
@@ -46,26 +46,12 @@
           </ion-list>
         </ion-card-content>
       </ion-card>
-      <!-- <ion-row>
-        <ion-col text-start>
-          <span class="price">￥{{goods.Price}}</span>
-          <ul class="btn-numbox">
-            <li>
-              <ul class="count">
-                <li>
-                  <span id="num-add" class="num-add" (click)="addCart(goods)">+</span>
-                </li>
-                <li>
-                  <span class="input-num" id="input-num" (click)="showConfirm(goods)">{{goods.Piece}}</span>
-                </li>
-                <li>
-                  <span id="num-remove" class="num-remove" (click)="removeCart(goods)">-</span>
-                </li>
-              </ul>
-            </li>
-            </ul>
-        </ion-col>
-      </ion-row> -->
     </ion-item>
   </ion-list>
+
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="订单加载中...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

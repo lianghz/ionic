@@ -49,6 +49,7 @@ require('./routes/settle')(app);
 require('./routes/supplier')(app);
 require('./routes/finance')(app);
 require('./routes/customer')(app);
+require('./routes/community')(app);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

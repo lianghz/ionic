@@ -12,7 +12,13 @@ import 'rxjs/add/operator/map';
 @Injectable()
 export class WholesaleProvider {
   data: any;
-
+  apiUrl1='/api';
+  apiCompany='http://192.168.1.38';
+  apiHome='http://192.168.0.153'
+  apiPost=":8090";
+  apiUrl = this.apiUrl1;
+  public imageURl=this.apiHome + ":8080/images/";
+  
   //===event===============================
   cartEvent: EventEmitter<number> = new EventEmitter();
   hiddenAddrEvent: EventEmitter<boolean> = new EventEmitter();
@@ -26,6 +32,8 @@ export class WholesaleProvider {
 
   constructor(public http: Http) {
     this.data = null;
+    if(this.apiUrl!=this.apiUrl1)
+      this.apiUrl += this.apiPost;
   }
 
   getReviews(url: string, args: any) {
@@ -83,37 +91,62 @@ export class WholesaleProvider {
 
   addCart(params: CartParams) {
 
-    return this.postReview('/api/document/addShoppingCar', params);
+    return this.postReview(this.apiUrl + '/document/addShoppingCar', params);
   }
 
   modifyCart(params: CartParams) {
 
-    return this.postReview('/api/document/addShoppingCar', params);
+    return this.postReview(this.apiUrl + '/document/addShoppingCar', params);
   }
 
 
   getArea(params) {
-    return this.getReviews('/api/common/getArea', params);
+    return this.getReviews(this.apiUrl + '/common/getArea', params);
   }
   getAddress(params) {
-    return this.getReviews('/api/customer/getAddress', params);
+    return this.getReviews(this.apiUrl + '/customer/getAddress', params);
   }
   getDefaultAddress(params) {
-    return this.getReviews('/api/customer/getDefaultAddress', params);
+    return this.getReviews(this.apiUrl + '/customer/getDefaultAddress', params);
   }
   addAddress(params) {
-    return this.postReview('/api/customer/addAddress', params);
+    return this.postReview(this.apiUrl + '/customer/addAddress', params);
 
   }
   getPayType(params) {
-    return this.getReviews('/api/finance/getMoneyType', params);
+    return this.getReviews(this.apiUrl + '/finance/getMoneyType', params);
   }
   convertOrder(params) {
-    return this.postReview('/api/document/convertOrder', params);
+    return this.postReview(this.apiUrl + '/document/convertOrder', params);
   }
+
+  getWebGoods(params){
+    return this.getReviews(this.apiUrl + '/goods/getwebgoods', params);
+  }
+
+  getAdvert(params){
+    return this.getReviews(this.apiUrl + '/community/getAdvert', params);
+  }
+  getNavigation(params){
+    return this.getReviews(this.apiUrl + '/goods/getNavigation', params);
+  }
+  getGoodsPage(params){
+    return this.getReviews(this.apiUrl + '/goods/getGoodsInfoPage', params);
+  }
+  getCarGoods(params){
+    return this.getReviews(this.apiUrl + '/document/getCarGoods', params);
+  }
+  getCarCount(params){
+      this.getReviews(this.apiUrl + '/document/getCarCount', params).then(data=>{
+      let count = JSON.parse(JSON.stringify(data))[0].goodsCount;
+      this.cartEvent.emit(count);
+    });
+  }
+  
+  
   getOrderList(params) {
     let headers: any;
-    this.getReviews('/api/document/getOrderList', params).then(data => {
+    return this.getReviews(this.apiUrl + '/document/getOrderList', params).then(data => {
       headers = data[0];
       let details = JSON.parse(JSON.stringify(data[1]));
 
@@ -130,25 +163,26 @@ export class WholesaleProvider {
         item = { "header": item, "detail": detail, "sumAmount": sumAmount, "sumQuantity": sumQuantity };
         return item;
       })
-      this.orderEvent.emit(headers);
+      // this.orderEvent.emit(headers);
+      return headers;
     });
   }
 
   login(params: LoginParams) {
-    return this.postReview('/api/customer/login', params);
+    return this.postReview(this.apiUrl + '/customer/login', params);
   }
 
   refreshToken() {
-    return this.postReview('/api/customer/refresh', { id: 0 });
+    return this.postReview(this.apiUrl + '/customer/refresh', { id: 0 });
   }
 
   verifyToken() {
 
-    return this.postReview('/api/customer/verifytoken', { id: 0 });
+    return this.postReview(this.apiUrl + '/customer/verifytoken', { id: 0 });
   }
 
   signout(customerParams:CustomerParams){
-    return this.postReview('/api/customer/addCustomer',customerParams);
+    return this.postReview(this.apiUrl + '/customer/addCustomer',customerParams);
   }
 
 

@@ -17,25 +17,45 @@ import { CartPage } from '../cart/cart';
 })
 
 export class OrderPage {
-  params={
-    pageNo:1
+  params = {
+    pageNo: 1
   }
-  orders:any;
-  cartParams = new CartParams(1,0,0,1,0,1);
-  constructor(public navCtrl: NavController, public navParams: NavParams,public service : WholesaleProvider,
+  orders: [any];
+  cartParams = new CartParams(1, 0, 0, 1, 0, 1);
+  imageUrl:string;
+  constructor(public navCtrl: NavController, public navParams: NavParams, public service: WholesaleProvider,
     public loadingCtrl: LoadingController) {
+      this.imageUrl = service.imageURl;
   }
 
   ionViewDidLoad() {
     // console.log('ionViewDidLoad OrderPage');
-    this.service.getOrderList(this.params);
-    this.service.orderEvent.subscribe(data=>{
+    this.service.getOrderList(this.params).then(data=>{
       this.orders = data;
-      // console.log("this.orders="+JSON.stringify(this.orders));
-    })
+    });
+    // this.service.orderEvent.subscribe(data => {
+    //   this.orders = data;
+    //   console.log("this.orders="+this.params.pageNo);
+    // })
   }
-
-  buyMore(order){
+  doInfinite(infiniteScroll) {
+    this.params.pageNo ++;
+    console.log('this.params.pageNo='+this.params.pageNo);
+    this.service.getOrderList(this.params).then(data=>{
+      let rs = JSON.parse(JSON.stringify(data));
+      if(rs.length==0){
+        this.params.pageNo--;
+      }
+      for (let index = 0; index < rs.length; index++) {
+        const element = rs[index];
+        this.orders.push(element);
+      }
+      infiniteScroll.complete();
+    });
+    // this.service.getOrderList(this.params);
+    
+  }
+  buyMore(order) {
     let emitNum: number;
     emitNum = 0;
     const loader = this.loadingCtrl.create({
@@ -45,13 +65,13 @@ export class OrderPage {
     order.forEach(element => {
       this.cartParams.goodsId = element.GoodsId;
       this.cartParams.piece = element.Piece;
-      emitNum += element.Piece*1;
-      this.service.addCart(this.cartParams).then(data=>{
+      emitNum += element.Piece * 1;
+      this.service.addCart(this.cartParams).then(data => {
         // console.log("1")
       })
       // console.log("2")
     });
-    
+
     loader.dismiss();
     this.service.cartEvent.emit(emitNum);
     this.navCtrl.push(CartPage);
