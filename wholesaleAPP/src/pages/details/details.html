@@ -31,7 +31,7 @@
   <ion-row no-padding color="danger">
     <ion-col text-left no-padding>
         <button ion-button icon-end color="danger" (click)="addCart(goods)">
-            <ion-icon name="logo-yen">{{goods.Price}}</ion-icon>
+            <ion-icon name="logo-yen">{{goods.Price|number:'.2'}}</ion-icon>
           </button>
      
     </ion-col>

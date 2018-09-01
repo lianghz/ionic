@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { DetailsPage } from '../details/details';
 
 @Component({
   selector: 'page-home',
@@ -35,6 +36,8 @@ export class HomePage {
     // console.log("this.images="+this.images.length)
     // this.getArea(0);
   }
-
+  goDetail(goods){
+    this.navCtrl.push(DetailsPage,{goods:goods});
+  }
 
 }

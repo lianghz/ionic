@@ -1,46 +1,68 @@
 <ion-header>
-  <ion-navbar>
+  <ion-navbar style="opacity: 0.6">
     <ion-title>
     </ion-title>
     <ion-searchbar (ionInput)="getItems($event)" placeholder="卢记生鲜"></ion-searchbar>
   </ion-navbar>
 </ion-header>
-<ion-content>
-  <ion-slides pager style="height:200px">
+<ion-content fullscreen>
+  <ion-slides pager>
     <ion-slide *ngFor="let advert of adverts;">
-        <img src="{{imageUrl}}{{advert.ImageName}}">
+      <img src="{{imageUrl}}{{advert.ImageName}}">
+      <div class="cover"></div>
+      <span class="title">{{advert.Titel}}</span>
     </ion-slide>
   </ion-slides>
+
   <ion-grid>
-    <ion-row>
-      <ion-col col-12>促销商品 </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-4 *ngFor="let goods of goods1;">
-        <ion-avatar>
-          <img src="{{imageUrl}}{{goods.ImageId}}">
-        </ion-avatar>
-      </ion-col>
-    </ion-row>
+    <ion-item-divider class="t-header" color="light"> 促销商品 </ion-item-divider>
+    <div class="product">
+      <ion-row>
+        <ion-col tappable col-4 *ngFor="let goods of goods1" (click)="goDetail(goods)">
+          <div class="imgH">
+            <img src="{{imageUrl}}{{goods.ImageId}}">
+          </div>
+          <p>{{goods.Name}}</p>
+          <div class="list-price buy">
+            <span class="price-new"><i>￥</i> {{goods.Price|number:'.2'}}</span>
+            <!-- <i class="del">￥<span>{{p.ReservePrice}}</span></i> -->
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
   </ion-grid>
   <ion-grid>
-    <ion-row>
-      <ion-col col-12>热销商品 </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-4 *ngFor="let goods of goods2;">
-        <img src="{{imageUrl}}{{goods.ImageId}}">
-      </ion-col>
-    </ion-row>
+    <ion-item-divider class="t-header" color="light"> 热销商品 </ion-item-divider>
+    <div class="product">
+        <ion-row>
+          <ion-col tappable col-4 *ngFor="let goods of goods2" (click)="goDetail(goods)">
+            <div class="imgH">
+              <img src="{{imageUrl}}{{goods.ImageId}}">
+            </div>
+            <p>{{goods.Name}}</p>
+            <div class="list-price buy">
+              <span class="price-new"><i>￥</i> {{goods.Price|number:'.2'}}</span>
+              <!-- <i class="del">￥<span>{{p.ReservePrice}}</span></i> -->
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
   </ion-grid>
   <ion-grid>
-    <ion-row>
-      <ion-col col-12>今日特价 </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col col-4 *ngFor="let goods of goods3;">
-        <img src="{{imageUrl}}{{goods.ImageId}}">
-      </ion-col>
-    </ion-row>
+    <ion-item-divider class="t-header" color="light"> 今日特价 </ion-item-divider>
+    <div class="product">
+        <ion-row>
+          <ion-col tappable col-4 *ngFor="let goods of goods3" (click)="goDetail(goods)">
+            <div class="imgH">
+              <img src="{{imageUrl}}{{goods.ImageId}}">
+            </div>
+            <p>{{goods.Name}}</p>
+            <div class="list-price buy">
+              <span class="price-new"><i>￥</i> {{goods.Price|number:'.2'}}</span>
+              <!-- <i class="del">￥<span>{{p.ReservePrice}}</span></i> -->
+            </div>
+          </ion-col>
+        </ion-row>
+      </div>
   </ion-grid>
 </ion-content>
