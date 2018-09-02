@@ -4,127 +4,11 @@ webpackJsonp([8],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddressListPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__address_address__ = __webpack_require__(108);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__ = __webpack_require__(34);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the AddressListPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var AddressListPage = /** @class */ (function () {
-    // addrPostParams = {
-    //   addressId:"",
-    //   regionId1: "",
-    //   regionId2: "",
-    //   regionId3: "",
-    //   regionId4: "",
-    //   regionId5: "",
-    //   regionName1: "",
-    //   regionName2: "",
-    //   regionName3: "",
-    //   regionName4: "",
-    //   regionName5: "",
-    //   address: "",
-    //   phone: "",
-    //   linkMan: ""
-    // };
-    function AddressListPage(navCtrl, navParams, service, authorization) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.service = service;
-        this.authorization = authorization;
-        this.addrparams = { id: Math.random() };
-        this.addressId = -1;
-    }
-    AddressListPage.prototype.ionViewWillEnter = function () {
-        this.authorization.verifyToken(this.navCtrl);
-    };
-    AddressListPage.prototype.ionViewDidLoad = function () {
-        this.getAddr();
-    };
-    AddressListPage.prototype.goAddr = function (item) {
-        // console.log("item=" + item);
-        if (item) {
-            this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["a" /* AddrPostParams */](item.AddressId || 0, item.RegionId1 || 0, item.RegionId2 || 0, item.RegionId3 || 0, item.RegionId4 || 0, item.RegionId5 || 0, item.Name1 || "", item.Name2 || "", item.Name3 || "", item.Name4 || "", item.Name5 || "", item.Address || "", item.Phone || "", item.LinkMan || "", 1);
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__address_address__["a" /* AddressPage */], this.addrPostParams);
-        }
-        else {
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__address_address__["a" /* AddressPage */]);
-        }
-        // if (this.addrPostParams) {
-        //   this.addrPostParams.addressId = item.AddressId;
-        //   this.addrPostParams.regionId1 = item.RegionId1;
-        //   this.addrPostParams.regionId2 = item.RegionId2;
-        //   this.addrPostParams.regionId3 = item.RegionId3;
-        //   this.addrPostParams.regionId4 = item.RegionId4;
-        //   this.addrPostParams.regionId5 = item.RegionId5;
-        //   this.addrPostParams.regionName1 = item.Name1;
-        //   this.addrPostParams.regionName2 = item.Name2;
-        //   this.addrPostParams.regionName3 = item.Name3;
-        //   this.addrPostParams.regionName4 = item.Name4;
-        //   this.addrPostParams.regionName5 = item.Name5;
-        //   this.addrPostParams.address = item.Address;
-        //   this.addrPostParams.phone = item.Phone;
-        //   this.addrPostParams.linkMan = item.LinkMan;
-        //   this.navCtrl.push(AddressPage,this.addrPostParams);
-        //   // this.service.addrPostParamsEvent.emit(this.addrPostParams);
-        // }
-    };
-    AddressListPage.prototype.getAddr = function () {
-        var _this = this;
-        this.service.getAddress(this.addrparams).then(function (data) {
-            _this.addressList = data;
-        });
-    };
-    AddressListPage.prototype.goFillOrder = function (item) {
-        if (item) {
-            this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["a" /* AddrPostParams */](item.AddressId || 0, item.RegionId1 || 0, item.RegionId2 || 0, item.RegionId3 || 0, item.RegionId4 || 0, item.RegionId5 || 0, item.Name1 || "", item.Name2 || "", item.Name3 || "", item.Name4 || "", item.Name5 || "", item.Address || "", item.Phone || "", item.LinkMan || "", 1);
-        }
-        this.service.addrPostParamsEvent.emit(this.addrPostParams);
-        this.navCtrl.pop();
-    };
-    AddressListPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-address-list',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/'<!--\n  Generated template for the AddressListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>选择收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-list>\n    <ion-grid style="padding: 0px;">\n      <ion-item style="padding: 0px;" *ngFor="let address of addressList">\n        <ion-row style="padding: 0px;">\n          <ion-col style="padding: 0px;" col-9 (click)="goFillOrder(address)">\n            \n            <h2>{{address.LinkMan}} {{address.Phone}}<ion-badge item-end color="danger" *ngIf="address.isDefault==1">默认</ion-badge></h2>\n            <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}\n              <br>{{address.Address}}</p>\n          </ion-col>\n          <ion-col col-3 text-end style="padding: 0px;">\n            <button ion-button icon-only clear item-end (click)="goAddr(address)" style="padding: 0px;">\n              <ion-icon name="create"></ion-icon>\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-item>\n    </ion-grid>\n  </ion-list>\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <button ion-button full (click)="goAddr()">\n      <ion-icon name="add">新建收货地址</ion-icon>\n    </button>\n  </ion-toolbar>\n</ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
-            __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */]])
-    ], AddressListPage);
-    return AddressListPage;
-}());
-
-//# sourceMappingURL=address-list.js.map
-
-/***/ }),
-
-/***/ 108:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddressPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_authorization_authorization__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_authorization_authorization__ = __webpack_require__(26);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -262,7 +146,7 @@ var AddressPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-address',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address\address.html"*/'<!--\n  Generated template for the AddressPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>新建收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n    <ion-item>\n      <ion-label color="primary">收&nbsp;&nbsp;货&nbsp;&nbsp;人</ion-label>\n      <ion-input maxlength="50" placeholder="请输入姓名" clearInput="true" [(ngModel)]="addrParams.linkMan"></ion-input>\n    </ion-item>\n  \n    <ion-item>\n      <ion-label color="primary">手机号码</ion-label>\n      <ion-input type="number" placeholder="请输入" clearInput="true"  [(ngModel)]="addrParams.phone"></ion-input>\n    </ion-item>\n    <ion-item (click)="showArea()">\n        <ion-icon name="more" item-end (click)="showArea()"></ion-icon>\n      <ion-label color="primary">所在地区</ion-label>\n      <ion-input placeholder="请选择" value="{{addrAreas}}" readonly="true"></ion-input>\n    </ion-item>\n    <ion-item>\n      <ion-label color="primary">详细地址</ion-label>\n      <ion-textarea maxlength="200" placeholder="街道、楼牌号等" clearInput="true" [(ngModel)]="addrParams.address"></ion-textarea>\n    </ion-item>\n  \n  </ion-list>\n  <ion-item>\n    <ion-label>设为默认地址</ion-label>\n    <ion-toggle checked="{{defaultAddr}}" (click)="setDefault()"></ion-toggle>\n  </ion-item>\n  <ion-area [hiddenAddr]="hiddenAddr" ></ion-area>\n</ion-content>\n<ion-footer>\n    <ion-toolbar>\n      <button ion-button full (click)="addAddr()">\n        <ion-icon name="save">保存并使用</ion-icon>\n      </button>\n    </ion-toolbar>\n  </ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address\address.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */],
             __WEBPACK_IMPORTED_MODULE_3__providers_authorization_authorization__["a" /* AuthorizationProvider */]])
     ], AddressPage);
     return AddressPage;
@@ -272,18 +156,18 @@ var AddressPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 109:
+/***/ 108:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return FillOrderPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__address_list_address_list__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__address_list_address_list__ = __webpack_require__(109);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__result_result__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__result_ok_result_ok__ = __webpack_require__(55);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_authorization_authorization__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__providers_authorization_authorization__ = __webpack_require__(26);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -373,7 +257,7 @@ var FillOrderPage = /** @class */ (function () {
     };
     FillOrderPage.prototype.convertOrder = function () {
         var _this = this;
-        this.payParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["e" /* PayParams */](1, 0, this.payType, this.addrParams.address, this.addrParams.phone, this.addrParams.linkMan, "", 0, this.addrParams.addressId, 0, "sys");
+        this.payParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["f" /* PayParams */](1, 0, this.payType, this.addrParams.address, this.addrParams.phone, this.addrParams.linkMan, "", 0, this.addrParams.addressId, 0, "sys");
         if (!this.addrParams.address) {
             this.showAlert('信息不完整', '请选择一个收货地址');
             return;
@@ -404,13 +288,129 @@ var FillOrderPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-fill-order',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\fill-order\fill-order.html"*/'<!--\n  Generated template for the FillOrderPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>填写订单</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-card>\n    <ion-card-header>\n      <ion-item style="padding: 0">\n        <ion-icon name="mail"> 收货地址</ion-icon>\n        <button ion-button icon-only clear item-end icon-end (click)="goAddressList()">\n          <ion-icon name="create"></ion-icon>\n        </button>\n      </ion-item>\n    </ion-card-header>\n    <ion-card-content>\n      {{addrParams.linkMan}} {{addrParams.phone}}\n      <br> {{addrParams.regionName}}\n      <br> {{addrParams.address}}\n    </ion-card-content>\n  </ion-card>\n  <ion-card>\n    <ion-card-header>\n      <ion-item style="padding: 0">\n        <ion-label> <ion-icon name="card"> 支付方式</ion-icon></ion-label>\n        <ion-select [(ngModel)]="payType" multiple="false" cancelText="取消" okText="确定">\n          <ion-option *ngFor="let item of payTypes" value="{{item.MoneyType}}">{{item.TypeDescription}}</ion-option>\n        </ion-select>\n      </ion-item>\n    </ion-card-header>\n    <ion-card-content>\n      选择您使用的支付方式，支持微信、支付宝、货到付款\n    </ion-card-content>\n  </ion-card>\n  <!-- <ion-card>\n    <ion-card-header>\n        <ion-item style="padding: 0">\n            <ion-icon name="time"> 收货时间</ion-icon>\n            <button ion-button icon-only clear item-end icon-end>\n              <ion-icon name="create"></ion-icon>\n            </button>\n          </ion-item>\n    </ion-card-header>\n    <ion-card-content>\n      The British use the term "header", but the American term "head-shot" the English simply refuse to adopt.\n    </ion-card-content>\n  </ion-card> -->\n  <ion-card>\n    <ion-card-header>\n      <ion-item style="padding: 0">\n        <ion-icon name="cart"> 商品信息</ion-icon>\n        <button ion-button icon-only clear item-end icon-end>\n          <ion-icon name="more"></ion-icon>\n        </button>\n      </ion-item>\n    </ion-card-header>\n    <ion-card-content>\n      商品数量:{{sumPiece|number:\'.2\'}} <br>\n      商品金额:{{sumPrice|number:\'.2\'}}<br>\n      运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费:0;\n\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n<ion-footer no-padding style="padding: 0px">\n  <ion-toolbar no-padding style="padding: 0px">\n    ￥:{{sumPrice|number:\'.2\'}}\n    <ion-buttons end>\n      <button ion-button color="danger" (click)="convertOrder()">\n        提交订单\n        <ion-icon name="send"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\fill-order\fill-order.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["g" /* WholesaleProvider */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_6__providers_authorization_authorization__["a" /* AuthorizationProvider */]])
     ], FillOrderPage);
     return FillOrderPage;
 }());
 
 //# sourceMappingURL=fill-order.js.map
+
+/***/ }),
+
+/***/ 109:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddressListPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__address_address__ = __webpack_require__(107);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__ = __webpack_require__(26);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the AddressListPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var AddressListPage = /** @class */ (function () {
+    // addrPostParams = {
+    //   addressId:"",
+    //   regionId1: "",
+    //   regionId2: "",
+    //   regionId3: "",
+    //   regionId4: "",
+    //   regionId5: "",
+    //   regionName1: "",
+    //   regionName2: "",
+    //   regionName3: "",
+    //   regionName4: "",
+    //   regionName5: "",
+    //   address: "",
+    //   phone: "",
+    //   linkMan: ""
+    // };
+    function AddressListPage(navCtrl, navParams, service, authorization) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.service = service;
+        this.authorization = authorization;
+        this.addrparams = { id: Math.random() };
+        this.addressId = -1;
+    }
+    AddressListPage.prototype.ionViewWillEnter = function () {
+        this.authorization.verifyToken(this.navCtrl);
+    };
+    AddressListPage.prototype.ionViewDidLoad = function () {
+        this.getAddr();
+    };
+    AddressListPage.prototype.goAddr = function (item) {
+        // console.log("item=" + item);
+        if (item) {
+            this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["a" /* AddrPostParams */](item.AddressId || 0, item.RegionId1 || 0, item.RegionId2 || 0, item.RegionId3 || 0, item.RegionId4 || 0, item.RegionId5 || 0, item.Name1 || "", item.Name2 || "", item.Name3 || "", item.Name4 || "", item.Name5 || "", item.Address || "", item.Phone || "", item.LinkMan || "", 1);
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__address_address__["a" /* AddressPage */], this.addrPostParams);
+        }
+        else {
+            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__address_address__["a" /* AddressPage */]);
+        }
+        // if (this.addrPostParams) {
+        //   this.addrPostParams.addressId = item.AddressId;
+        //   this.addrPostParams.regionId1 = item.RegionId1;
+        //   this.addrPostParams.regionId2 = item.RegionId2;
+        //   this.addrPostParams.regionId3 = item.RegionId3;
+        //   this.addrPostParams.regionId4 = item.RegionId4;
+        //   this.addrPostParams.regionId5 = item.RegionId5;
+        //   this.addrPostParams.regionName1 = item.Name1;
+        //   this.addrPostParams.regionName2 = item.Name2;
+        //   this.addrPostParams.regionName3 = item.Name3;
+        //   this.addrPostParams.regionName4 = item.Name4;
+        //   this.addrPostParams.regionName5 = item.Name5;
+        //   this.addrPostParams.address = item.Address;
+        //   this.addrPostParams.phone = item.Phone;
+        //   this.addrPostParams.linkMan = item.LinkMan;
+        //   this.navCtrl.push(AddressPage,this.addrPostParams);
+        //   // this.service.addrPostParamsEvent.emit(this.addrPostParams);
+        // }
+    };
+    AddressListPage.prototype.getAddr = function () {
+        var _this = this;
+        this.service.getAddress(this.addrparams).then(function (data) {
+            _this.addressList = data;
+        });
+    };
+    AddressListPage.prototype.goFillOrder = function (item) {
+        if (item) {
+            this.addrPostParams = new __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["a" /* AddrPostParams */](item.AddressId || 0, item.RegionId1 || 0, item.RegionId2 || 0, item.RegionId3 || 0, item.RegionId4 || 0, item.RegionId5 || 0, item.Name1 || "", item.Name2 || "", item.Name3 || "", item.Name4 || "", item.Name5 || "", item.Address || "", item.Phone || "", item.LinkMan || "", 1);
+        }
+        this.service.addrPostParamsEvent.emit(this.addrPostParams);
+        this.navCtrl.pop();
+    };
+    AddressListPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-address-list',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/'<!--\n  Generated template for the AddressListPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>选择收货地址</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-list>\n    <ion-grid style="padding: 0px;">\n      <ion-item style="padding: 0px;" *ngFor="let address of addressList">\n        <ion-row style="padding: 0px;">\n          <ion-col style="padding: 0px;" col-9 (click)="goFillOrder(address)">\n            \n            <h2>{{address.LinkMan}} {{address.Phone}}<ion-badge item-end color="danger" *ngIf="address.isDefault==1">默认</ion-badge></h2>\n            <p>{{address.Name1}}{{address.Name2}}{{address.Name3}}{{address.Name4}}{{address.Name5}}\n              <br>{{address.Address}}</p>\n          </ion-col>\n          <ion-col col-3 text-end style="padding: 0px;">\n            <button ion-button icon-only clear item-end (click)="goAddr(address)" style="padding: 0px;">\n              <ion-icon name="create"></ion-icon>\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-item>\n    </ion-grid>\n  </ion-list>\n</ion-content>\n\n<ion-footer>\n  <ion-toolbar>\n    <button ion-button full (click)="goAddr()">\n      <ion-icon name="add">新建收货地址</ion-icon>\n    </button>\n  </ion-toolbar>\n</ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\address-list\address-list.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_3__providers_wholesale_wholesale__["g" /* WholesaleProvider */],
+            __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */]])
+    ], AddressListPage);
+    return AddressListPage;
+}());
+
+//# sourceMappingURL=address-list.js.map
 
 /***/ }),
 
@@ -472,7 +472,7 @@ var ResultPage = /** @class */ (function () {
             this.showAlert('信息不完整', '请选择商品缺货的处理方式！');
             return;
         }
-        this.payParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["e" /* PayParams */](1, 0, this.results.payType, this.results.address, this.results.phone, this.results.linkMan, "", this.method, this.results.addressId, 0, "sys");
+        this.payParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* PayParams */](1, 0, this.results.payType, this.results.address, this.results.phone, this.results.linkMan, "", this.method, this.results.addressId, 0, "sys");
         this.service.convertOrder(this.payParams).then(function (data) {
             var dataResult = JSON.parse(JSON.stringify(data));
             if (dataResult[0][0].pramCode == 0) {
@@ -499,7 +499,7 @@ var ResultPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-result',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\result\result.html"*/'<!--\n  Generated template for the ResultPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>商品有缺货</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <!-- <ion-list *ngIf="!hasmore"> -->\n  <ion-list radio-group [(ngModel)]="method">\n    <ion-list-header>\n      {{result}}\n    </ion-list-header>\n    <ion-item>\n        <ion-label>只订有货的产品</ion-label>\n        <ion-radio value="1"></ion-radio>\n    </ion-item>\n    <ion-item>\n        <ion-label>按最大可满足数订货</ion-label>\n        <ion-radio value="2"></ion-radio>\n    </ion-item>\n    <ion-item>\n        <ion-label>放弃购买</ion-label>\n        <ion-radio value="3"></ion-radio>\n    </ion-item>\n  </ion-list>\n\n  <ion-list>\n      <ion-list-header>\n        缺货商品\n      </ion-list-header>\n      <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let good of goods;let i=index">\n          <ion-thumbnail item-start>\n            <img src="img/thumbnail-totoro.png">\n          </ion-thumbnail>\n          <h2>{{good.Goodsname}}</h2>\n          <p>{{good.Description}}</p>\n          <ion-row>\n            <ion-col text-start>\n                  购买数:{{good.BookPiece}}\n            </ion-col>\n            <ion-col text-start>\n                库存数:{{good.InvalidStockPiece}}\n            </ion-col>\n          </ion-row>\n        </ion-item>\n    </ion-list>\n    <ion-footer no-padding style="padding: 0px">\n      <ion-toolbar no-padding style="padding: 0px">\n        ￥:{{results.amount|number:\'.2\'}}\n        <ion-buttons end>\n          <button ion-button color="danger" (click)="convertOrder()">\n            请选择提交\n            <ion-icon name="send"></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-toolbar>\n    </ion-footer>\n</ion-content>\n'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\result\result.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]])
     ], ResultPage);
     return ResultPage;
@@ -513,13 +513,14 @@ var ResultPage = /** @class */ (function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return WholesaleProvider; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "g", function() { return WholesaleProvider; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AddrPostParams; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return PayParams; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CartParams; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return LoginParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "f", function() { return PayParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CartParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return CartNumParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "e", function() { return LoginParams; });
 /* unused harmony export TokenStatus */
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return CustomerParams; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return CustomerParams; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_http__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_rxjs_add_operator_map__ = __webpack_require__(258);
@@ -655,7 +656,8 @@ var WholesaleProvider = /** @class */ (function () {
         var _this = this;
         this.getReviews(this.apiUrl + '/document/getCarCount', params).then(function (data) {
             var count = JSON.parse(JSON.stringify(data))[0].goodsCount;
-            _this.cartEvent.emit(count);
+            var cartNumParams = new CartNumParams("over", count);
+            _this.cartEvent.emit(cartNumParams);
         });
     };
     WholesaleProvider.prototype.getOrderList = function (params) {
@@ -694,9 +696,10 @@ var WholesaleProvider = /** @class */ (function () {
     };
     WholesaleProvider = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_1__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_0__angular_http__["b" /* Http */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_0__angular_http__["b" /* Http */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_0__angular_http__["b" /* Http */]) === "function" && _a || Object])
     ], WholesaleProvider);
     return WholesaleProvider;
+    var _a;
 }());
 
 var AddrPostParams = /** @class */ (function () {
@@ -751,6 +754,15 @@ var CartParams = /** @class */ (function () {
         this.warehouseId = warehouseId;
     }
     return CartParams;
+}());
+
+var CartNumParams = /** @class */ (function () {
+    function CartNumParams(addType, //add or over
+        num) {
+        this.addType = addType;
+        this.num = num;
+    }
+    return CartNumParams;
 }());
 
 var LoginParams = /** @class */ (function () {
@@ -818,11 +830,11 @@ webpackEmptyAsyncContext.id = 120;
 
 var map = {
 	"../pages/address-list/address-list.module": [
-		287,
+		288,
 		7
 	],
 	"../pages/address/address.module": [
-		288,
+		287,
 		6
 	],
 	"../pages/details/details.module": [
@@ -842,11 +854,11 @@ var map = {
 		2
 	],
 	"../pages/result-ok/result-ok.module": [
-		293,
+		294,
 		1
 	],
 	"../pages/result/result.module": [
-		294,
+		293,
 		0
 	]
 };
@@ -876,7 +888,7 @@ module.exports = webpackAsyncContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__order_order__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_login__ = __webpack_require__(53);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_wholesale_wholesale__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_authorization_authorization__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__providers_authorization_authorization__ = __webpack_require__(26);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -915,16 +927,17 @@ var MyPage = /** @class */ (function () {
     MyPage.prototype.logout = function () {
         window.localStorage.removeItem('token');
         this.navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_3__login_login__["a" /* LoginPage */]);
-        this.service.cartEvent.emit(0);
+        var cartNumParams = new __WEBPACK_IMPORTED_MODULE_4__providers_wholesale_wholesale__["b" /* CartNumParams */]("over", 0);
+        this.service.cartEvent.emit(cartNumParams);
     };
     MyPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-my',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\my\my.html"*/'<ion-header>\n  <ion-toolbar>\n    <ion-title>{{tokenParam.userName||"我的"}}</ion-title>\n    <ion-buttons end *ngIf="tokenParam.userName">\n      <button ion-button color="royal" (click)="logout()">注销&nbsp; \n        <ion-icon name="log-out"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-header>\n\n\n<ion-content padding>\n<button ion-button full (click)="goOrder()">查看订单</button>\n</ion-content>\n'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\my\my.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_4__providers_wholesale_wholesale__["f" /* WholesaleProvider */], __WEBPACK_IMPORTED_MODULE_5__providers_authorization_authorization__["a" /* AuthorizationProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_4__providers_wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_5__providers_authorization_authorization__["a" /* AuthorizationProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_authorization_authorization__["a" /* AuthorizationProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]) === "function" && _d || Object])
     ], MyPage);
     return MyPage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=my.js.map
@@ -1052,7 +1065,7 @@ var SortPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-sort',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\sort\sort.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      商品分类\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content fullscreen>\n    <ion-grid no-padding>\n    <ion-row>\n      <ion-col col-3 class="menus">\n        <ion-scroll scrollY="true" style="height:100%">\n          <ion-list>\n            <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->\n              <ion-item style="padding-left: 0px;" class="menuItem" *ngFor="let sort of sorts;let i=index" [ngClass]="{\'active\': i==0}" text-center (click)="getGoods(sort,$event)">\n                {{sort.Description}}\n              </ion-item>\n          </ion-list>\n        </ion-scroll>\n      </ion-col>\n      <ion-col class="items">\n          <ion-scroll scrollY="true" #scroll style="height:100%">\n            <ion-goods [goods]="goods"></ion-goods>\n            <ion-row>\n              <ion-col class="nodata" text-center *ngIf="!hasmore">\n                没有商品啦 ♪(^∇^*)\n              </ion-col>\n            </ion-row>\n            <ion-row #spinner *ngIf="hasmore">\n              <ion-col text-center>\n                <ion-spinner>数据加载中</ion-spinner>\n              </ion-col>\n            </ion-row>\n          </ion-scroll>\n      </ion-col>\n    </ion-row>\n  </ion-grid>\n\n</ion-content>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\sort\sort.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */]])
     ], SortPage);
     return SortPage;
 }());
@@ -1117,7 +1130,7 @@ var HomePage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-home',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\home\home.html"*/'<ion-header>\n  <ion-navbar style="opacity: 0.6">\n    <ion-title>\n    </ion-title>\n    <ion-searchbar (ionInput)="getItems($event)" placeholder="卢记生鲜"></ion-searchbar>\n  </ion-navbar>\n</ion-header>\n<ion-content fullscreen>\n  <ion-slides pager>\n    <ion-slide *ngFor="let advert of adverts;">\n      <img src="{{imageUrl}}{{advert.ImageName}}">\n      <div class="cover"></div>\n      <span class="title">{{advert.Titel}}</span>\n    </ion-slide>\n  </ion-slides>\n\n  <ion-grid>\n    <ion-item-divider class="t-header" color="light"> 促销商品 </ion-item-divider>\n    <div class="product">\n      <ion-row>\n        <ion-col tappable col-4 *ngFor="let goods of goods1" (click)="goDetail(goods)">\n          <div class="imgH">\n            <img src="{{imageUrl}}{{goods.ImageId}}">\n          </div>\n          <p>{{goods.Name}}</p>\n          <div class="list-price buy">\n            <span class="price-new"><i>￥</i> {{goods.Price|number:\'.2\'}}</span>\n            <!-- <i class="del">￥<span>{{p.ReservePrice}}</span></i> -->\n          </div>\n        </ion-col>\n      </ion-row>\n    </div>\n  </ion-grid>\n  <ion-grid>\n    <ion-item-divider class="t-header" color="light"> 热销商品 </ion-item-divider>\n    <div class="product">\n        <ion-row>\n          <ion-col tappable col-4 *ngFor="let goods of goods2" (click)="goDetail(goods)">\n            <div class="imgH">\n              <img src="{{imageUrl}}{{goods.ImageId}}">\n            </div>\n            <p>{{goods.Name}}</p>\n            <div class="list-price buy">\n              <span class="price-new"><i>￥</i> {{goods.Price|number:\'.2\'}}</span>\n              <!-- <i class="del">￥<span>{{p.ReservePrice}}</span></i> -->\n            </div>\n          </ion-col>\n        </ion-row>\n      </div>\n  </ion-grid>\n  <ion-grid>\n    <ion-item-divider class="t-header" color="light"> 今日特价 </ion-item-divider>\n    <div class="product">\n        <ion-row>\n          <ion-col tappable col-4 *ngFor="let goods of goods3" (click)="goDetail(goods)">\n            <div class="imgH">\n              <img src="{{imageUrl}}{{goods.ImageId}}">\n            </div>\n            <p>{{goods.Name}}</p>\n            <div class="list-price buy">\n              <span class="price-new"><i>￥</i> {{goods.Price|number:\'.2\'}}</span>\n              <!-- <i class="del">￥<span>{{p.ReservePrice}}</span></i> -->\n            </div>\n          </ion-col>\n        </ion-row>\n      </div>\n  </ion-grid>\n</ion-content>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\home\home.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */]])
     ], HomePage);
     return HomePage;
 }());
@@ -1146,7 +1159,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AppModule; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(28);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_platform_browser__ = __webpack_require__(29);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__angular_http__ = __webpack_require__(163);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__app_component__ = __webpack_require__(276);
@@ -1160,14 +1173,14 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__ionic_native_splash_screen__ = __webpack_require__(209);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__providers_wholesale_wholesale__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__components_ion_area_ion_area__ = __webpack_require__(286);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_fill_order_fill_order__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_address_list_address_list__ = __webpack_require__(107);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_address_address__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__pages_fill_order_fill_order__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__pages_address_list_address_list__ = __webpack_require__(109);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_17__pages_address_address__ = __webpack_require__(107);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_18__pages_result_result__ = __webpack_require__(110);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_19__pages_result_ok_result_ok__ = __webpack_require__(55);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_20__pages_order_order__ = __webpack_require__(54);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_21__pages_login_login__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_authorization_authorization__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_22__providers_authorization_authorization__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_23__pages_details_details__ = __webpack_require__(56);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1231,14 +1244,14 @@ var AppModule = /** @class */ (function () {
                 // ComponentsModule,
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["e" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_4__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/address-list/address-list.module#AddressListPageModule', name: 'AddressListPage', segment: 'address-list', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/address/address.module#AddressPageModule', name: 'AddressPage', segment: 'address', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/address-list/address-list.module#AddressListPageModule', name: 'AddressListPage', segment: 'address-list', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/details/details.module#DetailsPageModule', name: 'DetailsPage', segment: 'details', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/fill-order/fill-order.module#FillOrderPageModule', name: 'FillOrderPage', segment: 'fill-order', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/order/order.module#OrderPageModule', name: 'OrderPage', segment: 'order', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/result-ok/result-ok.module#ResultOkPageModule', name: 'ResultOkPage', segment: 'result-ok', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/result/result.module#ResultPageModule', name: 'ResultPage', segment: 'result', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/result/result.module#ResultPageModule', name: 'ResultPage', segment: 'result', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/result-ok/result-ok.module#ResultOkPageModule', name: 'ResultOkPage', segment: 'result-ok', priority: 'low', defaultHistory: [] }
                     ]
                 })
             ],
@@ -1265,7 +1278,7 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_11__ionic_native_status_bar__["a" /* StatusBar */],
                 __WEBPACK_IMPORTED_MODULE_12__ionic_native_splash_screen__["a" /* SplashScreen */],
                 { provide: __WEBPACK_IMPORTED_MODULE_0__angular_core__["u" /* ErrorHandler */], useClass: __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicErrorHandler */] },
-                __WEBPACK_IMPORTED_MODULE_13__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
+                __WEBPACK_IMPORTED_MODULE_13__providers_wholesale_wholesale__["g" /* WholesaleProvider */],
                 __WEBPACK_IMPORTED_MODULE_22__providers_authorization_authorization__["a" /* AuthorizationProvider */],
             ]
         })
@@ -1274,6 +1287,86 @@ var AppModule = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=app.module.js.map
+
+/***/ }),
+
+/***/ 26:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthorizationProvider; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TokenParam; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_login_login__ = __webpack_require__(53);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wholesale_wholesale__ = __webpack_require__(12);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+// import { HttpClient } from '@angular/common/http';
+
+
+
+/*
+  Generated class for the AuthorizationProvider provider.
+
+  See https://angular.io/guide/dependency-injection for more info on providers
+  and Angular DI.
+*/
+var AuthorizationProvider = /** @class */ (function () {
+    function AuthorizationProvider(service) {
+        this.service = service;
+        this.tokenEvent = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */]();
+        this.tokenParam = new TokenParam('', '', '', '');
+        // console.log('Hello AuthorizationProvider Provider');
+    }
+    AuthorizationProvider.prototype.verifyToken = function (navCtrl) {
+        var _this = this;
+        var token = window.localStorage.getItem('token');
+        // console.log("token="+token);
+        if (!token) {
+            navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__pages_login_login__["a" /* LoginPage */]);
+            // appCtrl.getRootNav().push(LoginPage);
+        }
+        else {
+            this.service.verifyToken().then(function (data) {
+                var rs = JSON.parse(JSON.stringify(data));
+                _this.tokenParam = new TokenParam(rs.status, rs.userName, rs.message, rs.token);
+                if (rs.status == "err") {
+                    navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__pages_login_login__["a" /* LoginPage */]);
+                    // appCtrl.getRootNav().push(LoginPage);
+                }
+                else {
+                    _this.tokenEvent.emit(_this.tokenParam);
+                }
+            });
+        }
+    };
+    AuthorizationProvider = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_2__wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _a || Object])
+    ], AuthorizationProvider);
+    return AuthorizationProvider;
+    var _a;
+}());
+
+var TokenParam = /** @class */ (function () {
+    function TokenParam(status, userName, message, token) {
+        this.status = status;
+        this.userName = userName;
+        this.message = message;
+        this.token = token;
+    }
+    ;
+    return TokenParam;
+}());
+
+//# sourceMappingURL=authorization.js.map
 
 /***/ }),
 
@@ -1332,6 +1425,8 @@ var MyApp = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__pages_details_details__ = __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__pages_login_login__ = __webpack_require__(53);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1346,6 +1441,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 
+
+
 /**
  * Generated class for the IonGoodsComponent component.
  *
@@ -1353,10 +1450,11 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Components.
  */
 var IonGoodsComponent = /** @class */ (function () {
-    function IonGoodsComponent(navCtrl, service, loadingCtrl) {
+    function IonGoodsComponent(navCtrl, service, loadingCtrl, authorization) {
         this.navCtrl = navCtrl;
         this.service = service;
         this.loadingCtrl = loadingCtrl;
+        this.authorization = authorization;
         this.params = {
             "addType": 1,
             "goodsId": 0,
@@ -1377,9 +1475,16 @@ var IonGoodsComponent = /** @class */ (function () {
         });
         loader.present();
         this.service.addCart(this.params).then((function (data) {
-            // console.log("data=="+JSON.stringify(goods));
+            // console.log("data=="+JSON.stringify(data));
+            var rs = JSON.parse(JSON.stringify(data));
+            if (rs[0].pramCode == 1) {
+                var cartNumParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartNumParams */]("add", 1);
+                _this.service.cartEvent.emit(cartNumParams);
+            }
+            else {
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_5__pages_login_login__["a" /* LoginPage */]);
+            }
             loader.dismiss();
-            _this.service.cartEvent.emit(1);
         }));
     };
     IonGoodsComponent.prototype.goDetail = function (goods) {
@@ -1391,11 +1496,12 @@ var IonGoodsComponent = /** @class */ (function () {
     ], IonGoodsComponent.prototype, "goods", void 0);
     IonGoodsComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'ion-goods',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\components\ion-goods\ion-goods.html"*/'<ion-list>\n    <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->\n      <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let good of goods;let i=index" (click)="goDetail(good)">\n        <ion-thumbnail item-start>\n          <img src="{{imageUrl}}{{good.ImageId}}">\n        </ion-thumbnail>\n        <h2>{{good.Name}}</h2>\n        <p>{{good.Description}}</p>\n        <ion-row>\n          <ion-col text-start>\n            <button ion-button icon-start clear color="danger">\n                ￥{{good.Price}}\n            </button>\n          </ion-col>\n          <ion-col text-end>\n            <button ion-button icon-end clear (click)="addCart(good)">\n              <ion-icon name="add" color="danger"></ion-icon>\n            </button>\n          </ion-col>\n        </ion-row>\n      </ion-item>\n  </ion-list>\n'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\components\ion-goods\ion-goods.html"*/
+            selector: 'ion-goods',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\components\ion-goods\ion-goods.html"*/'<ion-list no-padding>\n  <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->\n  <ion-item style="padding-left: 3px;" no-padding *ngFor="let good of goods;let i=index">\n    <ion-row no-padding>\n      <ion-col col-3 (click)="goDetail(good)">\n        <img src="{{imageUrl}}{{good.ImageId}}">\n      </ion-col>\n      <ion-col>\n        <div (click)="goDetail(good)" style="width:100%">\n        <h2>{{good.Name}}</h2>\n        <p>{{good.Description}}</p>\n      </div>\n        <button ion-button float-left small text-start clear color="danger">\n          ￥{{good.Price}}\n        </button>\n\n        <button ion-button float-right small color="danger" (click)="addCart(good)">\n          <!-- <ion-icon name="add" color="danger"></ion-icon> -->加入购物车\n        </button>\n      </ion-col>\n    </ion-row>\n  </ion-item>\n</ion-list>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\components\ion-goods\ion-goods.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */]) === "function" && _d || Object])
     ], IonGoodsComponent);
     return IonGoodsComponent;
+    var _a, _b, _c, _d;
 }());
 
 // class Params{
@@ -1539,91 +1645,12 @@ var IonAreaComponent = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'ion-area',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\components\ion-area\ion-area.html"*/' <!--地址请选择-->\n <div class="showChose" [hidden]="hiddenAddr">\n  <div class="address">\n    <!-- <div class="title">\n      <h4>配送至</h4>\n      <span (click)="closeAddr()">×</span>\n    </div> -->\n    <ion-toolbar>\n        <ion-title text-center style="font-size:9pt;">配送至{{text}}</ion-title>\n        <ion-buttons end>\n          <button ion-button icon-only color="royal" (click)="closeAddr()">\n            <ion-icon name="close"></ion-icon>\n          </button>\n        </ion-buttons>\n      </ion-toolbar>\n\n    <div class="addrTitle">\n      <div class="area" (click)="getArea(0)" [ngClass]="{\'active\': addrLevelId==0}">{{addrLevelNames[0]?addrLevelNames[0]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(1)" [ngClass]="{\'active\': addrLevelId==1}" [hidden]="addrLevelHiddens[1]">{{addrLevelNames[1]?addrLevelNames[1]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(2)" [ngClass]="{\'active\': addrLevelId==2}" [hidden]="addrLevelHiddens[2]">{{addrLevelNames[2]?addrLevelNames[2]:\'请选择\'}}</div>\n      <div class="area" (click)="getArea(3)" [ngClass]="{\'active\': addrLevelId==3}" [hidden]="addrLevelHiddens[3]">{{addrLevelNames[3]?addrLevelNames[3]:\'请选择\'}}</div>\n    </div>\n    <ul>\n      <ion-list>\n        <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let item of areaList;">\n          <!-- <li class="addList" [ngClass]="{\'active\': addrId==item.Id}" (click)="getNextArea(item)">{{item.Name}}</li> -->\n          <ion-label>{{item.Name}}</ion-label>\n    <ion-radio checked="{{addrId==item.Id}}" value="item.Id" (click)="getNextArea(item)"></ion-radio>\n        </ion-item>\n      </ion-list>\n    </ul>\n  </div>\n</div>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\components\ion-area\ion-area.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__providers_wholesale_wholesale__["f" /* WholesaleProvider */]])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__providers_wholesale_wholesale__["g" /* WholesaleProvider */]])
     ], IonAreaComponent);
     return IonAreaComponent;
 }());
 
 //# sourceMappingURL=ion-area.js.map
-
-/***/ }),
-
-/***/ 34:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return AuthorizationProvider; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return TokenParam; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__pages_login_login__ = __webpack_require__(53);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__wholesale_wholesale__ = __webpack_require__(12);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-// import { HttpClient } from '@angular/common/http';
-
-
-
-/*
-  Generated class for the AuthorizationProvider provider.
-
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
-var AuthorizationProvider = /** @class */ (function () {
-    function AuthorizationProvider(service) {
-        this.service = service;
-        this.tokenEvent = new __WEBPACK_IMPORTED_MODULE_0__angular_core__["v" /* EventEmitter */]();
-        this.tokenParam = new TokenParam('', '', '', '');
-        // console.log('Hello AuthorizationProvider Provider');
-    }
-    AuthorizationProvider.prototype.verifyToken = function (navCtrl) {
-        var _this = this;
-        var token = window.localStorage.getItem('token');
-        // console.log("token="+token);
-        if (!token) {
-            navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__pages_login_login__["a" /* LoginPage */]);
-            // appCtrl.getRootNav().push(LoginPage);
-        }
-        else {
-            this.service.verifyToken().then(function (data) {
-                var rs = JSON.parse(JSON.stringify(data));
-                _this.tokenParam = new TokenParam(rs.status, rs.userName, rs.message, rs.token);
-                if (rs.status == "err") {
-                    navCtrl.setRoot(__WEBPACK_IMPORTED_MODULE_1__pages_login_login__["a" /* LoginPage */]);
-                    // appCtrl.getRootNav().push(LoginPage);
-                }
-                else {
-                    _this.tokenEvent.emit(_this.tokenParam);
-                }
-            });
-        }
-    };
-    AuthorizationProvider = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_2__wholesale_wholesale__["f" /* WholesaleProvider */]])
-    ], AuthorizationProvider);
-    return AuthorizationProvider;
-}());
-
-var TokenParam = /** @class */ (function () {
-    function TokenParam(status, userName, message, token) {
-        this.status = status;
-        this.userName = userName;
-        this.message = message;
-        this.token = token;
-    }
-    ;
-    return TokenParam;
-}());
-
-//# sourceMappingURL=authorization.js.map
 
 /***/ }),
 
@@ -1670,14 +1697,22 @@ var TabsPage = /** @class */ (function () {
         //this.tabService.getReviews('/api/document/getCarCount', this.params).then((data => {
         var _this = this;
         this.tabService.cartEvent.subscribe(function (data) {
-            if (data == 0) {
-                _this.goodsNum = 0;
+            if (data.addType == "add") {
+                _this.goodsNum += data.num;
             }
             else {
-                _this.goodsNum += data;
+                _this.goodsNum = data.num;
             }
-            console.log("this.goodsNumEvent=" + data);
-        });
+        }
+        // data => {
+        //   if (data == 0) {
+        //     this.goodsNum = 0;
+        //   } else {
+        //     this.goodsNum += data;
+        //   }
+        //   console.log("this.goodsNumEvent=" + data);
+        // }
+        );
     };
     TabsPage.prototype.ionViewWillEnter = function () {
         // var token = window.localStorage.getItem('token');
@@ -1700,9 +1735,10 @@ var TabsPage = /** @class */ (function () {
     TabsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\tabs\tabs.html"*/'<ion-tabs>\n  <ion-tab [root]="tab1Root" tabTitle="首页" tabIcon="home"></ion-tab>\n  <ion-tab [root]="tab2Root" tabTitle="分类" tabIcon="list"></ion-tab>\n  <ion-tab [root]="tab3Root" tabTitle="购物车" tabIcon="cart" [tabBadge]="goodsNum" (ionSelect)="changeTab($event)"></ion-tab>\n  <ion-tab [root]="tab4Root" tabTitle="我的" tabIcon="person"></ion-tab>\n</ion-tabs>\n'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\tabs\tabs.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_5__providers_wholesale_wholesale__["f" /* WholesaleProvider */], __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["h" /* NavController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_5__providers_wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_5__providers_wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_6_ionic_angular__["h" /* NavController */]) === "function" && _b || Object])
     ], TabsPage);
     return TabsPage;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=tabs.js.map
@@ -1751,7 +1787,7 @@ var LoginPage = /** @class */ (function () {
         this.userName = "";
         this.password = "";
         this.sign = "signin";
-        this.customerParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["c" /* CustomerParams */]('', '', '', '', '', 1, '', '', '', '', '1901/01/01', 0, '', '', '');
+        this.customerParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["d" /* CustomerParams */]('', '', '', '', '', 1, '', '', '', '', '1901/01/01', 0, '', '', '');
     }
     LoginPage.prototype.ionViewDidLoad = function () {
         console.log('ionViewDidLoad LoginPage');
@@ -1759,7 +1795,7 @@ var LoginPage = /** @class */ (function () {
     LoginPage.prototype.login = function () {
         var _this = this;
         // console.log(this.navCtrl.);
-        this.loginParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["d" /* LoginParams */](this.userName, this.password);
+        this.loginParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["e" /* LoginParams */](this.userName, this.password);
         this.service.login(this.loginParams).then(function (data) {
             var rs = JSON.parse(JSON.stringify(data));
             if (rs.status == "success") {
@@ -1811,7 +1847,7 @@ var LoginPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-login',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\login\login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>登陆</ion-title>\n  </ion-navbar>\n  <ion-toolbar no-border-top>\n\n    <ion-segment [(ngModel)]="sign">\n      <ion-segment-button value="signin">\n        用户登陆\n      </ion-segment-button>\n      <ion-segment-button value="signup">\n        新用户注册\n      </ion-segment-button>\n    </ion-segment>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <div [ngSwitch]="sign">\n    <div *ngSwitchCase="\'signin\'">\n      <ion-list>\n        <ion-item>\n          <ion-label>用户名:</ion-label>\n          <ion-input type="text" [(ngModel)]="userName"></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label>密&nbsp;&nbsp;&nbsp;&nbsp;码:</ion-label>\n          <ion-input type="password" [(ngModel)]="password"></ion-input>\n        </ion-item>\n      </ion-list>\n      <div padding>\n        <button ion-button color="primary" block (click)="login()">登陆</button>\n      </div>\n    </div>\n    <!-- ================= -->\n    <div *ngSwitchCase="\'signup\'">\n      <ion-list>\n        <ion-item>\n          <ion-label>用&nbsp;&nbsp;户&nbsp;&nbsp;名:</ion-label>\n          <ion-input type="text" [(ngModel)]="customerParams.customerId"></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱:</ion-label>\n          <ion-input type="text" [(ngModel)]="customerParams.email"></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label>手机号码:</ion-label>\n          <ion-input type="text" [(ngModel)]="customerParams.mobile"></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码:</ion-label>\n          <ion-input type="password" [(ngModel)]="customerParams.password"></ion-input>\n        </ion-item>\n        <ion-item>\n          <ion-label>重复密码:</ion-label>\n          <ion-input type="password" [(ngModel)]="customerParams.password2"></ion-input>\n        </ion-item>\n      </ion-list>\n      <div padding>\n        <button ion-button color="primary" block (click)="signout()">注册</button>\n      </div>\n    </div>\n  </div>\n</ion-content>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\login\login.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["k" /* Tabs */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]])
     ], LoginPage);
     return LoginPage;
@@ -1858,7 +1894,7 @@ var OrderPage = /** @class */ (function () {
         this.params = {
             pageNo: 1
         };
-        this.cartParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartParams */](1, 0, 0, 1, 0, 1);
+        this.cartParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["c" /* CartParams */](1, 0, 0, 1, 0, 1);
         this.imageUrl = service.imageURl;
     }
     OrderPage.prototype.ionViewDidLoad = function () {
@@ -1907,17 +1943,18 @@ var OrderPage = /** @class */ (function () {
             // console.log("2")
         });
         loader.dismiss();
-        this.service.cartEvent.emit(emitNum);
+        var cartNumParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartNumParams */]("add", emitNum);
+        this.service.cartEvent.emit(cartNumParams);
         this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__cart_cart__["a" /* CartPage */]);
     };
     OrderPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-order',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\order\order.html"*/'<!--\n  Generated template for the OrderPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>我的订单</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content no-padding no-margin>\n  <ion-list no-lines>\n    <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->\n    <ion-item no-padding no-margin *ngFor="let order of orders;">\n      <ion-card>\n        <ion-card-header>\n          <span float-left>{{order.header.CreateDate| date:\'yyyy-MM-dd HH:mm\'}}</span>\n          <span float-right>{{order.header.OrderStatusName}}</span>\n\n        </ion-card-header>\n\n        <ion-card-content>\n          <ion-list>\n            <ion-item *ngFor="let detail of order.detail;">\n              <ion-avatar item-start>\n                <img src="{{imageUrl}}{{detail.ImageId}}">\n              </ion-avatar>\n              <h2>{{detail.Name}}</h2>\n              <h3 text-right color="danger">￥{{detail.Price}}x{{detail.Piece}}</h3>\n            </ion-item>\n            <ion-item>\n              <h3 color="danger">\n                <span float-left>总数量:{{order.sumQuantity}}</span>\n                <span float-right>总额:￥{{order.sumAmount | number: \'0.2\'}}</span>\n              </h3>\n            </ion-item>\n            <ion-item>\n              <button ion-button small outline float-left>取消订单</button>\n              <button ion-button small outline float-right (click)="buyMore(order.detail)">再次购买</button>\n            </ion-item>\n          </ion-list>\n        </ion-card-content>\n      </ion-card>\n    </ion-item>\n  </ion-list>\n\n  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">\n    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="订单加载中...">\n    </ion-infinite-scroll-content>\n  </ion-infinite-scroll>\n\n</ion-content>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\order\order.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _d || Object])
     ], OrderPage);
     return OrderPage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=order.js.map
@@ -1993,6 +2030,7 @@ var ResultOkPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__login_login__ = __webpack_require__(53);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2002,6 +2040,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+
 
 
 
@@ -2026,25 +2065,31 @@ var DetailsPage = /** @class */ (function () {
     };
     DetailsPage.prototype.addCart = function (goods) {
         var _this = this;
-        var params = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartParams */](1, goods.GoodsId, 0, 1, 0, 1);
+        var params = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["c" /* CartParams */](1, goods.GoodsId, 0, 1, 0, 1);
+        var cartNumParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartNumParams */]("add", 1);
         var loader = this.loadingCtrl.create({
             content: "添加到购物车..."
         });
         loader.present();
         this.service.addCart(params).then((function (data) {
-            // console.log("data=="+JSON.stringify(goods));
+            var rs = JSON.parse(JSON.stringify(data));
+            if (rs[0].pramCode == 1) {
+                _this.service.cartEvent.emit(cartNumParams);
+            }
+            else {
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__login_login__["a" /* LoginPage */]);
+            }
             loader.dismiss();
-            _this.service.cartEvent.emit(1);
         }));
     };
     DetailsPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-details',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\details\details.html"*/'<!--\n  Generated template for the DetailsPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>商品详情</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content>\n  <ion-card>\n    <img src="{{imageUrl}}{{goods.ImageId}}">\n    <ion-card-content>\n      <ion-card-title>\n        {{goods.Name}}\n      </ion-card-title>\n      <p>\n        {{goods.Description}}\n      </p>\n\n    </ion-card-content>\n  </ion-card>\n</ion-content>\n<ion-footer no-padding style="padding: 0px">\n  <ion-row no-padding color="danger">\n    <ion-col text-left no-padding>\n        <button ion-button icon-end color="danger" (click)="addCart(goods)">\n            <ion-icon name="logo-yen">{{goods.Price|number:\'.2\'}}</ion-icon>\n          </button>\n     \n    </ion-col>\n    <ion-col text-right no-padding>\n      <button ion-button icon-end color="danger" (click)="addCart(goods)">\n        <ion-icon name="cart"> 添加到购物车</ion-icon>\n      </button>\n    </ion-col>\n  </ion-row>\n</ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\details\details.html"*/,
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* NavParams */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _d || Object])
     ], DetailsPage);
     return DetailsPage;
+    var _a, _b, _c, _d;
 }());
 
 //# sourceMappingURL=details.js.map
@@ -2059,8 +2104,8 @@ var DetailsPage = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fill_order_fill_order__ = __webpack_require__(109);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__ = __webpack_require__(34);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__fill_order_fill_order__ = __webpack_require__(108);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__ = __webpack_require__(26);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -2088,7 +2133,7 @@ var CartPage = /** @class */ (function () {
         // text:string;
         this.params = { id: Math.random() };
         // addrParams={"level":0,"parentId":-1}
-        this.cartParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartParams */](0, 0, 0, 1, 0, 1);
+        this.cartParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["c" /* CartParams */](0, 0, 0, 1, 0, 1);
         this.sumPrice = 0;
         this.sumPiece = 0;
         this.imageUrl = "";
@@ -2175,7 +2220,8 @@ var CartPage = /** @class */ (function () {
                         goods.Piece += piece;
                     }
                     loader.dismiss();
-                    _this.service.cartEvent.emit(emitNum);
+                    var cartNumParams = new __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["b" /* CartNumParams */]("add", emitNum);
+                    _this.service.cartEvent.emit(cartNumParams);
                     _this.getTotal();
                 }));
                 return;
@@ -2198,10 +2244,10 @@ var CartPage = /** @class */ (function () {
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
             selector: 'page-cart',template:/*ion-inline-start:"C:\dev\ionic\wholesaleAPP\src\pages\cart\cart.html"*/'<ion-header>\n  <ion-navbar>\n    <ion-title>\n      购物车\n    </ion-title>\n  </ion-navbar>\n</ion-header>\n\n<ion-content>\n  <ion-list>\n    <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->\n    <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let goods of cartGoods;">\n      <ion-thumbnail item-start>\n        <img src="{{imageUrl}}{{goods.ImageId}}">\n      </ion-thumbnail>\n      <h2>{{goods.Name}}</h2>\n      <p>{{goods.Description}}</p>\n      <ion-row>\n        <ion-col text-start>\n          <span class="price">￥{{goods.Price}}</span>\n          <ul class="btn-numbox">\n            <li>\n              <ul class="count">\n                <li>\n                  <span id="num-add" class="num-add" (click)="addCart(goods)">+</span>\n                </li>\n                <li>\n                  <span class="input-num" id="input-num" (click)="showConfirm(goods)">{{goods.Piece}}</span>\n                </li>\n                <li>\n                  <span id="num-remove" class="num-remove" (click)="removeCart(goods)">-</span>\n                </li>\n              </ul>\n            </li>\n            </ul>\n          <!-- <button ion-button icon-end clear (click)="addCart(good)">\n            <ion-icon name="remove" color="danger"></ion-icon>\n          </button>\n          <input type="text"  value="{{good.Piece}}" class="num"/>\n          <span>{{good.Piece}}</span>\n          <button ion-button icon-end clear (click)="addCart(good)">\n            <ion-icon name="add" color="danger"></ion-icon>\n          </button> -->\n        </ion-col>\n      </ion-row>\n    </ion-item>\n  </ion-list>\n\n \n\n</ion-content>\n<ion-footer no-padding style="padding: 0px">\n  <ion-toolbar no-padding style="padding: 0px">\n    合计：{{sumPrice|number:\'.2\'}}\n    <br>总额：优惠\n    <ion-buttons end>\n      <button ion-button color="danger" (click)="goOrder()">\n        去结算\n        <ion-icon name="send"></ion-icon>\n      </button>\n    </ion-buttons>\n  </ion-toolbar>\n</ion-footer>'/*ion-inline-end:"C:\dev\ionic\wholesaleAPP\src\pages\cart\cart.html"*/
         }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */], __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["f" /* WholesaleProvider */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */], __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* NavController */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_2__providers_wholesale_wholesale__["g" /* WholesaleProvider */]) === "function" && _b || Object, typeof (_c = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["a" /* AlertController */]) === "function" && _c || Object, typeof (_d = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* LoadingController */]) === "function" && _d || Object, typeof (_e = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["l" /* ToastController */]) === "function" && _e || Object, typeof (_f = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* App */]) === "function" && _f || Object, typeof (_g = typeof __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_4__providers_authorization_authorization__["a" /* AuthorizationProvider */]) === "function" && _g || Object])
     ], CartPage);
     return CartPage;
+    var _a, _b, _c, _d, _e, _f, _g;
 }());
 
 //# sourceMappingURL=cart.js.map

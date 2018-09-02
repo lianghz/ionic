@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
-import { WholesaleProvider, CartParams } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, CartParams, CartNumParams } from '../../providers/wholesale/wholesale';
 import { CartPage } from '../cart/cart';
 
 /**
@@ -73,7 +73,8 @@ export class OrderPage {
     });
 
     loader.dismiss();
-    this.service.cartEvent.emit(emitNum);
+    let cartNumParams = new CartNumParams("add",emitNum);
+    this.service.cartEvent.emit(cartNumParams);
     this.navCtrl.push(CartPage);
 
   }

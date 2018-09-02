@@ -20,7 +20,7 @@ export class AuthorizationProvider {
   constructor(public service:WholesaleProvider) {
     // console.log('Hello AuthorizationProvider Provider');
   }
-  verifyToken(navCtrl: NavController) {
+  verifyToken(navCtrl: NavController){
     var token = window.localStorage.getItem('token');
     // console.log("token="+token);
     if(!token){

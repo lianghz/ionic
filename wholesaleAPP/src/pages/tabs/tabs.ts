@@ -4,7 +4,7 @@ import { MyPage } from '../my/my';
 import { SortPage } from '../sort/sort';
 import { CartPage } from '../cart/cart';
 import { HomePage } from '../home/home';
-import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, CartNumParams } from '../../providers/wholesale/wholesale';
 import { NavController } from 'ionic-angular';
 
 @Component({
@@ -27,14 +27,21 @@ export class TabsPage {
     //this.tabService.getReviews('/api/document/getCarCount', this.params).then((data => {
 
     this.tabService.cartEvent.subscribe(
-      data => {
-        if (data == 0) {
-          this.goodsNum = 0;
-        } else {
-          this.goodsNum += data;
+      (data:CartNumParams)=>{
+        if(data.addType == "add"){
+          this.goodsNum += data.num;
+        }else{
+          this.goodsNum = data.num;
         }
-        console.log("this.goodsNumEvent=" + data);
       }
+      // data => {
+      //   if (data == 0) {
+      //     this.goodsNum = 0;
+      //   } else {
+      //     this.goodsNum += data;
+      //   }
+      //   console.log("this.goodsNumEvent=" + data);
+      // }
     )
   }
   ionViewWillEnter() {

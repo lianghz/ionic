@@ -1,8 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { NavController } from 'ionic-angular';
-import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, CartNumParams } from '../../providers/wholesale/wholesale';
 import { LoadingController } from 'ionic-angular';
 import { DetailsPage } from '../../pages/details/details';
+import { AuthorizationProvider } from '../../providers/authorization/authorization';
+import { LoginPage } from '../../pages/login/login';
 
 
 /**
@@ -28,21 +30,30 @@ export class IonGoodsComponent {
     "warehouseId":1
   }
   imageUrl="";
-  constructor(public navCtrl: NavController,public service: WholesaleProvider,public loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController,public service: WholesaleProvider,public loadingCtrl: LoadingController,
+  public authorization:AuthorizationProvider) {
     // console.log('Hello IonGoodsComponent Component');
     this.imageUrl = this.service.imageURl;
   }
 
   addCart(goods){
     this.params.goodsId = goods.GoodsId;
-    const loader = this.loadingCtrl.create({
+     const loader = this.loadingCtrl.create({
       content: "添加到购物车..."
     });
     loader.present();
     this.service.addCart(this.params).then((data=>{
-      // console.log("data=="+JSON.stringify(goods));
+      // console.log("data=="+JSON.stringify(data));
+      let rs =  JSON.parse(JSON.stringify(data));
+      if(rs[0].pramCode==1)
+      {
+        let cartNumParams = new CartNumParams("add",1);
+        this.service.cartEvent.emit(cartNumParams);
+      }else{
+        this.navCtrl.push(LoginPage);
+      }
       loader.dismiss();
-      this.service.cartEvent.emit(1);
+      
     })); 
   }
   goDetail(goods){

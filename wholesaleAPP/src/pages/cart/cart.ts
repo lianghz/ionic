@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, LoadingController, ToastController, App } from 'ionic-angular';
-import { WholesaleProvider, CartParams } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, CartParams, CartNumParams } from '../../providers/wholesale/wholesale';
 import { RequestOptionsArgs } from '@angular/http';
 import { FillOrderPage } from '../fill-order/fill-order';
 import { AuthorizationProvider } from '../../providers/authorization/authorization';
@@ -117,7 +117,8 @@ export class CartPage {
             goods.Piece += piece;
           }
           loader.dismiss();
-          this.service.cartEvent.emit(emitNum);
+          let cartNumParams = new CartNumParams("add",emitNum);
+          this.service.cartEvent.emit(cartNumParams);
           this.getTotal();
         }));
         return;

@@ -25804,6 +25804,10 @@ ion-area .addrTitle {
   height: 40px;
 }
 
+ion-goods .item-line {
+  border-bottom: 0.55px solid #c8c7cc;
+}
+
 page-cart ul,
 page-cart .btn-numbox li {
   list-style: none;

@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, App } from 'ionic-angular';
 import { OrderPage } from '../order/order';
 import { LoginPage } from '../login/login';
-import { WholesaleProvider } from '../../providers/wholesale/wholesale';
+import { WholesaleProvider, CartNumParams } from '../../providers/wholesale/wholesale';
 import { AuthorizationProvider, TokenParam } from '../../providers/authorization/authorization';
 
 @Component({
@@ -34,6 +34,7 @@ export class MyPage {
   logout(){
     window.localStorage.removeItem('token');
     this.navCtrl.setRoot(LoginPage);
-    this.service.cartEvent.emit(0);
+    let cartNumParams = new CartNumParams("over",0);
+    this.service.cartEvent.emit(cartNumParams);
   }
 }

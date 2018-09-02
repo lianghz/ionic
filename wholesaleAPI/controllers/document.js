@@ -221,7 +221,7 @@ module.exports = {
 	//======================客户端
 	addShoppingCar: function (req, res, next) {
 		str = "";
-		console.log('body=' + JSON.stringify(req.body));
+		// console.log('body=' + JSON.stringify(req.body));
 		var addType = req.body.addType;
 		var customerId = req.userName;
 		var goodsId = req.body.goodsId;
@@ -231,12 +231,14 @@ module.exports = {
 		var warehouseId = req.body.warehouseId;
 		levelId = levelId ? levelId : 0;
 		warehouseId = warehouseId ? warehouseId : 1;
-
-
-		var inParams = [addType, customerId, goodsId, cases, piece, levelId, warehouseId];
-		Document.addShoppingCar(inParams, function (rows) {
-			res.json(rows[0]);
-		});
+		if (customerId == "") {
+			res.json([{ pramResult: '请先登陆', pramCode: 0 }]);
+		} else {
+			var inParams = [addType, customerId, goodsId, cases, piece, levelId, warehouseId];
+			Document.addShoppingCar(inParams, function (rows) {
+				res.json(rows[0]);
+			});
+		}
 	},
 
 	getCarGoods: function (req, res, next) {
@@ -250,9 +252,13 @@ module.exports = {
 	getCarCount: function (req, res, next) {
 		var customerId = req.userName;
 		var inParams = [customerId];
-		Document.getCarCount(inParams, function (rows) {
-			res.json(rows[0]);
-		});
+		if (customerId == "") {
+			res.json([{ CustomerId: "", goodsCount: 0 }]);
+		} else {
+			Document.getCarCount(inParams, function (rows) {
+				res.json(rows[0]);
+			});
+		}
 	},
 
 	convertOrder: function (req, res, next) {
@@ -277,8 +283,8 @@ module.exports = {
 		userId = userId ? userId : 'sys';
 		deliverStartDateTime = deliverStartDateTime || moment().format("YYYY-MM-DD HH:mm:ss");
 		deliverEndDateTime = deliverEndDateTime || moment().format("YYYY-MM-DD HH:mm:ss");
-		console.log("Date.now()="+moment().format("YYYY-MM-DD HH:mm:ss"));
-		var inParams = [customerId, warehouseId, levelId, paidWay, deliverStartDateTime, deliverEndDateTime, deliveryAddress, mobile, linkman, remark, method, regionId, orderType,userId];
+		console.log("Date.now()=" + moment().format("YYYY-MM-DD HH:mm:ss"));
+		var inParams = [customerId, warehouseId, levelId, paidWay, deliverStartDateTime, deliverEndDateTime, deliveryAddress, mobile, linkman, remark, method, regionId, orderType, userId];
 		Document.convertOrder(inParams, function (rows) {
 			res.json(rows);
 		});
@@ -289,13 +295,13 @@ module.exports = {
 		var status = -1;
 		var pageNo = req.query.pageNo;
 		var pageSize = 20;
-		var inParams = [customerId,status,pageNo,pageSize];
+		var inParams = [customerId, status, pageNo, pageSize];
 		Document.getOrderList(inParams, function (rows) {
 			res.json(rows);
 		});
 	},
 
-	
+
 
 	///页面模板
 	order: function (req, res, next) {

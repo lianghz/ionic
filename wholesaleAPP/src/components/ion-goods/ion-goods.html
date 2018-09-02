@@ -1,22 +1,23 @@
-<ion-list>
-    <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->
-      <ion-item style="padding-left: 3px;" class="menuItem" *ngFor="let good of goods;let i=index" (click)="goDetail(good)">
-        <ion-thumbnail item-start>
-          <img src="{{imageUrl}}{{good.ImageId}}">
-        </ion-thumbnail>
+<ion-list no-padding>
+  <!-- <ion-item-sliding #slidingItem *ngFor="let sort of sorts"> -->
+  <ion-item style="padding-left: 3px;" no-padding *ngFor="let good of goods;let i=index">
+    <ion-row no-padding>
+      <ion-col col-3 (click)="goDetail(good)">
+        <img src="{{imageUrl}}{{good.ImageId}}">
+      </ion-col>
+      <ion-col>
+        <div (click)="goDetail(good)" style="width:100%">
         <h2>{{good.Name}}</h2>
         <p>{{good.Description}}</p>
-        <ion-row>
-          <ion-col text-start>
-            <button ion-button icon-start clear color="danger">
-                ￥{{good.Price}}
-            </button>
-          </ion-col>
-          <ion-col text-end>
-            <button ion-button icon-end clear (click)="addCart(good)">
-              <ion-icon name="add" color="danger"></ion-icon>
-            </button>
-          </ion-col>
-        </ion-row>
-      </ion-item>
-  </ion-list>
+      </div>
+        <button ion-button float-left small text-start clear color="danger">
+          ￥{{good.Price}}
+        </button>
+
+        <button ion-button float-right small color="danger" (click)="addCart(good)">
+          <!-- <ion-icon name="add" color="danger"></ion-icon> -->加入购物车
+        </button>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+</ion-list>

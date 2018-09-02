@@ -20,7 +20,7 @@ export class WholesaleProvider {
   public imageURl=this.apiHome + ":8080/images/";
   
   //===event===============================
-  cartEvent: EventEmitter<number> = new EventEmitter();
+  cartEvent: EventEmitter<CartNumParams> = new EventEmitter();
   hiddenAddrEvent: EventEmitter<boolean> = new EventEmitter();
   addrNameEvent: EventEmitter<string[]> = new EventEmitter();
   addrIdEvent: EventEmitter<number[]> = new EventEmitter();
@@ -90,7 +90,7 @@ export class WholesaleProvider {
   }
 
   addCart(params: CartParams) {
-
+    
     return this.postReview(this.apiUrl + '/document/addShoppingCar', params);
   }
 
@@ -139,7 +139,8 @@ export class WholesaleProvider {
   getCarCount(params){
       this.getReviews(this.apiUrl + '/document/getCarCount', params).then(data=>{
       let count = JSON.parse(JSON.stringify(data))[0].goodsCount;
-      this.cartEvent.emit(count);
+      let cartNumParams = new CartNumParams("over",count);
+      this.cartEvent.emit(cartNumParams);
     });
   }
   
@@ -232,6 +233,11 @@ export class CartParams {
     public piece: number,
     public levelId: number,
     public warehouseId: number) { }
+}
+export class CartNumParams {
+  constructor(
+    public addType: string,//add or over
+    public num: number) { }
 }
 
 export class LoginParams {

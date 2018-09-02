@@ -25873,6 +25873,206 @@ page-home .gallery {
   flex-wrap: wrap;
 }
 
+page-home ion-slides {
+  height: 40%;
+}
+
+page-home ion-slides .cover {
+  position: absolute;
+  bottom: 0px;
+  width: 100%;
+  height: 20px;
+  background: -webkit-gradient(linear, left top, right top, from(#673743), to(#f9537d));
+  background: linear-gradient(to right, #673743, #f9537d);
+  opacity: 0.6;
+}
+
+page-home ion-slides .title {
+  position: absolute;
+  bottom: 0px;
+  width: 90%;
+  height: 20px;
+  line-height: 20px;
+  font-size: 60%;
+  left: 5px;
+  text-align: center;
+  color: white;
+}
+
+page-home .categories .title {
+  font-family: "黑体-简";
+  font-weight: 300;
+  color: #808080;
+  font-size: 80%;
+  display: block;
+  margin-top: 5px;
+}
+
+page-home .categories ion-row {
+  background-color: #efefef;
+  padding: 0px;
+}
+
+page-home .categories ion-col {
+  background-color: white;
+  /*border: 1px solid #efefef;*/
+}
+
+page-home .icon {
+  border-radius: 100px;
+  color: white;
+  background-color: #f8285c;
+  font-size: 36px !important;
+  padding: 5px;
+}
+
+page-home .c1 {
+  background-color: orangered;
+}
+
+page-home .c2 {
+  background-color: blueviolet;
+}
+
+page-home .c3 {
+  background-color: sandybrown;
+}
+
+page-home .c4 {
+  background-color: slateblue;
+}
+
+page-home .c5 {
+  background-color: orange;
+}
+
+page-home .c6 {
+  background-color: dimgray;
+}
+
+page-home .t-header {
+  font-family: "黑体-简";
+  font-weight: 300;
+  color: #f8285c;
+  border-left: 2px solid #f8285c;
+  border-top: 5px solid #efefef;
+  background: white;
+}
+
+page-home .stores .title {
+  font-family: "黑体-简";
+  font-weight: 300;
+  color: #808080;
+  font-size: 80%;
+  display: block;
+  margin-top: 5px;
+}
+
+page-home .stores ion-row {
+  background-color: #efefef;
+  padding: 0px;
+}
+
+page-home .stores ion-col {
+  background-color: white;
+  border: 1px solid #efefef;
+}
+
+page-home .product ion-row {
+  background-color: #efefef;
+  font-family: "Helvetica Neue", Helvetica, STHeiTi, sans-serif;
+  padding-top: 3px;
+}
+
+page-home .product ion-row ion-col {
+  position: relative;
+  background-color: white;
+  border: 2px solid #efefef;
+  border-radius: 2px;
+  padding: 0px;
+}
+
+page-home .product ion-row ion-col p {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  font-size: 12px;
+  font-family: "黑体-简";
+  font-weight: 300;
+  color: #808080;
+  height: 26px;
+  line-height: 26px;
+  background: rgba(255, 255, 255, 0.8);
+  overflow: hidden;
+  text-indent: 5px;
+}
+
+page-home .product .list-price {
+  width: 98%;
+  height: 26px;
+  line-height: 18px;
+  position: relative;
+  bottom: 0;
+  margin: 0 2%;
+}
+
+page-home .product .price-new {
+  font-size: 18px;
+  color: #f8285c;
+}
+
+page-home .product .list-price i {
+  font-style: normal;
+  font-size: 12px;
+}
+
+page-home .product .del {
+  color: #ababab;
+  text-decoration: line-through;
+  margin-left: 2px;
+}
+
+page-home .product .good-btn {
+  display: block;
+  position: absolute;
+  height: 16px;
+  line-height: 12px;
+  color: #f8285c;
+  font-size: 13px;
+  font-family: "黑体-简";
+  text-align: right;
+  top: 5px;
+  right: 2px;
+}
+
+page-home .product .quan_img {
+  position: absolute;
+  width: 61px;
+  height: 55px;
+  z-index: 5;
+  right: 0;
+  top: 0;
+  cursor: pointer;
+  background: url(/assets/img/quan.png) no-repeat;
+  background-size: contain;
+  color: #fff;
+}
+
+page-home .product .quan_img .num_money {
+  font-family: Arial;
+  font-size: 18px;
+  height: 40px;
+  left: 9px;
+  position: absolute;
+  text-align: center;
+  top: 14px;
+  width: 40px;
+}
+
+page-home .product .imgH {
+  height: 65%;
+}
+
 page-sort {
   background: #efefef;
 }
